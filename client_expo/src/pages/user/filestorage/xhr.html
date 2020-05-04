@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Storage</title>
+
+    <style>
+      * {
+        font-family: Arial;
+      }
+
+      html {
+        background: silver;
+      }
+
+      a,
+      button {
+        background: teal;
+        padding: 1rem;
+        border: 0;
+        color: white;
+        text-decoration: none;
+        font-weight: bolder;
+        font-size: 1rem;
+        border-radius: 5px;
+        margin: 1rem;
+        display: block;
+      }
+
+      #the-canvas {
+        border: 1px solid black;
+        direction: ltr;
+      }
+    </style>
+  </head>
+
+  <body>
+    <input id="input" type="file" /><br />
+
+    <canvas id="the-canvas"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.3.200/build/pdf.min.js"></script>
+    <script src="loadpdf.js"></script>
+    <script>
+      const input = document.querySelector("#input");
+      //   const fileReader = new FileReader();
+
+      //   fileReader.onload = function () {
+      //     // console.log(fileReader.result);
+      //     // console.log(fileReader.result);
+      //     localStorage.setItem("nse", fileReader.result);
+      //     loadPdf(fileReader.result);
+      //   };
+
+      async function getPdfFromNetwork() {
+        let response = await fetch(
+          "https://localhost:1026/uploads/pdfs/1588435866nse-2020.pdf"
+        );
+
+        // let arrayBuffer = await response.arrayBuffer();
+
+        // console.log(ab2str(arrayBuffer));
+
+        // loadPdf(arrayBuffer);
+
+        const blob = await response.blob();
+
+        console.log("blob", blob);
+
+        loadPdf(blob);
+
+        // console.log(blob);
+
+        // fileReader.readAsBinaryString(blob);
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        getPdfFromNetwork();
+        // const pdf = localStorage.getItem("nse");
+        // loadPdf(pdf);
+        // console.log(pdf)
+      });
+
+      // input.addEventListener("change", () => {
+      //     const file = input.files[0];
+      //     fileReader.readAsArrayBuffer(file);
+      // });
+    </script>
+  </body>
+</html>

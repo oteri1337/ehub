@@ -1,0 +1,10 @@
+.app-image-cover {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.app-image-back-1 {
+  background: url("../images/app/Office.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}

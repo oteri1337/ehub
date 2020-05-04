@@ -1,0 +1,32 @@
+{
+	"require": {
+		"vlucas/phpdotenv": "^4.1",
+		"slim/slim": "^4.4",
+		"alexgarrett/violin": "^2.2",
+		"illuminate/database": "^7.1",
+		"illuminate/pagination": "^7.1",
+		"illuminate/events": "^7.1",
+		"robmorgan/phinx": "^0.11.4",
+		"fzaninotto/faker": "^1.9",
+		"phpmailer/phpmailer": "^6.1",
+		"twig/twig": "^3.0",
+		"monolog/monolog": "^2.0",
+		"intervention/image": "^2.5",
+		"cboden/ratchet": "^0.4.2",
+		"phpunit/phpunit": "^9.0",
+		"twilio/sdk": "^6.0",
+		"guzzlehttp/guzzle": "^6.5",
+		"http-interop/http-factory-guzzle": "^1.0",
+		"minishlink/web-push": "^5.2"
+	},
+	"autoload": {
+		"psr-4": {
+			"Server\\": "servers/http"
+		}
+	},
+	"scripts": {
+		"post-install-cmd": [
+			"chmod -R 777 public_html/"
+		]
+	}
+}
