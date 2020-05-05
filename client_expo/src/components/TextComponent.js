@@ -13,7 +13,15 @@ function TextComponent(props) {
     );
   }
 
-  return <Text {...props} />;
+  return (
+    <Text
+      {...props}
+      style={{
+        color: "rgba(28, 28, 30, 0.68)",
+        ...props.style,
+      }}
+    />
+  );
 }
 
 export default TextComponent;

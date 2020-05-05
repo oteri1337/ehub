@@ -1,76 +1,94 @@
 import React from "react";
+import { FlatList } from "react-native";
 import { BACKEND_URL } from "../../../env";
+import Text from "../../components/TextComponent";
 import HeaderComponent from "../../components/HeaderComponent";
-import { getRequestThenDispatch } from "../../providers/AppProvider";
-import {
-  Container,
-  Content,
-  Text,
-  List,
-  Left,
-  Body,
-  Card,
-  CardItem,
-  Thumbnail,
-} from "native-base";
+import { AppContext } from "../../providers/AppProvider";
+import { Container, List, ListItem, Left, Body, Thumbnail } from "native-base";
 
-function PdfsPage({ navigation, route }) {
+function PdfgroupsReadPage({ navigation, route }) {
   const { title, slug } = route.params;
-  const url = `/api/pdfgroups/${slug}`;
-  const { state } = getRequestThenDispatch(url, "UPDATE_PDFGROUP");
+  const { state } = React.useContext(AppContext);
+  // const url = "/api/pdfgroups";
+  //  const { state, fetching } = getRequestThenDispatch(url, "UPDATE_PDFGROUPS");
 
-  const renderPdfs = () => {
-    const group = state.pdfgroups.object[slug];
-    const pdfs = group.pdfs?.data || [];
+  // const refreshing = fetching;
+  const refreshing = false;
+  // const data = state.pdfgroups.data;
+  const data = state.pdfgroups.object[slug].pdfs.data;
 
-    return pdfs.map((pdf) => {
-      return (
-        <Card transparent key={pdf.id} style={{ borderBottomWidth: 1 }}>
-          <CardItem>
-            <Left>
-              <Thumbnail
-                source={{
-                  uri: `${BACKEND_URL}/uploads/images/${pdf.image_name}`,
-                }}
-              />
-              <Body>
-                <Text onPress={() => navigation.navigate("PdfsReadPage", pdf)}>
-                  {pdf.title}
-                </Text>
-                <Text note>{pdf.file_size}</Text>
-                <Text note>{pdf.description}</Text>
-                {/* <WebView source={{ html: pdf.content_html }} /> */}
-              </Body>
-            </Left>
-          </CardItem>
-          {/* <CardItem>
-            <Left>
-              <Button transparent>
-                <Icon name="thumbs-up" />
-                <Text style={{ padding: 5 }}>{pdf.file_size}</Text>
-              </Button>
-            </Left>
-            <Right>
-              <Button transparent>
-                <Icon name="ios-save" />
-                <Text style={{ padding: 5 }}>{pdf.file_size}</Text>
-              </Button>
-            </Right>
-          </CardItem> */}
-        </Card>
-      );
-    });
+  const renderItem = ({ item }) => {
+    const onPress = () => {
+      navigation.navigate("PdfsReadPage", item);
+    };
+
+    return (
+      <ListItem thumbnail onPress={onPress}>
+        <Left>
+          <Thumbnail
+            square
+            source={{
+              uri: `${BACKEND_URL}/uploads/images/${item.image_name}`,
+            }}
+          />
+        </Left>
+        <Body>
+          <Text
+            style={{
+              fontSize: 12,
+              fontFamily: "Roboto_medium",
+              textTransform: "uppercase",
+              color: "#59595a",
+            }}
+          >
+            {item.title}
+          </Text>
+          <Text
+            style={{
+              fontSize: 11,
+              textTransform: "capitalize",
+              color: "#5a5a62",
+            }}
+          >
+            {item.description}
+          </Text>
+          <Text style={{ fontSize: 11, color: "#5a5a62" }}>
+            {item.file_size}
+          </Text>
+        </Body>
+      </ListItem>
+    );
+  };
+
+  const onRefresh = () => {
+    // getRequestThenDispatch(url, "UPDATE_PDFGROUPS");
+  };
+
+  const keyExtractor = (item) => {
+    return item.id.toString();
+  };
+
+  const ListHeaderComponent = () => {
+    return <Text style={{ marginLeft: 10 }}>{title.toUpperCase()}</Text>;
   };
 
   return (
     <Container>
       <HeaderComponent navigation={navigation} />
-      <Content padder>
-        <Text>{title}</Text>
-        <List>{renderPdfs()}</List>
-      </Content>
+      <List style={{ padding: 10 }}>
+        <FlatList
+          {...{
+            data,
+            renderItem,
+            refreshing,
+            onRefresh,
+            keyExtractor,
+            ListHeaderComponent,
+          }}
+        />
+      </List>
     </Container>
   );
 }
 
-export default PdfsPage;
+export default PdfgroupsReadPage;

@@ -1,9 +1,7 @@
 import React from "react";
-// import Pdf from "react-native-pdf";
 import PDFReader from "rn-pdf-reader-js";
 import { BACKEND_URL } from "../../../env";
-import { Container, Content, Text } from "native-base";
-import HeaderComponent from "../../components/HeaderComponent";
+import HeaderComponent from "../../components/HeaderBackComponent";
 
 function PdfsReadPage({ navigation, route }) {
   const { title, file_name } = route.params;
@@ -30,11 +28,14 @@ function PdfsReadPage({ navigation, route }) {
   // );
 
   return (
-    <PDFReader
-      source={{
-        uri,
-      }}
-    />
+    <React.Fragment>
+      <HeaderComponent {...{ navigation, title }} />
+      <PDFReader
+        source={{
+          uri,
+        }}
+      />
+    </React.Fragment>
   );
 }
 

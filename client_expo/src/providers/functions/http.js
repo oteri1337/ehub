@@ -20,6 +20,7 @@ export async function getRequest(url) {
   // }
 
   try {
+    console.log(BACKEND_URL);
     response = await axios({ url: BACKEND_URL + url, withCredentials: true });
     response = response.data;
   } catch (e) {

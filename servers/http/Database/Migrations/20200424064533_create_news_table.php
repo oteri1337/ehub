@@ -13,9 +13,9 @@ class CreateNewsTable extends ParentMigration
             $table->string("title");
             $table->string("slug")->unique();
             $table->string("image")->default("image.png");
-            $table->text("content");
-            $table->text("content_html");
-            $table->string("content_short");
+            $table->text("content")->nullable();
+            $table->text("content_html")->nullable();
+            $table->string("content_short")->nullable();
             $table->timestamps();
         });
     }

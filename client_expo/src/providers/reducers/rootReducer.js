@@ -1,5 +1,7 @@
 import userReducer from "./userReducer";
 import newsReducer from "./newsReducer";
+import usersReducer from "./usersReducer";
+import topicsReducer from "./topicsReducer";
 import pdfgroupsReducer from "./pdfgroupsReducer";
 
 function rootReducer(state = {}, action) {
@@ -12,6 +14,8 @@ function rootReducer(state = {}, action) {
   return {
     user: userReducer(state.user, action),
     news: newsReducer(state.news, action),
+    users: usersReducer(state.users, action),
+    topics: topicsReducer(state.topics, action),
     pdfgroups: pdfgroupsReducer(state.pdfgroups, action),
   };
 }

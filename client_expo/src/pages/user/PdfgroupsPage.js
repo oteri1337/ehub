@@ -5,7 +5,6 @@ import HeaderComponent from "../../components/HeaderComponent";
 import { getRequestThenDispatch } from "../../providers/AppProvider";
 import {
   Container,
-  Content,
   List,
   ListItem,
   Left,
@@ -14,16 +13,12 @@ import {
   Icon,
 } from "native-base";
 
-function PdfsPage({ navigation }) {
+function PdfgroupsPage({ navigation }) {
   const url = "/api/pdfgroups";
   const { state, fetching } = getRequestThenDispatch(url, "UPDATE_PDFGROUPS");
 
   const refreshing = fetching;
   const data = state.pdfgroups.data;
-
-  const onRefresh = () => {
-    // getRequestThenDispatch(url, "UPDATE_PDFGROUPS");
-  };
 
   const renderItem = ({ item }) => {
     const onPress = () => {
@@ -33,10 +28,11 @@ function PdfsPage({ navigation }) {
     return (
       <ListItem thumbnail onPress={onPress}>
         <Left>
-          <Icon name="ios-copy" />
+          <Icon name="ios-copy" style={{ color: "rgba(28, 28, 30, 0.68)" }} />
         </Left>
         <Body>
           <Text>{item.title}</Text>
+          <Text note>{item.pdfs_count} Books</Text>
         </Body>
         <Right>
           <Icon name="arrow-forward" />
@@ -45,29 +41,35 @@ function PdfsPage({ navigation }) {
     );
   };
 
+  const onRefresh = () => {
+    // getRequestThenDispatch(url, "UPDATE_PDFGROUPS");
+  };
+
   const keyExtractor = (item) => {
     return item.id.toString();
+  };
+
+  const ListHeaderComponent = () => {
+    return <Text style={{ marginLeft: 10 }}>LIBRARY</Text>;
   };
 
   return (
     <Container>
       <HeaderComponent navigation={navigation} />
-      <Content padder>
-        <Text>E Library</Text>
-        <List>
-          <FlatList
-            {...{
-              data,
-              renderItem,
-              refreshing,
-              onRefresh,
-              keyExtractor,
-            }}
-          />
-        </List>
-      </Content>
+      <List style={{ padding: 10 }}>
+        <FlatList
+          {...{
+            data,
+            renderItem,
+            refreshing,
+            onRefresh,
+            keyExtractor,
+            ListHeaderComponent,
+          }}
+        />
+      </List>
     </Container>
   );
 }
 
-export default PdfsPage;
+export default PdfgroupsPage;

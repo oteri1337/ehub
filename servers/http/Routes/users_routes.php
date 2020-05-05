@@ -10,7 +10,7 @@ $app->get('/api/users/{attr}', UsersController::class . ':read');
 
 $app->delete('/api/users', UsersController::class . ':delete')->add($admin_logged_in);
 
-$app->get('/api/users', UsersController::class . ':list')->add($admin_logged_in);
+$app->get('/api/users', UsersController::class . ':list');
 
 $app->post('/api/users/search', UsersController::class . ':search')->add($admin_logged_in);
 

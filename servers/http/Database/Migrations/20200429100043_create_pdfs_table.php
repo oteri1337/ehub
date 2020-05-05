@@ -16,7 +16,7 @@ class CreatePdfsTable extends ParentMigration
             $table->string('image_name')->default('image.png');
             $table->string('file_name')->nullable();
             $table->float('file_size', 11, 2)->default(0);
-            $table->text('description');
+            $table->text('description')->nullable();
 
             $table->timestamps();
         });

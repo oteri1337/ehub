@@ -10,19 +10,27 @@ import {
 } from "@react-navigation/drawer";
 
 import HomePage from "../pages/HomePage";
-import SignUpPage from "../pages/auth/SignUpPage";
+import SignUpPage from "../pages/SignUpPage";
+import PasswordPage from "../pages/PasswordPage";
 
 import UserHomePage from "../pages/user/UserHomePage";
+import AccountPage from "../pages/user/account/AccountPage";
+import ProfilePage from "../pages/user/account/ProfilePage";
+import MessagesPage from "../pages/user/account/MessagesPage";
 
-import PdfsReadPage from "../pages/user/PdfsReadPage";
-import SavedPdfsPage from "../pages/user/SavedPdfsPage";
 import PdfgroupsPage from "../pages/user/PdfgroupsPage";
 import PdfgroupsReadPage from "../pages/user/PdfgroupsReadPage";
+import PdfsReadPage from "../pages/user/PdfsReadPage";
+import SavedPdfsPage from "../pages/user/SavedPdfsPage";
 
 import NewsPage from "../pages/user/NewsPage";
-import ForumPage from "../pages/user/ForumPage";
-import AccountPage from "../pages/user/AccountPage";
+import NewsReadPage from "../pages/user/NewsReadPage";
+
+import TopicsPage from "../pages/user/TopicsPage";
+import TopicsCreatePage from "../pages/user/TopicsCreatePage";
+
 import UsersPage from "../pages/user/UsersPage";
+import UsersReadPage from "../pages/user/UsersReadPage";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -32,7 +40,11 @@ function Link({ label, icon = "ios-qr-scanner", onPress }) {
     <DrawerItem
       label={label}
       icon={({ focused, color, size }) => (
-        <Icon color={color} size={size} name={focused ? icon : icon} />
+        <Icon
+          size={size}
+          name={focused ? icon : icon}
+          // style={{ color: "rgba(28, 28, 30, 0.68)" }}
+        />
       )}
       onPress={onPress}
     />
@@ -56,15 +68,15 @@ function DrawerContentComponent(props) {
   // prettier-ignore
   return (
     <DrawerContentScrollView {...props}>
-      <Link onPress={() => goto("AccountPage")} label={`${first_name} ${last_name}`} icon="ios-contact" />
-      <Link onPress={() => goto("PdfgroupsPage")} label="E Library" icon="ios-copy" />
-      <Link onPress={() => goto("SavedPdfsPage")} label="Downloads" icon="ios-save"/>
+      <Link onPress={() => goto("ProfilePage")} label={`${first_name} ${last_name}`} icon="ios-contact" />
+      <Link onPress={() => goto("PdfgroupsPage")} label="Library" icon="ios-copy" />
       <Link onPress={() => goto("NewsPage")} label="News" icon="ios-image" />
-      <Link onPress={() => goto("ForumPage")} label="Forum" icon="md-chatboxes" />
+      <Link onPress={() => goto("TopicsPage")} label="Forum" icon="md-chatboxes" />
       <Link onPress={() => goto("UsersPage")} label="Community" icon="ios-contacts" />
-      <Link onPress={() => goto("AccountPage")} label="Inbox" icon="md-mail"/>      
+      <Link onPress={() => goto("MessagesPage")} label="Messages" icon="md-mail"/>      
+      <Link onPress={() => goto("SavedPdfsPage")} label="Downloads" icon="ios-save"/>
       <Link onPress={() => goto("AccountPage")} label="My Account" icon="ios-construct"/>
-      <Link onPress={signOut} label="Signout" icon="md-power" />
+      <Link onPress={signOut} label="Sign Out" icon="md-power" />
     </DrawerContentScrollView>
   );
 }
@@ -77,16 +89,23 @@ function Routes() {
     return (
       <Drawer.Navigator drawerContent={(props) => <DrawerContentComponent {...props} />}>
         <Drawer.Screen name="HomePage" component={UserHomePage} />
-        
-        <Drawer.Screen name="PdfsReadPage" component={PdfsReadPage} />
-        <Drawer.Screen name="SavedPdfsPage" component={SavedPdfsPage} />
+        <Drawer.Screen name="AccountPage" component={AccountPage} />
+        <Drawer.Screen name="ProfilePage" component={ProfilePage} />
+        <Drawer.Screen name="MessagesPage" component={MessagesPage} />
+
         <Drawer.Screen name="PdfgroupsPage" component={PdfgroupsPage} />
         <Drawer.Screen name="PdfgroupsReadPage" component={PdfgroupsReadPage} />
+        <Drawer.Screen name="PdfsReadPage" component={PdfsReadPage} />
+        <Drawer.Screen name="SavedPdfsPage" component={SavedPdfsPage} />
 
         <Drawer.Screen name="NewsPage" component={NewsPage} />
-        <Drawer.Screen name="ForumPage" component={ForumPage} />
-        <Drawer.Screen name="AccountPage" component={AccountPage} />
+        <Drawer.Screen name="NewsReadPage" component={NewsReadPage} />
+
+        <Drawer.Screen name="TopicsPage" component={TopicsPage} />
+        <Drawer.Screen name="TopicsCreatePage" component={TopicsCreatePage} />
+
         <Drawer.Screen name="UsersPage" component={UsersPage} />
+        <Drawer.Screen name="UsersReadPage" component={UsersReadPage} />
       </Drawer.Navigator>
     );
   }
@@ -95,6 +114,7 @@ function Routes() {
     <Stack.Navigator headerMode="none">
       <Stack.Screen name="HomePage" component={HomePage} />
       <Stack.Screen name="SignUpPage" component={SignUpPage} />
+      <Stack.Screen name="PasswordPage" component={PasswordPage} />
     </Stack.Navigator>
   );
 }

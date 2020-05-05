@@ -1,7 +1,7 @@
 import React from "react";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
-import { View, Text } from "native-base";
+import { Root } from "native-base";
 import Router from "./src/routing/Router";
 import { AsyncStorage } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,6 +19,7 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync({
+      Montserrat: require("./assets/Montserrat/Montserrat-Medium.ttf"),
       Roboto: require("native-base/Fonts/Roboto.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       ...Ionicons.font,
@@ -34,15 +35,11 @@ export default class App extends React.Component {
     }
 
     return (
-      <AppProvider initialState={this.state.persisted}>
-        <Router />
-      </AppProvider>
-    );
-
-    return (
-      <AppProvider initialState={this.state.persisted}>
-        <Router />
-      </AppProvider>
+      <Root>
+        <AppProvider initialState={this.state.persisted}>
+          <Router />
+        </AppProvider>
+      </Root>
     );
   }
 }

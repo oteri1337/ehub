@@ -25,13 +25,13 @@ class PdfgroupsSeeder extends AbstractSeed
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
-                'title'         => "Math & Logic",
+                'title'         => "Math And Logic",
                 'slug'      => "math-and-logic",
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
-                'title'         => "Mechanices",
+                'title'         => "Mechanics",
                 'slug'      => "mechanics",
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
@@ -43,7 +43,7 @@ class PdfgroupsSeeder extends AbstractSeed
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
-                'title'         => "Petroleum & Natural Gas",
+                'title'         => "Petroleum And Natural Gas",
                 'slug'      => "png",
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),

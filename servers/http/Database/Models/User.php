@@ -22,6 +22,11 @@ class User extends Model
         'password'
     ];
 
+    public function getChatsAttribute()
+    {
+        return Chat::where('user_id', $this->id)->get();
+    }
+
     public static function relationships($row)
     {
         return $row;

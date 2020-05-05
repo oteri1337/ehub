@@ -2,6 +2,7 @@ import React from "react";
 import { AsyncStorage } from "react-native";
 import reducer from "./reducers/rootReducer";
 import { getRequest, sendRequest } from "./functions/http";
+import { Toast } from "native-base";
 
 export const AppContext = React.createContext({});
 
@@ -54,7 +55,7 @@ export function getRequestThenDispatch(url, dispatch, prop) {
   return { state, fetching, response };
 }
 
-export function sendRequestThenDispatch(url, dispatch) {
+export function sendRequestThenDispatch(url, dispatch, onError) {
   const defResp = {
     errors: [],
     message: "",
@@ -72,6 +73,12 @@ export function sendRequestThenDispatch(url, dispatch) {
     setResponse(response);
     if (response.errors.length === 0) {
       callReducer({ dispatch, data: response.data });
+    }
+
+    if (response.errors.length) {
+      setTimeout(() => {
+        Toast.show({ text: response.errors[0].toUpperCase(), duration: 2000 });
+      }, 700);
     }
   };
 

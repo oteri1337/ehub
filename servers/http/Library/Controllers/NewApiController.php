@@ -10,8 +10,9 @@ class NewApiController extends ServicesController
     public $readBy;
     public $searchBy;
     public $perPage;
+    public $relationships;
 
-    public function __construct($model = [], $readBy = "id", $searchBy = "id", $perPage = 12)
+    public function __construct($model = [], $readBy = "id", $searchBy = "id", $perPage = 20)
     {
         parent::__construct();
 
@@ -25,6 +26,7 @@ class NewApiController extends ServicesController
         $this->readBy = $readBy;
         $this->perPage = $perPage;
         $this->searchBy = $searchBy;
+        $this->relationships = [];
     }
 
     public function create($request, $response)
@@ -86,7 +88,8 @@ class NewApiController extends ServicesController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $row = $this->afterRead($row);
+        // $row = $this->afterRead($row);
+        // $row = $row->with($this->relationships);
 
         $this->data['data'] = $row;
         $response->getBody()->write(json_encode($this->data));
@@ -124,6 +127,4 @@ class NewApiController extends ServicesController
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }
-
-
 }

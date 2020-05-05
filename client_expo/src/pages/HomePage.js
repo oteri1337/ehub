@@ -18,6 +18,8 @@ import {
   Header,
   Spinner,
   Container,
+  Content,
+  Toast,
 } from "native-base";
 
 function HomePage({ navigation }) {
@@ -37,30 +39,92 @@ function HomePage({ navigation }) {
     }
   };
 
-  const onPress = () => {
-    navigation.navigate("SignUpPage");
-  };
-
-  const login = () => {
-    navigation.navigate("UserHomePage");
-  };
-
   const onBlur = () => {
     Keyboard.dismiss();
   };
 
   return (
     <Container>
-      <View style={{ flex: 1 }}>
+      <ImageBackground
+        source={Signin}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <Header transparent iosBarStyle="light-content" />
+        <Thumbnail source={Logo} style={{ marginTop: -20, marginLeft: 25 }} />
+        <Form
+          onSubmit={onSubmit}
+          style={{ paddingLeft: 15, paddingRight: 15, marginTop: 90 }}
+        >
+          <H1 style={{ textAlign: "center", color: "#fff" }}>eHUB</H1>
+          <Item rounded style={{ marginBottom: 25, marginTop: 25 }}>
+            <Icon name="ios-mail" style={{ color: "#fff" }} />
+            <Input
+              placeholder="Email"
+              style={{ color: "#fff" }}
+              placeholderTextColor="#fff"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+            />
+          </Item>
+          <Item rounded style={{ marginBottom: 25 }}>
+            <Icon name="ios-lock" style={{ color: "#fff" }} />
+            <Input
+              placeholder="Password"
+              style={{ color: "#fff" }}
+              placeholderTextColor="#fff"
+              value={password}
+              secureTextEntry={true}
+              onChangeText={(text) => setPassword(text)}
+              onBlur={onBlur}
+            />
+          </Item>
+          {!fetching && (
+            <View style={{ alignSelf: "center" }}>
+              <Button success bordered onPress={onSubmit}>
+                <Text padding={20} style={{ color: "rgb(92, 184, 92)" }}>
+                  Log In
+                </Text>
+              </Button>
+            </View>
+          )}
+
+          {fetching && <Spinner />}
+        </Form>
+
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 25,
+            color: "#fff",
+            marginBottom: 10,
+          }}
+        >
+          Forgot password?{" "}
+          <Text
+            style={{ color: "#f3ae35" }}
+            onPress={() => navigation.navigate("PasswordPage")}
+          >
+            Get Help
+          </Text>
+        </Text>
+        <Text style={{ textAlign: "center", color: "#fff" }}>
+          Don't have an account?{" "}
+          <Text
+            style={{ color: "#f3ae35" }}
+            onPress={() => {
+              navigation.navigate("SignUpPage");
+            }}
+          >
+            Sign Up
+          </Text>
+        </Text>
+
+        {/* 
+      <Content>
         <ImageBackground
           source={Signin}
           style={{ width: "100%", height: "100%" }}
         >
-          <Header
-            transparent
-            androidStatusBarColor="#FFF"
-            iosBarStyle="light-content"
-          />
           <View
             style={{
               flex: 1,
@@ -71,7 +135,7 @@ function HomePage({ navigation }) {
           </View>
           <View
             style={{
-              flex: 4,
+              marginTop: 65,
               padding: 10,
             }}
           >
@@ -120,7 +184,7 @@ function HomePage({ navigation }) {
 
             <ErrorsComponent errors={response.errors} />
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={{ marginTop: 130, paddingBottom: 10 }}>
             <Text
               style={{
                 textAlign: "center",
@@ -142,7 +206,8 @@ function HomePage({ navigation }) {
             </Text>
           </View>
         </ImageBackground>
-      </View>
+      </Content> */}
+      </ImageBackground>
     </Container>
   );
 }

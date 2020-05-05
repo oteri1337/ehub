@@ -20,20 +20,31 @@ class UserSeeder extends AbstractSeed
 
         $data = [];
         // for ($i = 0; $i <= 1; $i++) {
-            $data[] = [
-                'email' => "test@gmail.com",
-                'password' => sha1("password"),
-                'first_name' => $faker->firstName,
-                'last_name' => $faker->lastName,
-                'mobile_number' => $faker->e164PhoneNumber,
-                'department'=>"Petroleum Engineering",
-                'created_at'    => date('Y-m-d H:i:s'),
-                'updated_at'    => date('Y-m-d H:i:s'),
-            ];
+        $data[] = [
+            'email' => "test@gmail.com",
+            'password' => sha1("password"),
+            'first_name' => $faker->firstName,
+            'last_name' => $faker->lastName,
+            'mobile_number' => $faker->e164PhoneNumber,
+            'department' => "Petroleum Engineering",
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
 
-            User::create($data[0]);
+        $data[] = [
+            'email' => "test2@gmail.com",
+            'password' => sha1("password2"),
+            'first_name' => $faker->firstName,
+            'last_name' => $faker->lastName,
+            'mobile_number' => $faker->e164PhoneNumber,
+            'department' => "Mechanical Engineering",
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
+
+        // User::create($data[0]);
         // }
 
-        // $this->table('users')->insert($data)->save();
+        $this->table('users')->insert($data)->save();
     }
 }

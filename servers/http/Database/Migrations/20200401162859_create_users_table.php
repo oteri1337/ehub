@@ -14,20 +14,28 @@ class CreateUsersTable extends ParentMigration
 
             // auth
             $table->string('email')->unique();
+
             $table->string('password');
 
             $table->string('first_name');
+
             $table->string('last_name');
+
             $table->string('department');
 
             $table->string('photo_profile')->default("human.png");
+
             $table->string('mobile_number')->unique()->nullable();
 
             $table->boolean('verified')->default(0);
+
             $table->integer('pin')->nullable();
+
             $table->text('push_subscription')->nullable();
 
             $table->timestamps();
+
+            $table->string('chats')->nullable();
         });
     }
 
