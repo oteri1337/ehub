@@ -31,7 +31,7 @@ function UsersPage({ navigation }) {
           <Text>
             {item.first_name} {item.last_name}
           </Text>
-          <Text note>0 Posts</Text>
+          <Text note>{item.department}</Text>
         </Body>
       </ListItem>
     );

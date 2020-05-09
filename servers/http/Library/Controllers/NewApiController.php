@@ -53,6 +53,7 @@ class NewApiController extends ServicesController
         $row = $this->afterRead($row);
 
         $this->data['data'] = $row;
+        $this->data['message'] = "Created";
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }

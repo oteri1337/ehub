@@ -2,7 +2,7 @@ import React from "react";
 import { FlatList } from "react-native";
 import { BACKEND_URL } from "../../../env";
 import Text from "../../components/TextComponent";
-import HeaderComponent from "../../components/HeaderComponent";
+import HeaderComponent from "../../components/HeaderBackComponent";
 import { AppContext } from "../../providers/AppProvider";
 import { Container, List, ListItem, Left, Body, Thumbnail } from "native-base";
 
@@ -74,7 +74,7 @@ function PdfgroupsReadPage({ navigation, route }) {
 
   return (
     <Container>
-      <HeaderComponent navigation={navigation} />
+      <HeaderComponent navigation={navigation} title={title} />
       <List style={{ padding: 10 }}>
         <FlatList
           {...{
@@ -83,7 +83,6 @@ function PdfgroupsReadPage({ navigation, route }) {
             refreshing,
             onRefresh,
             keyExtractor,
-            ListHeaderComponent,
           }}
         />
       </List>

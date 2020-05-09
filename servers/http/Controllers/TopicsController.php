@@ -20,6 +20,20 @@ class TopicsController extends NewApiController
     {
         $body["slug"] = $this->slugify($body["title"]);
 
-        return $this->filter($body, ['title', 'content', 'slug']);
+        return $this->filter($body, ['title', 'content', 'slug', 'user_id']);
+    }
+
+    public function createRules($body)
+    {
+
+        $title = $body['title'] ?? '';
+        $content = $body['content'] ?? '';
+        $user_id = $body['user_id'] ?? '';
+
+        return [
+            'title' => [$title, 'required'],
+            'content' => [$content, 'required'],
+            'user id' => [$user_id, 'required']
+        ];
     }
 }

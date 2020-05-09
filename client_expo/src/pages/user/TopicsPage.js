@@ -27,7 +27,7 @@ function TopicsPage({ navigation }) {
     };
 
     return (
-      <ListItem thumbnail>
+      <ListItem thumbnail onPress={onPress}>
         <Left>
           <Icon
             name="ios-chatboxes"

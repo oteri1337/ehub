@@ -77,7 +77,13 @@ export function sendRequestThenDispatch(url, dispatch, onError) {
 
     if (response.errors.length) {
       setTimeout(() => {
-        Toast.show({ text: response.errors[0].toUpperCase(), duration: 2000 });
+        Toast.show({ text: response.errors[0].toUpperCase(), duration: 2500 });
+      }, 700);
+    }
+
+    if (response.message) {
+      setTimeout(() => {
+        Toast.show({ text: response.message, duration: 2500 });
       }, 700);
     }
   };

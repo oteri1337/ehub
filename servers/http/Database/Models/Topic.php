@@ -11,5 +11,18 @@ class Topic extends Model
         'slug',
         'title',
         'content',
+        'user_id'
     ];
+
+    public function getUserIdAttribute($row)
+    {
+        $user = User::where("id", $row)->first();
+        return $user->first_name . " " . $user->last_name;
+    }
+
+    public function getCreatedAtAttribute($row)
+    {
+        $dateTimeInstance = new \DateTime($row);
+        return $dateTimeInstance->format('h:i A');
+    }
 }
