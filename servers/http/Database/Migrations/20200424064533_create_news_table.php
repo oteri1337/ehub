@@ -12,7 +12,7 @@ class CreateNewsTable extends ParentMigration
             $table->increments('id');
             $table->string("title");
             $table->string("slug")->unique();
-            $table->string("image")->default("image.png");
+            $table->string("image")->default("image3.png");
             $table->text("content")->nullable();
             $table->text("content_html")->nullable();
             $table->string("content_short")->nullable();

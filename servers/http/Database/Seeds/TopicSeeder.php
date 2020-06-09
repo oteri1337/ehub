@@ -15,13 +15,17 @@ class TopicSeeder extends AbstractSeed
      */
     public function run()
     {
+
+        $color = ['#2588ed', '#fe653b', '#8299cd', '#00adef'];
+
         $faker = Faker\Factory::create();
         $data = [];
-        for ($i = 0; $i < 35; $i++) {
+        for ($i = 0; $i < 85; $i++) {
             $data[] = [
                 'slug' => $faker->slug,
                 'title' => $faker->name,
                 'content' => $faker->text,
+                'color' => $color[rand(0, 3)],
                 'user_id' => 1,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),

@@ -14,6 +14,11 @@ class Topic extends Model
         'user_id'
     ];
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->orderBy('created_at', 'ASC');
+    }
+
     public function getUserIdAttribute($row)
     {
         $user = User::where("id", $row)->first();
@@ -23,6 +28,6 @@ class Topic extends Model
     public function getCreatedAtAttribute($row)
     {
         $dateTimeInstance = new \DateTime($row);
-        return $dateTimeInstance->format('h:i A');
+        return $dateTimeInstance->format('M d h:i A');
     }
 }

@@ -17,10 +17,12 @@ class NewsSeeder extends AbstractSeed
     {
         $faker = Faker\Factory::create();
         $data = [];
-        for ($i = 0; $i < 35; $i++) {
+        for ($i = 0; $i < 85; $i++) {
             $data[] = [
                 'slug' => $faker->slug,
                 'title' => $faker->name,
+                'content' => $faker->text,
+                'content_html' => $faker->randomHtml(2, 3),
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ];

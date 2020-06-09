@@ -17,26 +17,31 @@ class PdfrelSeeder extends AbstractSeed
     {
         $faker = Faker\Factory::create();
 
-        $data = [
-            [
-                'pdf_id'         => 1,
-                'pdfgroup_id'      => 1,
-                'created_at'    => date('Y-m-d H:i:s'),
-                'updated_at'    => date('Y-m-d H:i:s'),
-            ],
-            [
-                'pdf_id'         => 1,
-                'pdfgroup_id'      => 2,
-                'created_at'    => date('Y-m-d H:i:s'),
-                'updated_at'    => date('Y-m-d H:i:s'),
-            ],
-            [
-                'pdf_id'         => 1,
-                'pdfgroup_id'      => 3,
-                'created_at'    => date('Y-m-d H:i:s'),
-                'updated_at'    => date('Y-m-d H:i:s'),
-            ],
-        ];
+        // $data = [
+        //     [
+        //         'pdf_id'         => 1,
+        //         'pdfgroup_id'      => 1,
+        //         'created_at'    => date('Y-m-d H:i:s'),
+        //         'updated_at'    => date('Y-m-d H:i:s'),
+        //     ],
+        // ];
+
+        $data = [];
+        $num = 1;
+
+        for ($j = 1; $j <= 5; $j++) {
+            for ($i = 1; $i <= 4; $i++) {
+                $data[] =
+                    [
+                        'pdf_id'    =>  $num,
+                        'pdfgroup_id'      => $j,
+                        'created_at'    => date('Y-m-d H:i:s'),
+                        'updated_at'    => date('Y-m-d H:i:s'),
+                    ];
+                $num++;
+            }
+        }
+
 
         $this->table('pdf_pdfgroup')->insert($data)->save();
     }

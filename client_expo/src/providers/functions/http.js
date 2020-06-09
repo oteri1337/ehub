@@ -3,30 +3,33 @@ import { BACKEND_URL } from "../../../env";
 
 export const ERROR_OBJECT = {
   errors: [`connection or server error @ ${BACKEND_URL}`],
-  data: {},
+  data: false,
 };
 
-export async function getRequest(url) {
+export async function getRequest(endpoint) {
   let response;
 
+  const url = BACKEND_URL + endpoint;
+
+  console.log(url);
+
+  try {
+    response = await axios({ url, withCredentials: true });
+    response = response.data;
+  } catch (e) {
+    response = { ...ERROR_OBJECT, jsError: e };
+  }
+
   // try {
-  //   response = await fetch(BACKEND_URL + url, {
+  //   response = await fetch(url, {
   //     credentials: "include",
   //   });
   //   response = await response.json();
   // } catch (e) {
-  //   console.log(e);
   //   response = { ...ERROR_OBJECT, jsError: e };
   // }
 
-  try {
-    console.log(BACKEND_URL);
-    response = await axios({ url: BACKEND_URL + url, withCredentials: true });
-    response = response.data;
-  } catch (e) {
-    console.log(e);
-    response = { ...ERROR_OBJECT, jsError: e };
-  }
+  console.log(response);
 
   return response;
 }
@@ -49,9 +52,13 @@ export async function sendRequest(url, data, method = "POST") {
 
   const headers = { "content-type": "application/json" };
 
+  const newUrl = BACKEND_URL + url;
+
+  console.log(newUrl);
+
   try {
     response = await axios({
-      url: BACKEND_URL + url,
+      url: newUrl,
       data,
       method,
       headers,

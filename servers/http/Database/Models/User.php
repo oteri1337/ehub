@@ -16,16 +16,17 @@ class User extends Model
         'department',
         'mobile_number',
         'push_subscription',
+        'photo_profile'
     ];
 
     protected $hidden = [
         'password'
     ];
 
-    public function getChatsAttribute()
-    {
-        return Chat::where('user_id', $this->id)->get();
-    }
+    // public function getChatsAttribute()
+    // {
+    //     return Chat::where('user_id', $this->id)->get();
+    // }
 
     public static function relationships($row)
     {

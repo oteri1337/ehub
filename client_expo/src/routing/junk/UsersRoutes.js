@@ -9,7 +9,7 @@ function UsersRoutes() {
   return (
     <Stack.Navigator headerMode="none">
       <Stack.Screen name="UsersPage" component={UsersPage} />
-      <Stack.Screen name="UsersReadPage" component={UsersReadPage} />
+      {/* <Stack.Screen name="UsersReadPage" component={UsersReadPage} /> */}
     </Stack.Navigator>
   );
 }

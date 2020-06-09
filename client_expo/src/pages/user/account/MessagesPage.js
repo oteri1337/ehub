@@ -19,6 +19,10 @@ function MessagesPage({ navigation }) {
 
   const data = state.user.chats;
 
+  const keyExtractor = (item) => {
+    return item.id.toString();
+  };
+
   const renderItem = ({ item }) => {
     const onPress = () => {
       navigation.navigate("MessagesReadPage", item);
@@ -29,12 +33,12 @@ function MessagesPage({ navigation }) {
         <Left>
           <Thumbnail
             source={{
-              uri: `${BACKEND_URL}/uploads/images/human.png`,
+              uri: `${BACKEND_URL}/uploads/images/girl1.jpg`,
             }}
           />
         </Left>
         <Body>
-          <Text>{item.recvr_id}</Text>
+          <Text style={{ fontWeight: "bold" }}>{item.recvr_id}</Text>
           <Text note>Last Message</Text>
         </Body>
       </ListItem>
@@ -42,17 +46,15 @@ function MessagesPage({ navigation }) {
   };
 
   const ListHeaderComponent = () => {
-    return <Text style={{ marginLeft: 10 }}>INBOX</Text>;
+    return <Text style={{ marginLeft: 15, marginTop: 5 }}>INBOX</Text>;
   };
 
   return (
     <Container>
-      <HeaderComponent navigation={navigation} />
-      <Content padder>
-        <List>
-          <FlatList {...{ data, renderItem, ListHeaderComponent }} />
-        </List>
-      </Content>
+      {/* <HeaderComponent navigation={navigation} title="Messages" /> */}
+      <List>
+        <FlatList {...{ data, renderItem, keyExtractor }} />
+      </List>
     </Container>
   );
 }

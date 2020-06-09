@@ -4,11 +4,25 @@ function newsReducer(state = defaultState, action) {
   switch (action.dispatch) {
     case "UPDATE_TOPICS":
       return action.data;
-    case "UPDATE_TOPICS_IN_TOPICS":
+    case "UPDATE_TOPIC":
       return {
         ...state,
         object: {
-          [action.data.id]: action.data,
+          ...state.object,
+          [action.data.slug]: action.data,
+        },
+      };
+    case "ADD_COMMENT_TO_TOPIC":
+      const { slug, comment } = action.data;
+
+      return {
+        ...state,
+        object: {
+          ...state.object,
+          [slug]: {
+            ...state.object[slug],
+            comments: [...state.object[slug].comments, comment],
+          },
         },
       };
     case "UPDATE_TOPICS_PAGE":

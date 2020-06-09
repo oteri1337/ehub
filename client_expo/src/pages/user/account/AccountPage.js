@@ -1,5 +1,9 @@
 import React from "react";
-import HeaderComponent from "../../../components/HeaderComponent";
+import { BACKEND_URL } from "../../../../env";
+import { useNavigation } from "@react-navigation/native";
+import { AppContext } from "../../../providers/AppProvider";
+import HeaderComponent from "../../../components/HeaderBackComponent";
+
 import {
   Container,
   Content,
@@ -8,39 +12,100 @@ import {
   ListItem,
   Left,
   Icon,
+  Body,
+  Button,
+  Right,
+  H1,
+  View,
+  Thumbnail,
+  Picker,
 } from "native-base";
 
+function Li({ text = "", icon = "ios-today", color, to }) {
+  const navigation = useNavigation();
+
+  const onPress = () => {
+    if (to) {
+      navigation.navigate(to);
+    }
+  };
+
+  return (
+    <ListItem icon onPress={onPress}>
+      <Left>
+        <Button style={{ backgroundColor: color || "#FF9501" }}>
+          <Icon active name={icon} />
+        </Button>
+      </Left>
+      <Body>
+        <Text>{text}</Text>
+      </Body>
+      <Right>
+        <Icon active name="arrow-forward" />
+      </Right>
+    </ListItem>
+  );
+}
+
 function AccountPage({ navigation }) {
+  const { state, callReducer } = React.useContext(AppContext);
+  const { first_name, last_name, photo_profile, department } = state.user;
+
+  const uri = `${BACKEND_URL}/uploads/images/${photo_profile}`;
+
+  const signOut = () => {
+    callReducer({ dispatch: "UPDATE_USER", data: false });
+  };
+
   return (
     <Container>
-      <HeaderComponent navigation={navigation} />
-      <Content padder>
-        <Text>MY ACCOUNT</Text>
+      {/* <HeaderComponent navigation={navigation} title="My Account" /> */}
+      <Content>
+        <View
+          style={{ paddingBottom: 15, paddingTop: 15, alignItems: "center" }}
+        >
+          <Thumbnail large source={{ uri }} />
+          <H1 style={{ textAlign: "center", fontWeight: "bold" }}>
+            {first_name} {last_name}
+          </H1>
+
+          <Text>{department}</Text>
+        </View>
         <List>
-          <ListItem onPress={() => navigation.navigate("ProfilePage")}>
+          {/* <Li text="View Profile" icon="ios-contact" />
+          <Li color="#007AFF" text="Update Profile" icon="ios-school" /> */}
+          <Li
+            color="green"
+            to="UploadPhotoPage"
+            text="Change Photo"
+            icon="ios-aperture"
+          />
+          {/* <Li
+            to="ChangeAvatarPage"
+            color="#007AFF"
+            text="Change Avatar"
+            icon="ios-person"
+          /> */}
+
+          <Li to="ChangeEmailPage" text="Change Email" icon="ios-mail" />
+          <Li
+            to="ChangePasswordPage"
+            color="#007AFF"
+            text="Change Password"
+            icon="ios-lock"
+          />
+          <ListItem icon onPress={signOut}>
             <Left>
-              <Text>View Profile</Text>
+              <Button style={{ backgroundColor: "red" }}>
+                <Icon active name="ios-power" />
+              </Button>
             </Left>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Text>Update Photo</Text>
-            </Left>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Text>Update Profile</Text>
-            </Left>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Text>Change Email</Text>
-            </Left>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Text>Change Password</Text>
-            </Left>
+            <Body>
+              <Text>Sign Out</Text>
+            </Body>
+            <Right>
+              <Icon active name="arrow-forward" />
+            </Right>
           </ListItem>
         </List>
       </Content>

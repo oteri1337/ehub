@@ -4,7 +4,7 @@ import * as Font from "expo-font";
 import { Root } from "native-base";
 import Router from "./src/routing/Router";
 import { AsyncStorage } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Feather } from "@expo/vector-icons";
 import AppProvider from "./src/providers/AppProvider";
 import reducer from "./src/providers/reducers/rootReducer";
 
@@ -23,6 +23,7 @@ export default class App extends React.Component {
       Roboto: require("native-base/Fonts/Roboto.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       ...Ionicons.font,
+      ...Feather.font,
     });
     let persisted = await AsyncStorage.getItem("state");
     persisted = await JSON.parse(persisted);

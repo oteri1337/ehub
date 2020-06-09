@@ -2,7 +2,7 @@ import React from "react";
 import { Keyboard } from "react-native";
 import { AppContext } from "../../providers/AppProvider";
 import HeaderComponent from "../../components/HeaderBackComponent";
-import { sendRequestThenDispatch } from "../../providers/AppProvider";
+// import { sendRequestThenDispatch } from "../../providers/AppProvider";
 import {
   Container,
   Content,
@@ -16,16 +16,20 @@ import {
 } from "native-base";
 
 function TopicsCreatePage({ navigation }) {
-  const { state } = React.useContext(AppContext);
-
-  const url = "/api/topics";
-  const dispatch = "NO_DISPATCH";
-  const { send, fetching, response } = sendRequestThenDispatch(url, dispatch);
+  console.log(" ");
+  console.log("topics page opened");
 
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
+  const { state, fetching, sendRequestThenDispatch } = React.useContext(
+    AppContext
+  );
 
-  const onPress = () => {
+  // const url = "/api/topics";
+  // const dispatch = "NO_DISPATCH";
+  // const { send, fetching } = sendRequestThenDispatch(url, dispatch);
+
+  const onPress = async () => {
     if (title.length && content.length) {
       Keyboard.dismiss();
       const body = JSON.stringify({
@@ -33,7 +37,13 @@ function TopicsCreatePage({ navigation }) {
         content,
         user_id: state.user.id,
       });
-      send(body);
+      const url = "/api/topics";
+      const response = await sendRequestThenDispatch(url, "UPDATE_TOPIC", body);
+      if (!response.errors.length) {
+        navigation.navigate("TopicsReadPage", response.data);
+      }
+      // const data = await send(body);
+      // console.log(data);
     }
   };
 
@@ -43,7 +53,7 @@ function TopicsCreatePage({ navigation }) {
 
   return (
     <Container>
-      <HeaderComponent navigation={navigation} title={"New Topic"} />
+      {/* <HeaderComponent navigation={navigation} title={"New Topic"} /> */}
       <Content style={{ padding: 15 }}>
         <Form>
           <Item regular>
@@ -63,7 +73,7 @@ function TopicsCreatePage({ navigation }) {
           />
         </Form>
         {!fetching && (
-          <Button full style={{ marginTop: 5 }} onPress={onPress}>
+          <Button full onPress={onPress} style={{ marginTop: 5 }}>
             <Text>Post</Text>
           </Button>
         )}

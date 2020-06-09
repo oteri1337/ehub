@@ -19,50 +19,32 @@ class PdfgroupsSeeder extends AbstractSeed
 
         $data = [
             [
-                'title'         => "Data Science",
+                'title'         => "Petroleum Engineering",
                 'slug'      => "data-science",
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
-                'title'         => "Math And Logic",
+                'title'         => "Chemical Engineering",
                 'slug'      => "math-and-logic",
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
-                'title'         => "Mechanics",
+                'title'         => "Marine Engineering",
                 'slug'      => "mechanics",
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
-                'title'         => "Chemistry",
+                'title'         => "Mechanical Engineering",
                 'slug'      => "chemistry",
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
-                'title'         => "Petroleum And Natural Gas",
+                'title'         => "Electrical Engineering",
                 'slug'      => "png",
-                'created_at'    => date('Y-m-d H:i:s'),
-                'updated_at'    => date('Y-m-d H:i:s'),
-            ],
-            [
-                'title'         => "Electrical Machines",
-                'slug'      => "electrical-machines",
-                'created_at'    => date('Y-m-d H:i:s'),
-                'updated_at'    => date('Y-m-d H:i:s'),
-            ],
-            [
-                'title'         => "Naval Achitecture",
-                'slug'      => "naval-achitecture",
-                'created_at'    => date('Y-m-d H:i:s'),
-                'updated_at'    => date('Y-m-d H:i:s'),
-            ],
-            [
-                'title'         => "Personal Development",
-                'slug'      => "personal-development",
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],

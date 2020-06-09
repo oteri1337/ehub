@@ -1,79 +1,74 @@
 import React from "react";
+import { Platform } from "react-native";
 import { AppContext } from "../providers/AppProvider";
-import { getRequest } from "../providers/functions/http";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { DrawerContentScrollView } from "@react-navigation/drawer";
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
 
-import Link from "./Link";
-import PdfsRoutes from "./PdfsRoutes";
-import TourRoutes from "./TourRoutes";
-import NewsRoutes from "./NewsRoutes";
-import UsersRoutes from "./UsersRoutes";
-import TopicsRoutes from "./TopicsRoutes";
-import AccountRoutes from "./AccountRoutes";
+import HomePage from "../pages/HomePage";
+import SignUpPage from "../pages/SignUpPage";
+import PasswordPage from "../pages/PasswordPage";
 
-import SavedPdfsPage from "../pages/user/SavedPdfsPage";
-import MessagesPage from "../pages/user/account/MessagesPage";
+import TabRoutes from "./TabRoutes";
+import SearchPage from "../pages/user/SearchPage";
+import UsersReadPage from "../pages/user/UsersReadPage";
 
-const Drawer = createDrawerNavigator();
+import PdfsReadPage from "../pages/user/PdfsReadPage";
+import PdfsPreviewPage from "../pages/user/PdfsPreviewPage";
 
-function DrawerContentComponent(props) {
-  const navigation = props.navigation;
-  const { state, callReducer } = React.useContext(AppContext);
-  const { first_name, last_name, department } = state.user;
+import TopicsReadPage from "../pages/user/TopicsReadPage";
+import TopicsCreatePage from "../pages/user/TopicsCreatePage";
 
-  const signOut = async () => {
-    callReducer({ dispatch: "UPDATE_USER", data: false });
-    await getRequest("/api/users/auth/signout");
-  };
+import AccountPage from "../pages/user/account/AccountPage";
+import UploadPhotoPage from "../pages/user/account/UploadPhotoPage";
+import ChangeAvatarPage from "../pages/user/account/ChangeAvatarPage";
+import ChangeEmailPage from "../pages/user/account/ChangeEmailPage";
+import ChangePasswordPage from "../pages/user/account/ChangePasswordPage";
 
-  const goto = (page) => {
-    navigation.navigate(page);
-  };
-
-  // prettier-ignore
-  return (
-    <DrawerContentScrollView {...props}>
-      <Link onPress={() => goto("AccountRoutes")} label={`${first_name} ${last_name}`} icon="ios-contact" />
-      <Link onPress={() => goto("PdfRoutes")} label="Library" icon="ios-copy" />
-      <Link onPress={() => goto("NewsRoutes")} label="News" icon="ios-image" />
-      <Link onPress={() => goto("TopicsRoutes")} label="Forum" icon="md-chatboxes" />
-      <Link onPress={() => goto("UsersRoutes")} label="Community" icon="ios-contacts" />
-      <Link onPress={() => goto("MessagesPage")} label="Messages" icon="md-mail"/>      
-      <Link onPress={() => goto("SavedPdfsPage")} label="Downloads" icon="ios-save"/>
-      <Link onPress={() => goto("AccountRoutes")} label="My Account" icon="ios-construct"/>
-      <Link onPress={signOut} label="Sign Out" icon="md-power" />
-    </DrawerContentScrollView>
-  );
-}
+const Stack = createStackNavigator();
+const { Navigator, Screen } = Stack;
 
 function Routes() {
   const { state } = React.useContext(AppContext);
 
-  if (state.user ?? false) {
-    // prettier-ignore
-    return (
-      <Drawer.Navigator  initialRouteName="PdfRoutes" drawerContent={(props)  => <DrawerContentComponent {...props} />}>
+  let modalNav = {
+    cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+  };
 
-        <Drawer.Screen name="PdfRoutes" component={PdfsRoutes} />
+  const onPress = () => {
+    navigation.navigate("AccountPage");
+  };
 
-        <Drawer.Screen name="NewsRoutes" component={NewsRoutes} />
-
-        <Drawer.Screen name="TopicsRoutes" component={TopicsRoutes} />
-
-        <Drawer.Screen name="UsersRoutes" component={UsersRoutes} />
-
-        <Drawer.Screen name="AccountRoutes" component={AccountRoutes} />
-
-        <Drawer.Screen name="MessagesPage" component={MessagesPage} />
-
-        <Drawer.Screen name="SavedPdfsPage" component={SavedPdfsPage} />
-
-      </Drawer.Navigator>
-    );
+  if (Platform.OS == "ios") {
+    modalNav = {};
   }
 
-  return <TourRoutes />;
+  // prettier-ignore
+  if (state.user ?? false) {
+    return <Navigator>
+        <Screen name="TabRoutes" component={TabRoutes} />
+        <Screen name="SearchPage" component={SearchPage}/>
+        <Screen name="PdfsReadPage" component={PdfsReadPage}/>
+        <Screen name="AccountPage" component={AccountPage} options={{...modalNav, title: "My Account"}} />
+        <Screen name="UsersReadPage" component={UsersReadPage} />
+        <Screen name="TopicsReadPage" component={TopicsReadPage}  />
+        <Screen name="PdfsPreviewPage" component={PdfsPreviewPage} />
+        <Screen name="TopicsCreatePage" component={TopicsCreatePage} options={{title: "New Topic"}} />
+        <Screen name="UploadPhotoPage" component={UploadPhotoPage} options={{...modalNav,title: "Upload Photo"}} />
+        <Screen name="ChangeAvatarPage" component={ChangeAvatarPage} options={{...modalNav, title: "Change Avatar"}} />
+        <Screen name="ChangeEmailPage" component={ChangeEmailPage} options={{...modalNav, title: "Change Email"}} />
+        <Screen name="ChangePasswordPage" component={ChangePasswordPage} options={{...modalNav, title: "Change Password"}} />
+    </Navigator>
+  }
+
+  return (
+    <Navigator headerMode="none">
+      <Screen name="HomePage" component={HomePage} />
+      <Screen name="SignUpPage" component={SignUpPage} />
+      <Screen name="PasswordPage" component={PasswordPage} />
+    </Navigator>
+  );
 }
 
 export default Routes;

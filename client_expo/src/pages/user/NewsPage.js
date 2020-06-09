@@ -1,174 +1,110 @@
-// import React from "react";
-// import { BACKEND_URL } from "../../../env";
-// import { WebView } from "react-native-webview";
-// import Text from "../../components/TextComponent";
-// import HeaderComponent from "../../components/HeaderComponent";
-// import { getRequestThenDispatch } from "../../providers/AppProvider";
-// import {
-//   Container,
-//   Thumbnail,
-//   Icon,
-//   Button,
-//   Left,
-//   Body,
-//   Right,
-//   Card,
-//   CardItem,
-//   Content,
-//   View,
-// } from "native-base";
-// import Human from "../../../assets/human.png";
-
-// function UserHomePage({ navigation }) {
-//   const { state } = getRequestThenDispatch("/api/news", "UPDATE_NEWS");
-
-//   const renderNews = () => {
-//     return state.news.data.map((news) => {
-//       return (
-//         <Card transparent key={news.id} style={{ borderBottomWidth: 1 }}>
-//           <CardItem>
-//             <Left>
-// <Thumbnail
-//   source={{ uri: `${BACKEND_URL}/uploads/images/${news.image}` }}
-// />
-//               <Body>
-//                 <Text>{news.title}</Text>
-//                 <Text note>{news.content_short}</Text>
-//                 {/* <WebView source={{ html: news.content_html }} /> */}
-//               </Body>
-//             </Left>
-//           </CardItem>
-//           <CardItem>
-//             <Left>
-//               <Button transparent>
-//                 <Icon name="thumbs-up" />
-//                 <Text style={{ padding: 5 }}>12 Likes</Text>
-//               </Button>
-//             </Left>
-//             <Right>
-//               <Button transparent>
-//                 <Icon name="chatbubbles" />
-//                 <Text style={{ padding: 5 }}>4 Comments</Text>
-//               </Button>
-//             </Right>
-//           </CardItem>
-//         </Card>
-//       );
-//     });
-//   };
-
-//   return (
-//     <Container>
-//       <HeaderComponent navigation={navigation} />
-//       <Content padder>
-//         <Text>News</Text>
-//         {renderNews()}
-//       </Content>
-//     </Container>
-//   );
-// }
-
-// export default UserHomePage;
-
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, Platform } from "react-native";
 import { BACKEND_URL } from "../../../env";
 import Text from "../../components/TextComponent";
+import { AppContext } from "../../providers/AppProvider";
 import HeaderComponent from "../../components/HeaderComponent";
-import { getRequestThenDispatch } from "../../providers/AppProvider";
 import {
-  Container,
   List,
-  ListItem,
   Left,
   Body,
-  Right,
-  Icon,
+  Spinner,
+  ListItem,
+  Container,
   Thumbnail,
 } from "native-base";
 
 function NewsPage({ navigation }) {
-  const url = "/api/news";
-  const { state, fetching } = getRequestThenDispatch(url, "UPDATE_NEWS");
+  console.log(" ");
+  console.log("news page opened");
 
-  const refreshing = fetching;
-  const data = state.news.data;
+  const context = React.useContext(AppContext);
+  const { state, refreshing, getRequestThenDispatch } = context;
+  const list = state.news;
+  const { data } = list;
 
-  const renderItem = ({ item }) => {
-    const onPress = () => {
-      navigation.navigate("NewsReadPage", item);
-    };
+  const dispatch = "UPDATE_NEWS";
 
-    return (
-      <ListItem thumbnail onPress={onPress}>
-        <Left>
-          <Thumbnail
-            source={{ uri: `${BACKEND_URL}/uploads/images/${item.image}` }}
-          />
-        </Left>
-        <Body>
-          <Text
-            style={{
-              fontSize: 12,
-              fontFamily: "Roboto_medium",
-              textTransform: "uppercase",
-              color: "#59595a",
-            }}
-          >
-            {item.title}
-          </Text>
-          <Text
-            note
-            style={{
-              fontSize: 11,
-              textTransform: "capitalize",
-              color: "#5a5a62",
-            }}
-          >
-            0 Likes
-          </Text>
-          <Text
-            note
-            style={{
-              fontSize: 11,
-              textTransform: "capitalize",
-              color: "#5a5a62",
-            }}
-          >
-            0 Comments
-          </Text>
-        </Body>
-        <Right>
-          <Icon name="arrow-forward" />
-        </Right>
-      </ListItem>
-    );
+  const onRefresh = async () => {
+    console.log("requesting news");
+    getRequestThenDispatch("/api/news", dispatch);
   };
 
-  const onRefresh = () => {
-    // getRequestThenDispatch(url, "UPDATE_PDFGROUPS");
-  };
+  React.useEffect(() => {
+    if (!data.length) {
+      onRefresh();
+    }
+  }, []);
+
+  const onEndReachedThreshold = 0.9;
 
   const keyExtractor = (item) => {
     return item.id.toString();
   };
 
   const ListHeaderComponent = () => {
-    return <Text style={{ marginLeft: 10, marginBottom: 5 }}>NEWS</Text>;
+    return <Text style={{ marginLeft: 15, marginTop: 5 }}>News</Text>;
+  };
+
+  const ListFooterComponent = () => {
+    if (refreshing) {
+      if (Platform.os == "ios") {
+        return <Spinner />;
+      } else {
+        return <React.Fragment />;
+      }
+    }
+    return <React.Fragment />;
+  };
+
+  const onEndReached = async () => {
+    if (!refreshing) {
+      const { next_page_url } = list;
+      if (next_page_url) {
+        getRequestThenDispatch(next_page_url, `${dispatch}_PAGE`);
+      }
+    }
+  };
+
+  const renderItem = ({ item }) => {
+    console.log("rendering news ", item.id);
+
+    const onPress = () => {
+      navigation.navigate("NewsReadPage", item);
+    };
+
+    const uri = `${BACKEND_URL}/uploads/images/${item.image}`;
+
+    return (
+      <ListItem thumbnail onPress={onPress}>
+        <Left>
+          <Thumbnail source={{ uri }} />
+        </Left>
+        <Body>
+          <Text style={{ fontWeight: "bold" }}>
+            {item.id} {item.title}
+          </Text>
+          <Text note>0 Comments</Text>
+        </Body>
+      </ListItem>
+    );
   };
 
   return (
     <Container>
-      <HeaderComponent navigation={navigation} />
-      <List style={{ padding: 10 }}>
+      {/* <HeaderComponent navigation={navigation} /> */}
+      <List style={{ flex: 1 }}>
         <FlatList
           {...{
             data,
+            onRefresh,
             renderItem,
             refreshing,
-            onRefresh,
             keyExtractor,
+            onEndReached,
             ListHeaderComponent,
+            ListFooterComponent,
+            onEndReachedThreshold,
           }}
         />
       </List>

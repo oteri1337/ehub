@@ -4,7 +4,7 @@ namespace Server\Library\Controllers;
 
 use Server\Database\Models\Session;
 
-class AuthController extends ApiController
+class AuthController extends NewApiController
 {
     protected $authKey;
 
@@ -49,9 +49,9 @@ class AuthController extends ApiController
         // $_SESSION[$this->authKey]['id'] = $row->id;
 
         $key = time();
-        $expires = time() + 30*24*60*60;
-        $key = sha1($key);     
-        Session::create(['key' => $key,'value'=>$row->id,'expires'=>$expires]);
+        $expires = time() + 30 * 24 * 60 * 60;
+        $key = sha1($key);
+        Session::create(['key' => $key, 'value' => $row->id, 'expires' => $expires]);
         $this->data['cookie'] = $key;
         setcookie($this->authKey, $key, $expires, "/");
 
@@ -71,7 +71,7 @@ class AuthController extends ApiController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $session = Session::where("key",$cookie)->first();
+        $session = Session::where("key", $cookie)->first();
 
         if (!$session) {
             $this->data['data'] = false;

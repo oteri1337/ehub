@@ -10,6 +10,7 @@ class ApiController extends ServicesController
     public $readBy;
     public $searchBy;
     public $perPage;
+    public $eager = [];
 
     public function __construct($model = [], $readBy = "id", $searchBy = "id", $perPage = 12)
     {

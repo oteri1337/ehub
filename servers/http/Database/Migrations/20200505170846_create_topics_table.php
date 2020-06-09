@@ -12,6 +12,8 @@ class CreateTopicsTable extends ParentMigration
             $table->increments('id');
             $table->integer('user_id');
             $table->string("title");
+            $table->string("icon")->nullable();
+            $table->string("color")->nullable();
             $table->string("slug")->unique();
             $table->text("content");
             $table->timestamps();

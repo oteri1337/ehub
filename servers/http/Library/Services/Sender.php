@@ -17,8 +17,9 @@ class Sender
 
             $mailer = new PHPMailer;
             $mailer->isMail();
-            //$mailer->Sender = getenv("MAIL_NAME");
             $mailer->From = getenv("MAIL_USERNAME");
+
+            //$mailer->Sender = getenv("MAIL_NAME");
             //$mailer->setFrom("test", "test");
 
             // $mailer->Host = getenv("MAIL_HOST");

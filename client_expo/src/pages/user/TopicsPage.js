@@ -1,27 +1,24 @@
 import React from "react";
-import { FlatList } from "react-native";
-import Text from "../../components/TextComponent";
-import HeaderComponent from "../../components/HeaderComponent";
-import { getRequestThenDispatch } from "../../providers/AppProvider";
+import { AppContext } from "../../providers/AppProvider";
+import { FlatList, Platform, StatusBar } from "react-native";
 import {
-  Container,
+  Text,
+  Icon,
   List,
-  ListItem,
   Left,
   Body,
-  Icon,
-  Fab,
-  Button,
+  View,
+  Spinner,
+  ListItem,
+  Container,
 } from "native-base";
 
-function TopicsPage({ navigation }) {
-  const url = "/api/topics";
-  const { state, fetching } = getRequestThenDispatch(url, "UPDATE_TOPICS");
+class ItemPureComponent extends React.PureComponent {
+  render() {
+    const { item, navigation } = this.props;
 
-  const refreshing = fetching;
-  const data = state.topics.data;
+    console.log("rendering topic ", item.id);
 
-  const renderItem = ({ item }) => {
     const onPress = () => {
       navigation.navigate("TopicsReadPage", item);
     };
@@ -29,55 +26,103 @@ function TopicsPage({ navigation }) {
     return (
       <ListItem thumbnail onPress={onPress}>
         <Left>
-          <Icon
-            name="ios-chatboxes"
-            style={{ color: "rgba(28, 28, 30, 0.68)" }}
-          />
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 50,
+              backgroundColor: item.color,
+              justifyContent: "center",
+            }}
+          >
+            <Icon
+              name="message-square"
+              type="Feather"
+              style={{
+                color: "#FFFFFF",
+                textAlign: "center",
+              }}
+            />
+          </View>
         </Left>
         <Body>
-          <Text>{item.title}</Text>
+          <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
+          <Text note>
+            {item.comments[item.comments.length - 1]?.content.substring(0, 50)}
+          </Text>
         </Body>
       </ListItem>
     );
+  }
+}
+
+function TopicsPage({ navigation }) {
+  const context = React.useContext(AppContext);
+  const { topics, refreshing, getRequestThenDispatch } = context;
+
+  const list = topics;
+  let { data } = list;
+
+  const dispatch = "UPDATE_TOPICS";
+
+  const onRefresh = async () => {
+    getRequestThenDispatch("/api/topics", dispatch);
   };
 
-  const onRefresh = () => {
-    // getRequestThenDispatch(url, "UPDATE_PDFGROUPS");
-  };
+  React.useEffect(() => {
+    if (!data.length) {
+      onRefresh();
+    }
+  }, []);
+
+  const onEndReachedThreshold = 0.1;
 
   const keyExtractor = (item) => {
     return item.id.toString();
   };
 
-  const ListHeaderComponent = () => {
-    return <Text style={{ marginLeft: 10 }}>FORUM</Text>;
+  const ListFooterComponent = () => {
+    if (refreshing) {
+      if (Platform.OS == "ios") {
+        return <Spinner />;
+      } else {
+        return <React.Fragment />;
+      }
+    }
+    return <React.Fragment />;
+  };
+
+  const onEndReached = async () => {
+    console.log("on end reached topics");
+    if (!refreshing) {
+      const { next_page_url } = list;
+      if (next_page_url) {
+        getRequestThenDispatch(next_page_url, `${dispatch}_PAGE`);
+      }
+    }
+  };
+
+  const renderItem = ({ item }) => {
+    return <ItemPureComponent item={item} navigation={navigation} />;
   };
 
   return (
     <Container>
-      <HeaderComponent navigation={navigation} />
-      <List style={{ padding: 10 }}>
+      <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" />
+      <List style={{ flex: 1 }}>
         <FlatList
           {...{
             data,
+            onRefresh,
+            onEndReached,
             renderItem,
             refreshing,
-            onRefresh,
             keyExtractor,
-            ListHeaderComponent,
+            ListFooterComponent,
+            onEndReachedThreshold,
           }}
         />
       </List>
-      <Fab
-        active={true}
-        direction="up"
-        containerStyle={{}}
-        style={{ backgroundColor: "#5067FF" }}
-        position="bottomRight"
-        onPress={() => navigation.navigate("TopicsCreatePage")}
-      >
-        <Icon name="add" />
-      </Fab>
     </Container>
   );
 }

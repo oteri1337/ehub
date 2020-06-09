@@ -2,32 +2,42 @@
 
 namespace Server\Library\Controllers;
 
+use Illuminate\Support\Collection;
+
+
 class NewApiController extends ServicesController
 {
     use UtilsTrait;
 
     public $model;
-    public $readBy;
-    public $searchBy;
-    public $perPage;
-    public $relationships;
+    public $eager = [];
+    public $perPage = 12;
+    public $readBy = "id";
+    public $searchBy = "id";
+    public $data = [
+        'errors' => [],
+        'message' => '',
+        'data' =>  [],
+    ];
 
-    public function __construct($model = [], $readBy = "id", $searchBy = "id", $perPage = 20)
-    {
-        parent::__construct();
+    // public $relationships;
 
-        $this->data = [
-            'errors' => [],
-            'message' => '',
-            'data' => (object) [],
-        ];
+    // public function __construct($model = [], $readBy = "id", $searchBy = "id", $perPage = 12)
+    // {
+    //     parent::__construct();
 
-        $this->model = $model;
-        $this->readBy = $readBy;
-        $this->perPage = $perPage;
-        $this->searchBy = $searchBy;
-        $this->relationships = [];
-    }
+    // $this->data = [
+    //     'errors' => [],
+    //     'message' => '',
+    //     'data' => (object) [],
+    // ];
+
+    //     $this->model = $model;
+    //     $this->readBy = $readBy;
+    //     $this->perPage = $perPage;
+    //     $this->searchBy = $searchBy;
+    //     $this->relationships = [];
+    // }
 
     public function create($request, $response)
     {
@@ -97,11 +107,29 @@ class NewApiController extends ServicesController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+    // public function list($request, $response)
+    // {
+    //     $optimized = $this->getOptimizedList();
+    //     $this->data['data'] = $optimized;
+    //     $response->getBody()->write(json_encode($this->data));
+    //     return $response->withHeader('Content-Type', 'application/json');
+    // }
+
     public function list($request, $response)
     {
-        $optimized = $this->getOptimizedList();
-        $this->data['data'] = $optimized;
+
+        $paginator =  $this->model->with($this->eager)->orderBy('created_at', 'DESC')->paginate($this->perPage);
+
+        $paginator = $paginator->toArray();
+
+        $collection = Collection::make($paginator['data'])->keyBy($this->readBy);
+
+        $paginator['object'] = $collection;
+
+        $this->data['data'] = $paginator;
+
         $response->getBody()->write(json_encode($this->data));
+
         return $response->withHeader('Content-Type', 'application/json');
     }
 

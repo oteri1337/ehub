@@ -15,18 +15,20 @@ class PdfsSeeder extends AbstractSeed
      */
     public function run()
     {
+        $faker = Faker\Factory::create();
         $data = [];
-        // for ($i = 0; $i < 1; $i++) {
-        $data[] = [
-            'title' => "Advanced Mathematcis For Applications",
-            'slug' => "advanced-mathematics",
-            'image_name' => 'sample-book.jpg',
-            'file_name' => 'sample-book.pdf',
-            'file_size' => 1000000,
-            'created_at'    => date('Y-m-d H:i:s'),
-            'updated_at'    => date('Y-m-d H:i:s'),
-        ];
-        // }
+        for ($i = 1; $i < 20; $i++) {
+            $data[] = [
+                'slug' => $faker->email,
+                'title' => $faker->firstName . " " . $faker->lastName,
+                'description' => $faker->text(1000),
+                'image_name' => 'book' . $i . '.jpg',
+                'file_name' => 'sample-book.pdf',
+                'file_size' => 1000000,
+                'created_at'    => date('Y-m-d H:i:s'),
+                'updated_at'    => date('Y-m-d H:i:s'),
+            ];
+        }
         $this->table('pdfs')->insert($data)->save();
     }
 }

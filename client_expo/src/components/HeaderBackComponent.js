@@ -1,52 +1,56 @@
 import React from "react";
-import { AppContext } from "../providers/AppProvider";
-import { getRequest } from "../providers/functions/http";
+import { Platform } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import {
   Header,
-  Left,
-  Button,
-  Icon,
-  Right,
   Body,
   Title,
+  Icon,
+  Right,
+  Button,
+  Left,
   Text,
 } from "native-base";
 
-function HeaderComponent({ navigation, title = "" }) {
-  const { state, callReducer } = React.useContext(AppContext);
+function HeaderComponent({ title = "eHUB", arrowBackPressed = false }) {
+  const navigation = useNavigation();
 
-  const signOut = async () => {
-    callReducer({ dispatch: "UPDATE_USER", data: false });
-    await getRequest("/api/users/auth/signout");
+  arrowBackPressed =
+    arrowBackPressed ||
+    function () {
+      navigation.goBack();
+    };
+
+  let iconStyle = {};
+
+  let bodyStyle = {
+    flex: 3,
   };
 
+  let textStyle = {};
+
+  let iosBarStyle = "dark-content";
+
+  if (Platform.OS == "android") {
+    iosBarStyle = "light-content";
+
+    iconStyle = { color: "white" };
+
+    bodyStyle = { flex: 3 };
+
+    textStyle = { color: "white" };
+  }
+
   return (
-    <Header
-      androidStatusBarColor="#FFF"
-      style={{ paddingLeft: 15 }}
-      transparent
-    >
+    <Header iosBarStyle={iosBarStyle}>
       <Left>
-        <Button transparent onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" style={{ color: "rgba(28, 28, 30, 0.68)" }} />
+        <Button transparent onPress={arrowBackPressed}>
+          <Icon name="arrow-back" />
         </Button>
       </Left>
-      <Body style={{ flex: 3 }}>
-        <Text>{title}</Text>
+      <Body style={bodyStyle}>
+        <Text style={textStyle}>{title}</Text>
       </Body>
-      <Right>
-        {/* <Button transparent>
-          <Icon
-            name="ios-save"
-            style={{ color: "rgba(28, 28, 30, 0.68)", marginRight: 10 }}
-          />
-
-          <Icon
-            name="ios-share-alt"
-            style={{ color: "rgba(28, 28, 30, 0.68)", marginRight: 10 }}
-          />
-        </Button> */}
-      </Right>
     </Header>
   );
 }

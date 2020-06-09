@@ -1,66 +1,116 @@
 import React from "react";
-import { FlatList } from "react-native";
 import { BACKEND_URL } from "../../../env";
 import Text from "../../components/TextComponent";
-import HeaderComponent from "../../components/HeaderComponent";
-import { getRequestThenDispatch } from "../../providers/AppProvider";
-import { Container, List, ListItem, Left, Body, Thumbnail } from "native-base";
+import { FlatList, Platform } from "react-native";
+import { AppContext } from "../../providers/AppProvider";
+import {
+  List,
+  Left,
+  Body,
+  Spinner,
+  ListItem,
+  Container,
+  Thumbnail,
+} from "native-base";
 
-function UsersPage({ navigation }) {
-  const url = "/api/users";
-  const { state, fetching } = getRequestThenDispatch(url, "UPDATE_USERS");
+class ItemPureComponent extends React.PureComponent {
+  render() {
+    const { item, navigation } = this.props;
 
-  const refreshing = fetching;
-  const data = state.users.data;
+    console.log("rendering user ", item.id);
 
-  const renderItem = ({ item }) => {
     const onPress = () => {
       navigation.navigate("UsersReadPage", item);
     };
 
+    const uri = `${BACKEND_URL}/uploads/images/${item.photo_profile}`;
+
     return (
       <ListItem thumbnail onPress={onPress}>
         <Left>
-          <Thumbnail
-            source={{
-              uri: `${BACKEND_URL}/uploads/images/${item.photo_profile}`,
-            }}
-          />
+          <Thumbnail source={{ uri }} />
         </Left>
         <Body>
-          <Text>
+          <Text style={{ fontWeight: "bold" }}>
             {item.first_name} {item.last_name}
           </Text>
           <Text note>{item.department}</Text>
         </Body>
       </ListItem>
     );
+  }
+}
+
+function UsersPage({ navigation }) {
+  console.log(" ");
+  console.log("users page opened");
+
+  const context = React.useContext(AppContext);
+  const { state, refreshing, getRequestThenDispatch } = context;
+  const list = state.users;
+  const { data } = list;
+
+  const dispatch = "UPDATE_USERS";
+
+  const onRefresh = async () => {
+    console.log("requesting users");
+    getRequestThenDispatch("/api/users", dispatch);
   };
 
-  const onRefresh = () => {
-    // getRequestThenDispatch(url, "UPDATE_PDFGROUPS");
-  };
+  React.useEffect(() => {
+    if (!data.length) {
+      onRefresh();
+    }
+  }, []);
+
+  const onEndReachedThreshold = 0.1;
 
   const keyExtractor = (item) => {
     return item.id.toString();
   };
 
   const ListHeaderComponent = () => {
-    return <Text style={{ marginLeft: 10 }}>COMMUNITY</Text>;
+    return <Text style={{ marginLeft: 15, marginTop: 5 }}>COMMUNITY</Text>;
+  };
+
+  const ListFooterComponent = () => {
+    if (refreshing) {
+      if (Platform.os == "ios") {
+        return <Spinner />;
+      } else {
+        return <React.Fragment />;
+      }
+    }
+    return <React.Fragment />;
+  };
+
+  const onEndReached = async () => {
+    console.log("on end reached users");
+    if (!refreshing) {
+      const { next_page_url } = list;
+      if (next_page_url) {
+        getRequestThenDispatch(next_page_url, `${dispatch}_PAGE`);
+      }
+    }
+  };
+
+  const renderItem = ({ item }) => {
+    return <ItemPureComponent item={item} navigation={navigation} />;
   };
 
   return (
     <Container>
-      <HeaderComponent navigation={navigation} />
-      <List style={{ padding: 10 }}>
+      <List style={{ flex: 1 }}>
         <FlatList
           {...{
             data,
+            onRefresh,
             renderItem,
             refreshing,
-            onRefresh,
             keyExtractor,
-            ListHeaderComponent,
+            onEndReached,
+            ListFooterComponent,
+            onEndReachedThreshold,
           }}
         />
       </List>

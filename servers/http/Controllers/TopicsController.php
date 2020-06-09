@@ -2,8 +2,10 @@
 
 namespace Server\Controllers;
 
-use Server\Library\Controllers\NewApiController;
 use Server\Database\Models\Topic;
+use Illuminate\Support\Collection;
+use Server\Database\Models\Comment;
+use Server\Library\Controllers\NewApiController;
 
 class TopicsController extends NewApiController
 {
@@ -14,7 +16,57 @@ class TopicsController extends NewApiController
         $this->model = new Topic;
         $this->readBy = 'slug';
         $this->searchBy = 'title';
+        $this->eagerList = ['comments.user', 'comments' => function ($comments) {
+            $comments->paginate(6);
+        }];
+        $this->eagerRead = ['comments.user', 'comments'];
     }
+
+    public function list($request, $response)
+    {
+
+        $paginator =  $this->model->with($this->eagerList)->orderBy('created_at', 'DESC')->paginate($this->perPage);
+
+        $paginator = $paginator->toArray();
+
+        $collection = Collection::make($paginator['data'])->keyBy($this->readBy);
+
+        $paginator['object'] = $collection;
+
+        $this->data['data'] = $paginator;
+
+        $response->getBody()->write(json_encode($this->data));
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function read($request, $response)
+    {
+        $attr = $request->getAttribute('attr');
+
+        $row =  $this->model->where($this->readBy, $attr)->with($this->eagerRead)->first();
+
+        if (!$row) {
+            $this->data['errors'] = ['not found'];
+
+            $response->getBody()->write(json_encode($this->data));
+
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        // $comments = $row->comments()->paginate($this->perPage)->toArray();
+
+        // $row['comments_total'] = $comments['total'];
+
+        // $row['comments_next_page'] = $comments['next_page_url'];
+
+        $this->data['data'] = $row;
+
+        $response->getBody()->write(json_encode($this->data));
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
 
     public function beforeCreate($body)
     {
@@ -35,5 +87,49 @@ class TopicsController extends NewApiController
             'content' => [$content, 'required'],
             'user id' => [$user_id, 'required']
         ];
+    }
+
+    public function comment($request, $response)
+    {
+        $body = $request->getParsedBody();
+        $user = $request->getAttribute('user');
+        $user_id = $user->id;
+
+        $topic_id = $body['topic_id'] ?? '';
+        $content = $body['content'] ?? '';
+
+        $rules = [
+            'user id'  => [$user_id, 'required'],
+            'topic id' => [$topic_id, 'required'],
+            'content' => [$content, 'required'],
+        ];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $topic = $this->model->where('id', $topic_id)->first();
+
+        if (!$topic) {
+            $this->data['errors'] = ['topic not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $comment = new Comment(['user_id' => $user_id, 'topic_id', 'topic_id', 'content' => $content]);
+
+        $topic->comments()->save($comment);
+
+        $row =  $this->model->where("id", $topic_id)->with($this->eagerRead)->first();
+
+        $this->data['data'] = $row;
+        $response->getBody()->write(json_encode($this->data));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }
