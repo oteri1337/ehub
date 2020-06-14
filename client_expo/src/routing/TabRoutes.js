@@ -2,11 +2,11 @@ import React from "react";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import UsersPage from "../pages/user/UsersPage";
-import TopicsPage from "../pages/user/TopicsPage";
-import PdfgroupsPage from "../pages/user/PdfgroupsPage";
-import SavedPdfsPage from "../pages/user/SavedPdfsPage";
-import MessagesPage from "../pages/user/account/MessagesPage";
+import UsersPage from "../pages/user/UsersListPage";
+import TopicsPage from "../pages/user/TopicsListPage";
+import ChatsListPage from "../pages/user/ChatsListPage";
+import PdfgroupsPage from "../pages/user/pdfs/PdfgroupsPage";
+import SavedPdfsPage from "../pages/user/pdfs/SavedPdfsPage";
 
 import { Button, Icon } from "native-base";
 
@@ -64,7 +64,7 @@ function TabNavigator({ navigation }) {
         } else if (route.name === "UsersPage") {
           iconName = focused ? "ios-contacts" : "ios-contacts";
           return <Feather name="users" size={size} color={color} />;
-        } else if (route.name === "MessagesPage") {
+        } else if (route.name === "ChatsListPage") {
           iconName = focused ? "ios-chatbubbles" : "ios-chatbubbles";
           return <Feather name="message-circle" size={size} color={color} />;
         } else if (route.name === "SearchPage") {
@@ -88,21 +88,16 @@ function TabNavigator({ navigation }) {
   const initialRouteName = "PdfgroupsPage";
 
   return (
-    <Navigator {...{ initialRouteName, tabBarOptions, screenOptions }}>
-      <Screen
-        name="PdfgroupsPage"
-        component={PdfgroupsPage}
-        options={{ title: "Library" }}
-      />
+    <Navigator {...{ tabBarOptions, screenOptions, initialRouteName }}>
       <Screen
         name="TopicsPage"
         component={TopicsPage}
         options={{ title: "Forum" }}
       />
       <Screen
-        name="SavedPdfsPage"
-        component={SavedPdfsPage}
-        options={{ title: "Saved" }}
+        name="PdfgroupsPage"
+        component={PdfgroupsPage}
+        options={{ title: "Library" }}
       />
       <Screen
         name="UsersPage"
@@ -110,8 +105,13 @@ function TabNavigator({ navigation }) {
         options={{ title: "Community" }}
       />
       <Screen
-        name="MessagesPage"
-        component={MessagesPage}
+        name="SavedPdfsPage"
+        component={SavedPdfsPage}
+        options={{ title: "Saved" }}
+      />
+      <Screen
+        name="ChatsListPage"
+        component={ChatsListPage}
         options={{ title: "Messages" }}
       />
     </Navigator>

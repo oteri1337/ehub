@@ -1,14 +1,13 @@
 import React from "react";
-import { StatusBar } from "react-native";
 import PDFReader from "rn-pdf-reader-js";
-import { BACKEND_URL } from "../../../env";
+import { BACKEND_URL } from "../../../../env";
 import { Spinner, Button, Icon, View } from "native-base";
-import { AppContext } from "../../providers/AppProvider";
+import { AppContext } from "../../../providers/AppProvider";
 import {
   savePdfToDatabase,
   removePdfFromDatabase,
   readPdfFromDatabase,
-} from "../../providers/functions/sqlite";
+} from "../../../providers/functions/sqlite";
 
 function PdfsReadPage({ navigation, route }) {
   const { params } = route;
@@ -41,13 +40,31 @@ function PdfsReadPage({ navigation, route }) {
     saved = true;
   }
 
+  const removePdf = () => {
+    setSaving(true);
+
+    const onSuccess = () => {
+      callReducer({ dispatch: "REMOVE_PDF", data: params });
+      setSaving(false);
+    };
+
+    removePdfFromDatabase(id, onSuccess);
+  };
+
   React.useEffect(() => {
     if (saved) {
       setTimeout(() => {
         console.log("reading from database");
 
         const onSuccess = (_, { rows }) => {
-          setBase(rows._array[0].blob);
+          // console.log(rows._array[0].blob);
+          if (rows._array[0].blob) {
+            console.log("saved");
+            setBase(rows._array[0].blob);
+          } else {
+            console.log("not saved");
+            removePdf();
+          }
         };
 
         readPdfFromDatabase(id, onSuccess);
@@ -74,17 +91,6 @@ function PdfsReadPage({ navigation, route }) {
     }
 
     getPdfFromNetwork();
-  };
-
-  const removePdf = () => {
-    setSaving(true);
-
-    const onSuccess = () => {
-      callReducer({ dispatch: "REMOVE_PDF", data: params });
-      setSaving(false);
-    };
-
-    removePdfFromDatabase(id, onSuccess);
   };
 
   if (saved) {
@@ -117,7 +123,7 @@ function PdfsReadPage({ navigation, route }) {
     if (base64.length) {
       return (
         <React.Fragment>
-          <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" />
+          {/* <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" /> */}
           <PDFReader
             source={{
               base64,
@@ -129,7 +135,7 @@ function PdfsReadPage({ navigation, route }) {
 
     return (
       <React.Fragment>
-        <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" />
+        {/* <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" /> */}
         <View style={{ flex: 1, justifyContent: "center" }}>
           <Spinner color="black" />
         </View>
@@ -140,7 +146,7 @@ function PdfsReadPage({ navigation, route }) {
   if (base64.length) {
     return (
       <React.Fragment>
-        <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" />
+        {/* <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" /> */}
         <PDFReader
           source={{
             base64,
@@ -152,7 +158,7 @@ function PdfsReadPage({ navigation, route }) {
 
   return (
     <React.Fragment>
-      <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" />
+      {/* <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" /> */}
       <PDFReader
         source={{
           uri,

@@ -1,5 +1,5 @@
 import React from "react";
-import { BACKEND_URL } from "../../../env";
+import { BACKEND_URL } from "../../../../env";
 import { Thumbnail, View } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { FlatList, TouchableHighlight } from "react-native";

@@ -3,14 +3,15 @@
 namespace Server\Library\Controllers;
 
 use Illuminate\Support\Collection;
-
+use Server\Database\Models\LightUser;
 
 class NewApiController extends ServicesController
 {
     use UtilsTrait;
 
     public $model;
-    public $eager = [];
+    public $eagerList = [];
+    public $eagerRead = [];
     public $perPage = 12;
     public $readBy = "id";
     public $searchBy = "id";
@@ -20,24 +21,6 @@ class NewApiController extends ServicesController
         'data' =>  [],
     ];
 
-    // public $relationships;
-
-    // public function __construct($model = [], $readBy = "id", $searchBy = "id", $perPage = 12)
-    // {
-    //     parent::__construct();
-
-    // $this->data = [
-    //     'errors' => [],
-    //     'message' => '',
-    //     'data' => (object) [],
-    // ];
-
-    //     $this->model = $model;
-    //     $this->readBy = $readBy;
-    //     $this->perPage = $perPage;
-    //     $this->searchBy = $searchBy;
-    //     $this->relationships = [];
-    // }
 
     public function create($request, $response)
     {
@@ -92,33 +75,38 @@ class NewApiController extends ServicesController
     {
         $attr = $request->getAttribute('attr');
 
-        $row = $this->model->where($this->readBy, $attr)->first();
+        $row =  $this->model->where($this->readBy, $attr)->with($this->eagerRead)->first();
+
+
         if (!$row) {
             $this->data['errors'] = ['not found'];
+
             $response->getBody()->write(json_encode($this->data));
+
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        // $row = $this->afterRead($row);
-        // $row = $row->with($this->relationships);
+        $this->loadPivots($row);
+
+        // foreach ($row->chats as $chat) {
+        //     $chat->recvr = LightUser::where('id', $chat->pivot->recvr_id)->first();
+        // }
 
         $this->data['data'] = $row;
+
         $response->getBody()->write(json_encode($this->data));
+
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    // public function list($request, $response)
-    // {
-    //     $optimized = $this->getOptimizedList();
-    //     $this->data['data'] = $optimized;
-    //     $response->getBody()->write(json_encode($this->data));
-    //     return $response->withHeader('Content-Type', 'application/json');
-    // }
+    public function loadPivots($row)
+    {
+    }
 
     public function list($request, $response)
     {
 
-        $paginator =  $this->model->with($this->eager)->orderBy('created_at', 'DESC')->paginate($this->perPage);
+        $paginator =  $this->model->with($this->eagerList)->orderBy('created_at', 'DESC')->paginate($this->perPage);
 
         $paginator = $paginator->toArray();
 

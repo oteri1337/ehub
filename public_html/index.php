@@ -1,5 +1,7 @@
 <?php
 
+// session_start();
+
 define("PDF_DIR", __DIR__ . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . "pdfs" . DIRECTORY_SEPARATOR);
 
 define("IMAGE_DIR", __DIR__ . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR);

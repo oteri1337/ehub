@@ -17,7 +17,7 @@ class TopicsController extends NewApiController
         $this->readBy = 'slug';
         $this->searchBy = 'title';
         $this->eagerList = ['comments.user', 'comments' => function ($comments) {
-            $comments->paginate(6);
+            $comments->orderBy('created_at', 'DESC')->limit(1);
         }];
         $this->eagerRead = ['comments.user', 'comments'];
     }
@@ -72,19 +72,19 @@ class TopicsController extends NewApiController
     {
         $body["slug"] = $this->slugify($body["title"]);
 
-        return $this->filter($body, ['title', 'content', 'slug', 'user_id']);
+        return $this->filter($body, ['title', 'message', 'slug', 'user_id']);
     }
 
     public function createRules($body)
     {
 
         $title = $body['title'] ?? '';
-        $content = $body['content'] ?? '';
+        $message = $body['message'] ?? '';
         $user_id = $body['user_id'] ?? '';
 
         return [
             'title' => [$title, 'required'],
-            'content' => [$content, 'required'],
+            'message' => [$message, 'required'],
             'user id' => [$user_id, 'required']
         ];
     }
@@ -96,12 +96,12 @@ class TopicsController extends NewApiController
         $user_id = $user->id;
 
         $topic_id = $body['topic_id'] ?? '';
-        $content = $body['content'] ?? '';
+        $message = $body['message'] ?? '';
 
         $rules = [
             'user id'  => [$user_id, 'required'],
             'topic id' => [$topic_id, 'required'],
-            'content' => [$content, 'required'],
+            'message' => [$message, 'required'],
         ];
 
         $this->validator->validate($rules);
@@ -122,7 +122,7 @@ class TopicsController extends NewApiController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $comment = new Comment(['user_id' => $user_id, 'topic_id', 'topic_id', 'content' => $content]);
+        $comment = new Comment(['user_id' => $user_id, 'topic_id', 'message' => $message]);
 
         $topic->comments()->save($comment);
 

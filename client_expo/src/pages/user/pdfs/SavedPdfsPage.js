@@ -1,7 +1,7 @@
 import React from "react";
-import { BACKEND_URL } from "../../../env";
+import { BACKEND_URL } from "../../../../env";
 import { TouchableHighlight } from "react-native";
-import { AppContext } from "../../providers/AppProvider";
+import { AppContext } from "../../../providers/AppProvider";
 import { Container, View, Thumbnail, Content, Text } from "native-base";
 
 function SavedPdfsPage({ navigation }) {

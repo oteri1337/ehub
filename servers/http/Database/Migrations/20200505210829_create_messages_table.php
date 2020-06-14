@@ -10,9 +10,13 @@ class CreateMessagesTable extends ParentMigration
     {
         $this->schema->create('messages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('chat_id');
+
+            $table->integer('chat_id');
+
             $table->integer('user_id');
+
             $table->text('message');
+
             $table->timestamps();
         });
     }

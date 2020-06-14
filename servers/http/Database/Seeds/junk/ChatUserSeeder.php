@@ -3,7 +3,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class ChatSeeder extends AbstractSeed
+class ChatUserSeeder extends AbstractSeed
 {
     /**
      * Run Method.
@@ -18,7 +18,7 @@ class ChatSeeder extends AbstractSeed
         $data = [];
         // for ($i = 0; $i < 1; $i++) {
         $data[] = [
-            'chat_id' => "user_one_and_two",
+            'chat_id' => 1,
             'user_id' => 1,
             'recvr_id' => 2,
             'created_at'    => date('Y-m-d H:i:s'),
@@ -27,13 +27,13 @@ class ChatSeeder extends AbstractSeed
         // }
 
         $data[] = [
-            'chat_id' => "user_one_and_two",
+            'chat_id' => 1,
             'user_id' => 2,
             'recvr_id' => 1,
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
 
-        $this->table('chats')->insert($data)->save();
+        $this->table('chat_user')->insert($data)->save();
     }
 }

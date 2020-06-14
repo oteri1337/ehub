@@ -24,13 +24,45 @@ class UserSeeder extends AbstractSeed
             'first_name' => "Oteri",
             'last_name' => "Avwunudiogba",
             'photo_profile' => "boy1.jpg",
-            'mobile_number' => $faker->e164PhoneNumber,
+            'phone_number' => $faker->e164PhoneNumber,
+            'bio' => $faker->text,
+            'link' => $faker->url,
             'department' => "Physics",
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
 
+        $known[] = [
+            'email' => "jenny@gmail.com",
+            'password' => sha1("password"),
+            'first_name' => "Jennifer",
+            'last_name' => "Ugwu",
+            'photo_profile' => "girl1.jpg",
+            'phone_number' => $faker->e164PhoneNumber,
+            'bio' => $faker->text,
+            'link' => $faker->url,
+            'department' => "Petroleum Engineering",
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
+
+        $known[] = [
+            'email' => "okem@gmail.com",
+            'password' => sha1("password"),
+            'first_name' => "Okem",
+            'last_name' => "Mordi",
+            'photo_profile' => "boy3.jpg",
+            'phone_number' => $faker->e164PhoneNumber,
+            'bio' => $faker->text,
+            'link' => $faker->url,
+            'department' => "Mechanical Engineering",
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
+
         User::create($known[0]);
+        User::create($known[1]);
+        User::create($known[2]);
 
         $departments = [
             'Petroleum Engineering',
@@ -56,9 +88,11 @@ class UserSeeder extends AbstractSeed
                 'password' => sha1("password2"),
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
-                'mobile_number' => $faker->e164PhoneNumber,
+                'phone_number' => $faker->e164PhoneNumber,
                 'department' => $departments[rand(0, 4)],
                 'photo_profile' => $images[rand(0, 4)],
+                'bio' => $faker->text,
+                'link' => $faker->url,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ];

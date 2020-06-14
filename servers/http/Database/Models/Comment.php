@@ -8,7 +8,7 @@ class Comment extends Model
 {
 
     protected $fillable = [
-        'content',
+        'message',
         'user_id',
         'topic_id'
     ];

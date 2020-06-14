@@ -8,10 +8,22 @@ class Message extends Model
 {
 
     protected $fillable = [
+        'chat_id',
         'user_id',
         'sender_id',
         'message',
     ];
+
+    // public function user()
+    // {
+    //     return $this->belongsTo(LightUser::class);
+    // }
+
+    public function getCreatedAtAttribute($row)
+    {
+        $dateTimeInstance = new \DateTime($row);
+        return $dateTimeInstance->format('M d h:i A');
+    }
 
     // public function getSenderNameAttribute()
     // {

@@ -1,131 +1,151 @@
 import React from "react";
-import chat from "../../../assets/chat.png";
-import {
-  Keyboard,
-  ScrollView,
-  Dimensions,
-  ImageBackground,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { Container, Button, Icon } from "native-base";
 import { AppContext } from "../../providers/AppProvider";
-import CommentsListComponent from "./CommentsListComponent";
-import { View, Textarea, Button, Icon, Text } from "native-base";
+import MessageListComponent from "../../components/MessageListComponent";
+import MessageFormComponent from "../../components/MessageFormComponent";
 
 function TopicsReadPage({ navigation, route }) {
-  const initialHeight = Dimensions.get("window").height - 85;
-  const [height, setHeight] = React.useState(initialHeight);
-  const [comment, setComment] = React.useState("");
+  const { slug } = route.params;
+  const { state, sendRequestThenDispatch } = React.useContext(AppContext);
+  const { id, title, comments } = state.topics.object[slug];
 
-  const keyboardShown = (e) => {
-    setHeight(initialHeight - e.endCoordinates.height);
-  };
-
-  const keyboardHidden = () => {
-    setHeight(initialHeight);
-  };
-
-  const { title, slug } = route.params;
-  const {
-    state,
-    getRequestThenDispatch,
-    sendRequestThenDispatch,
-  } = React.useContext(AppContext);
-  const topic = state.topics.object[slug];
-
-  React.useEffect(() => {
-    getRequestThenDispatch(`/api/topics/${slug}`, "UPDATE_TOPIC");
-    Keyboard.addListener("keyboardWillShow", keyboardShown);
-    Keyboard.addListener("keyboardWillHide", keyboardHidden);
-
-    // cleanup function
-    return () => {
-      Keyboard.removeListener("keyboardWillShow", keyboardShown);
-      Keyboard.removeListener("keyboardWillHide", keyboardHidden);
-    };
-  }, []);
-
-  // prettier-ignore
   navigation.setOptions({
     title,
     headerLeft: () => (
-      <Button transparent onPress={() => {navigation.navigate("TopicsPage")}}>
-        <Icon name="arrow-back" type="Ionicons" style={{ color: "black" }} />
-      </Button>
-    ),
-    headerRight: () => (
-      <Button transparent>
-        <Icon name="share-2" type="Feather" style={{ color: "black" }} />
+      <Button
+        transparent
+        onPress={() => {
+          navigation.navigate("TopicsPage");
+        }}
+      >
+        <Icon name="arrow-left" type="Feather" style={{ color: "black" }} />
       </Button>
     ),
   });
 
-  const { created_at, user_id, content, id } = topic;
-
-  const postComment = () => {
-    const body = { topic_id: id, content: comment };
-    setComment("");
+  const onSubmit = (message) => {
+    const body = { topic_id: id, message };
     sendRequestThenDispatch("/api/topics/comment", "UPDATE_TOPIC", body);
-
-    // console.log(slug);
-
-    // const comment = {
-    //   id: Date.now(),
-    //   user_id: 8,
-    //   topic_id: 1,
-    //   user_name: null,
-    //   content: "na we bros",
-    //   created_at: "Jun 09 09:07 PM",
-    //   updated_at: "2020-06-09T21:07:19.000000Z",
-    //   user: {
-    //     first_name: "Monica",
-    //     last_name: "O'Connell",
-    //   },
-    // };
-
-    // callReducer({
-    //   dispatch: "ADD_COMMENT_TO_TOPIC",
-    //   data: { slug, comment },
-    // });
   };
 
-  // prettier-ignore
   return (
-    <View style={{ height: "100%" }}>
-      <View style={{ height }}>
-        <View style={{ flex: 1 }}>
-          <View style={{ flex: 1, justifyContent: "center" }}>
-            <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss();}}>
-              <ImageBackground style={{ width: "100%", height: "100%" }} source={chat}>
-                <ScrollView contentContainerStyle={{ padding: 10 }}>
-                  <View style={{ backgroundColor: "#fff", padding: 10, borderRadius: 5, marginBottom: 10}}>
-                    <Text>
-                      <Text note>{created_at} </Text>
-                      <Text style={{ color: "green" }}>{user_id}</Text>
-                    </Text>
-                    <Text>{content}</Text>
-                  </View>
-                  <CommentsListComponent comments={topic.comments} />
-                </ScrollView>
-              </ImageBackground>
-            </TouchableWithoutFeedback>
-          </View>
-          <View style={{flexDirection: "row"}}>
-            <View style={{flex: 1}}> 
-            <Textarea  value={comment} onChangeText={text => setComment(text)} style={{ backgroundColor: "white" }} />
-            </View>
-            <View style={{padding: 5}}>
-            <Button rounded onPress={postComment} style={{ height: 50, width: 50 }}>
-              <Icon name="send" />
-            </Button>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
+    <Container>
+      <MessageListComponent messages={comments} />
+      <MessageFormComponent onSubmit={onSubmit} />
+    </Container>
   );
 }
-
 export default TopicsReadPage;
+
+// import {
+//   Keyboard,
+//   ScrollView,
+//   Dimensions,
+//   ImageBackground,
+//   TouchableWithoutFeedback,
+// } from "react-native";
+
+// const initialHeight = Dimensions.get("window").height - 85;
+// const [height, setHeight] = React.useState(initialHeight);
+// const [comment, setComment] = React.useState("");
+
+// const keyboardShown = (e) => {
+//   setHeight(initialHeight - e.endCoordinates.height);
+// };
+
+// const keyboardHidden = () => {
+//   setHeight(initialHeight);
+// };
+
+// const { title, slug } = route.params;
+// const {
+//   state,
+//   getRequestThenDispatch,
+//   sendRequestThenDispatch,
+// } = React.useContext(AppContext);
+// const topic = state.topics.object[slug];
+
+// React.useEffect(() => {
+//   getRequestThenDispatch(`/api/topics/${slug}`, "UPDATE_TOPIC");
+//   Keyboard.addListener("keyboardWillShow", keyboardShown);
+//   Keyboard.addListener("keyboardWillHide", keyboardHidden);
+
+//   // cleanup function
+//   return () => {
+//     Keyboard.removeListener("keyboardWillShow", keyboardShown);
+//     Keyboard.removeListener("keyboardWillHide", keyboardHidden);
+//   };
+// }, []);
+
+// // prettier-ignore
+
+// const { created_at, user_id, content, id } = topic;
+
+// const postComment = () => {
+//   const body = { topic_id: id, content: comment };
+//   setComment("");
+// sendRequestThenDispatch("/api/topics/comment", "UPDATE_TOPIC", body);
+
+// console.log(slug);
+
+// const comment = {
+//   id: Date.now(),
+//   user_id: 8,
+//   topic_id: 1,
+//   user_name: null,
+//   content: "na we bros",
+//   created_at: "Jun 09 09:07 PM",
+//   updated_at: "2020-06-09T21:07:19.000000Z",
+//   user: {
+//     first_name: "Monica",
+//     last_name: "O'Connell",
+//   },
+// };
+
+// callReducer({
+//   dispatch: "ADD_COMMENT_TO_TOPIC",
+//   data: { slug, comment },
+// });
+//   };
+
+//   // prettier-ignore
+//   return (
+//     <View style={{ height: "100%" }}>
+//       <View style={{ height }}>
+//         <View style={{ flex: 1 }}>
+//           <View style={{ flex: 1, justifyContent: "center" }}>
+//             <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss();}}>
+//               <ImageBackground style={{ width: "100%", height: "100%" }} source={chat}>
+//                 <ScrollView contentContainerStyle={{ padding: 10 }}>
+//                   <View style={{ backgroundColor: "#fff", padding: 10, borderRadius: 5, marginBottom: 10}}>
+//                     <Text>
+//                       <Text note>{created_at} </Text>
+//                       <Text style={{ color: "green" }}>{user_id}</Text>
+//                     </Text>
+//                     <Text>{content}</Text>
+//                   </View>
+//                   {/* <CommentsListComponent comments={topic.comments} /> */}
+//                 </ScrollView>
+//               </ImageBackground>
+//             </TouchableWithoutFeedback>
+//           </View>
+//           <View style={{flexDirection: "row"}}>
+//             <View style={{flex: 1}}>
+//             <Textarea  value={comment} onChangeText={text => setComment(text)} style={{ backgroundColor: "white" }} />
+//             </View>
+//             <View style={{padding: 5}}>
+//             <Button rounded onPress={postComment} style={{ height: 50, width: 50 }}>
+//               <Icon name="send" />
+//             </Button>
+//             </View>
+//           </View>
+//         </View>
+//       </View>
+//     </View>
+//   );
+// }
+
+// export default TopicsReadPage;
 
 // import React from "react";
 // import chat from "../../../assets/chat.png";

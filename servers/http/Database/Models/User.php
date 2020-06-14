@@ -23,13 +23,8 @@ class User extends Model
         'password'
     ];
 
-    // public function getChatsAttribute()
-    // {
-    //     return Chat::where('user_id', $this->id)->get();
-    // }
-
-    public static function relationships($row)
+    public function chats()
     {
-        return $row;
+        return $this->belongsToMany(Chat::class)->withPivot('recvr_id');
     }
 }

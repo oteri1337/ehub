@@ -3,6 +3,7 @@
 namespace Server\Controllers;
 
 use Server\Library\Controllers\AuthController;
+use Server\Database\Models\LightUser;
 use Server\Database\Models\User;
 
 class UsersController extends AuthController
@@ -15,6 +16,7 @@ class UsersController extends AuthController
         $this->model = new User;
         $this->authKey = 'user';
         $this->searchBy = 'first_name';
+        // $this->eagerRead = ['chats.messages'];
     }
 
     public function createRules($body)
@@ -70,4 +72,11 @@ class UsersController extends AuthController
     {
         return $this->filter($body, ['first_name', 'last_name', 'dob', 'country', 'street_address', 'currency', 'mobile_number']);
     }
+
+    // public function loadPivots($row)
+    // {
+    //     foreach ($row->chats as $chat) {
+    //         $chat->recvr = LightUser::where('id', $chat->pivot->recvr_id)->first();
+    //     }
+    // }
 }

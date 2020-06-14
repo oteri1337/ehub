@@ -1,60 +1,74 @@
 import React from "react";
-import { BACKEND_URL } from "../../../env";
 import Text from "../../components/TextComponent";
-import { FlatList, Platform } from "react-native";
 import { AppContext } from "../../providers/AppProvider";
+import { FlatList, Platform } from "react-native";
 import {
+  Icon,
   List,
   Left,
   Body,
+  View,
   Spinner,
   ListItem,
   Container,
-  Thumbnail,
 } from "native-base";
 
 class ItemPureComponent extends React.PureComponent {
   render() {
     const { item, navigation } = this.props;
 
-    console.log("rendering user ", item.id);
+    console.log("rendering topic ", item.id);
 
     const onPress = () => {
-      navigation.navigate("UsersReadPage", item);
+      navigation.navigate("TopicsReadPage", item);
     };
-
-    const uri = `${BACKEND_URL}/uploads/images/${item.photo_profile}`;
 
     return (
       <ListItem thumbnail onPress={onPress}>
         <Left>
-          <Thumbnail source={{ uri }} />
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 50,
+              backgroundColor: item.color,
+              justifyContent: "center",
+            }}
+          >
+            <Icon
+              name="message-square"
+              type="Feather"
+              style={{
+                color: "#FFFFFF",
+                textAlign: "center",
+              }}
+            />
+          </View>
         </Left>
         <Body>
-          <Text style={{ fontWeight: "bold" }}>
-            {item.first_name} {item.last_name}
+          <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
+          <Text note style={{ fontWeight: "300" }}>
+            {item.content.substring(0, 78)}
           </Text>
-          <Text note>{item.department}</Text>
         </Body>
       </ListItem>
     );
   }
 }
 
-function UsersPage({ navigation }) {
-  console.log(" ");
-  console.log("users page opened");
-
+function TopicsPage({ navigation }) {
   const context = React.useContext(AppContext);
-  const { state, refreshing, getRequestThenDispatch } = context;
-  const list = state.users;
-  const { data } = list;
+  const { topics, refreshing, getRequestThenDispatch, state } = context;
 
-  const dispatch = "UPDATE_USERS";
+  console.log(state);
+
+  const list = topics;
+  let { data } = list;
+
+  const dispatch = "UPDATE_TOPICS";
 
   const onRefresh = async () => {
-    console.log("requesting users");
-    getRequestThenDispatch("/api/users", dispatch);
+    getRequestThenDispatch("/api/topics", dispatch);
   };
 
   React.useEffect(() => {
@@ -69,13 +83,9 @@ function UsersPage({ navigation }) {
     return item.id.toString();
   };
 
-  const ListHeaderComponent = () => {
-    return <Text style={{ marginLeft: 15, marginTop: 5 }}>COMMUNITY</Text>;
-  };
-
   const ListFooterComponent = () => {
     if (refreshing) {
-      if (Platform.os == "ios") {
+      if (Platform.OS == "ios") {
         return <Spinner />;
       } else {
         return <React.Fragment />;
@@ -85,7 +95,7 @@ function UsersPage({ navigation }) {
   };
 
   const onEndReached = async () => {
-    console.log("on end reached users");
+    console.log("on end reached topics");
     if (!refreshing) {
       const { next_page_url } = list;
       if (next_page_url) {
@@ -100,15 +110,16 @@ function UsersPage({ navigation }) {
 
   return (
     <Container>
+      {/* <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" /> */}
       <List style={{ flex: 1 }}>
         <FlatList
           {...{
             data,
             onRefresh,
+            onEndReached,
             renderItem,
             refreshing,
             keyExtractor,
-            onEndReached,
             ListFooterComponent,
             onEndReachedThreshold,
           }}
@@ -118,4 +129,4 @@ function UsersPage({ navigation }) {
   );
 }
 
-export default UsersPage;
+export default TopicsPage;

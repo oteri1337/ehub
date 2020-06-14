@@ -16,7 +16,7 @@ class Topic extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class)->orderBy('created_at', 'ASC');
+        return $this->hasMany(Comment::class);
     }
 
     public function getUserIdAttribute($row)

@@ -1,12 +1,48 @@
 import React from "react";
+import * as Linking from "expo-linking";
 import { BACKEND_URL } from "../../../env";
 import { ImageBackground } from "react-native";
-import { Container, Button, View, Text, Icon } from "native-base";
+import { AppContext } from "../../providers/AppProvider";
+import { Container, Button, View, Text } from "native-base";
 
 function UsersReadPage({ navigation, route }) {
-  const { first_name, last_name, department, photo_profile } = route.params;
+  const { state } = React.useContext(AppContext);
+
+  const { params } = route;
+  const {
+    first_name,
+    last_name,
+    department,
+    photo_profile,
+    email,
+    bio,
+    link,
+    id,
+  } = params;
 
   navigation.setOptions({ title: `${first_name} ${last_name}` });
+
+  const open = () => {
+    Linking.openURL(link);
+  };
+
+  const onPress = () => {
+    navigation.navigate("ChatsReadPage", {
+      recvr: params,
+      recvr_id: id,
+    });
+  };
+
+  const renderMessageButton = () => {
+    if (state.user.id === id) {
+      return <React.Fragment />;
+    }
+    return (
+      <Button rounded full onPress={onPress}>
+        <Text>Send Message</Text>
+      </Button>
+    );
+  };
 
   return (
     <Container>
@@ -17,21 +53,16 @@ function UsersReadPage({ navigation, route }) {
             source={{ uri: `${BACKEND_URL}/uploads/images/${photo_profile}` }}
           />
         </View>
-        <View style={{ flex: 1, padding: 10 }}>
-          <Text style={{ textAlign: "center", marginBottom: 5 }}>
-            {department}
-          </Text>
-          <Text style={{ textAlign: "center" }}>
-            bio goes here bio goes herebio goes herebio goes herebio goes
-            herebio goes herebio goes herebio goes herebio goes herebio goes
+        <View style={{ flex: 1, padding: 10, alignItems: "center" }}>
+          <Text style={{ marginBottom: 5 }}>{department}</Text>
+          <Text style={{ marginBottom: 5 }}>{email}</Text>
+          <Text style={{ marginBottom: 10 }}>{bio}</Text>
+          <Text style={{ color: "blue" }} onPress={open}>
+            {link.substring(0, 40)}
           </Text>
         </View>
       </View>
-      <View>
-        <Button rounded full>
-          <Text>Send Message</Text>
-        </Button>
-      </View>
+      <View>{renderMessageButton()}</View>
     </Container>
   );
 }

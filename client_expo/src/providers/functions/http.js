@@ -11,8 +11,6 @@ export async function getRequest(endpoint) {
 
   const url = BACKEND_URL + endpoint;
 
-  console.log(url);
-
   try {
     response = await axios({ url, withCredentials: true });
     response = response.data;
@@ -53,8 +51,6 @@ export async function sendRequest(url, data, method = "POST") {
   const headers = { "content-type": "application/json" };
 
   const newUrl = BACKEND_URL + url;
-
-  console.log(newUrl);
 
   try {
     response = await axios({

@@ -19,9 +19,9 @@ class CommentSeeder extends AbstractSeed
         $data = [];
         for ($i = 1; $i < 20; $i++) {
             $data[] = [
-                'user_id' => rand(1, 20),
                 'topic_id' => 1,
-                'content' => $faker->text,
+                'user_id' => rand(1, 20),
+                'message' => $faker->text,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ];

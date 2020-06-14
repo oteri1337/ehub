@@ -9,19 +9,12 @@ class Chat extends Model
 
     protected $fillable = [
         'user_id',
-        'chat_id',
-        'message',
+        'recvr_id',
+        'title',
     ];
 
-    public function getRecvrIdAttribute($id)
+    public function messages()
     {
-        $recvr = User::where('id', $id)->first();
-
-        return $recvr->first_name . " " . $recvr->last_name;
-    }
-
-    public function getMessagesAttribute()
-    {
-        return Message::where('chat_id', $this->chat_id)->get();
+        return $this->hasMany(Message::class)->orderBy('created_at', 'ASC');
     }
 }

@@ -1,11 +1,11 @@
 import React from "react";
-import { BACKEND_URL } from "../../../env";
-import { Image, StatusBar } from "react-native";
-import { AppContext } from "../../providers/AppProvider";
+import { Image } from "react-native";
+import { BACKEND_URL } from "../../../../env";
+import { AppContext } from "../../../providers/AppProvider";
 import {
   savePdfToDatabase,
   removePdfFromDatabase,
-} from "../../providers/functions/sqlite";
+} from "../../../providers/functions/sqlite";
 import {
   Container,
   Content,
@@ -96,7 +96,7 @@ function PdfsPreviewPage({ navigation, route }) {
 
   return (
     <Container>
-      <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" />
+      {/* <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" /> */}
       <Content>
         <View style={{ backgroundColor: "silver" }}>
           <Image

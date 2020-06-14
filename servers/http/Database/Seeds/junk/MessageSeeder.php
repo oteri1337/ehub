@@ -18,7 +18,7 @@ class MessageSeeder extends AbstractSeed
         $data = [];
         // for ($i = 0; $i < 1; $i++) {
         $data[] = [
-            'chat_id' => "user_one_and_two",
+            'chat_id' => 1,
             'user_id' => 1,
             'message' => "afa",
             'created_at'    => date('Y-m-d H:i:s'),
@@ -27,7 +27,7 @@ class MessageSeeder extends AbstractSeed
         // }
 
         $data[] = [
-            'chat_id' => "user_one_and_two",
+            'chat_id' => 1,
             'user_id' => 2,
             'message' => "i dey o bros, how u?",
             'created_at'    => date('Y-m-d H:i:s'),

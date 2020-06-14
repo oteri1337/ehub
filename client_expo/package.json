@@ -21,6 +21,7 @@
     "expo-file-system": "^8.1.0",
     "expo-font": "~8.1.0",
     "expo-image-picker": "~8.1.0",
+    "expo-linking": "^1.0.1",
     "expo-permissions": "~8.1.0",
     "expo-sqlite": "~8.1.0",
     "native-base": "2.13.8",
@@ -33,7 +34,8 @@
     "react-native-screens": "~2.2.0",
     "react-native-web": "~0.11.7",
     "react-native-webview": "8.1.1",
-    "rn-pdf-reader-js": "^0.7.2"
+    "rn-pdf-reader-js": "^0.7.2",
+    "sentry-expo": "^2.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

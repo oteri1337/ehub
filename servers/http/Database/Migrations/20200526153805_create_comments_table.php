@@ -10,10 +10,9 @@ class CreateCommentsTable extends ParentMigration
     {
         $this->schema->create('comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
             $table->integer('topic_id');
-            $table->string('user_name')->nullable();
-            $table->text('content');
+            $table->integer('user_id');
+            $table->text('message');
             $table->timestamps();
         });
     }

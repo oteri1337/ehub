@@ -2,6 +2,7 @@ import userReducer from "./userReducer";
 import newsReducer from "./newsReducer";
 import savedReducer from "./savedReducer";
 import usersReducer from "./usersReducer";
+import chatsReducer from "./chatsReducer";
 import topicsReducer from "./topicsReducer";
 import pdfgroupsReducer from "./pdfgroupsReducer";
 
@@ -19,6 +20,7 @@ function rootReducer(state = {}, action) {
     news: newsReducer(state.news, action),
     saved: savedReducer(state.saved, action),
     users: usersReducer(state.users, action),
+    chats: chatsReducer(state.chats, action),
     topics: topicsReducer(state.topics, action),
     pdfgroups: pdfgroupsReducer(state.pdfgroups, action),
   };

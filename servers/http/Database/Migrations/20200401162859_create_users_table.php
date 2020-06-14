@@ -23,19 +23,22 @@ class CreateUsersTable extends ParentMigration
 
             $table->string('department');
 
-            $table->string('photo_profile')->default("human.png");
+            $table->string('bio')->default("");
 
-            $table->string('mobile_number')->unique()->nullable();
+            $table->string('link')->default("");
 
-            $table->boolean('verified')->default(0);
+            $table->string('phone_number')->nullable();
 
             $table->integer('pin')->nullable();
 
+            $table->boolean('verified')->default(0);
+
             $table->text('push_subscription')->nullable();
 
-            $table->timestamps();
+            $table->string('photo_profile')->default("human.png");
 
-            $table->string('chats')->nullable();
+
+            $table->timestamps();
         });
     }
 

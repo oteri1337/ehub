@@ -14,9 +14,9 @@ export default function AppProvider({ children, initialState }) {
     const asyncOperation = async () => {
       let response = await getRequest("/api/users/auth/status");
       if (response.errors.length === 0) {
-        if (typeof state.user != typeof response.data) {
-          callReducer({ dispatch: "UPDATE_USER", data: response.data });
-        }
+        //if (typeof state.user != typeof response.data) {
+        callReducer({ dispatch: "UPDATE_USER", data: response.data });
+        // }
       }
     };
 
@@ -40,6 +40,7 @@ export default function AppProvider({ children, initialState }) {
   const sendRequestThenDispatch = async (url, dispatch, body, method) => {
     setRefreshing(true);
     const response = await sendRequest(url, body, method);
+    console.log(response);
     setRefreshing(false);
     if (!response.errors.length) {
       callReducer({ dispatch, data: response.data });

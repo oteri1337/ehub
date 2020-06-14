@@ -1,9 +1,9 @@
 import React from "react";
 import { FlatList, Platform } from "react-native";
-import Text from "../../components/TextComponent";
+import Text from "../../../components/TextComponent";
 import PdfgroupComponent from "./PdfgroupComponent";
 import { View, Spinner, Container } from "native-base";
-import { AppContext } from "../../providers/AppProvider";
+import { AppContext } from "../../../providers/AppProvider";
 
 // const renderItem = ({ item }) => {
 //   console.log("rendering group ", item.id);
@@ -30,9 +30,6 @@ class ItemPureComponent extends React.PureComponent {
 }
 
 function PdfgroupsPage({ navigation }) {
-  console.log(" ");
-  console.log("groups page opened");
-
   const context = React.useContext(AppContext);
   const { state, refreshing, getRequestThenDispatch } = context;
   const list = state.pdfgroups;

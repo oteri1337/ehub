@@ -4,8 +4,7 @@ let url;
 
 if (Platform.OS === "web") {
   // development
-
-  url = "https://localhost:1026";
+  url = "https://ehub";
 
   // production
   url = "https://ehubcore.com";

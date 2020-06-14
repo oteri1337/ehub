@@ -48,6 +48,8 @@ function Li({ text = "", icon = "ios-today", color, to }) {
 }
 
 function AccountPage({ navigation }) {
+  navigation.setOptions({ title: "My Account" });
+
   const { state, callReducer } = React.useContext(AppContext);
   const { first_name, last_name, photo_profile, department } = state.user;
 
@@ -72,28 +74,22 @@ function AccountPage({ navigation }) {
           <Text>{department}</Text>
         </View>
         <List>
-          {/* <Li text="View Profile" icon="ios-contact" />
-          <Li color="#007AFF" text="Update Profile" icon="ios-school" /> */}
-          <Li
-            color="green"
-            to="UploadPhotoPage"
-            text="Change Photo"
-            icon="ios-aperture"
-          />
-          {/* <Li
-            to="ChangeAvatarPage"
-            color="#007AFF"
-            text="Change Avatar"
-            icon="ios-person"
-          /> */}
-
           <Li to="ChangeEmailPage" text="Change Email" icon="ios-mail" />
+
           <Li
             to="ChangePasswordPage"
             color="#007AFF"
             text="Change Password"
             icon="ios-lock"
           />
+
+          <Li
+            color="green"
+            to="ChangePhotoPage"
+            text="Change Profile Photo"
+            icon="ios-aperture"
+          />
+
           <ListItem icon onPress={signOut}>
             <Left>
               <Button style={{ backgroundColor: "red" }}>

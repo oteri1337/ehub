@@ -11,19 +11,20 @@ import SignUpPage from "../pages/SignUpPage";
 import PasswordPage from "../pages/PasswordPage";
 
 import TabRoutes from "./TabRoutes";
-import SearchPage from "../pages/user/SearchPage";
-import UsersReadPage from "../pages/user/UsersReadPage";
-
-import PdfsReadPage from "../pages/user/PdfsReadPage";
-import PdfsPreviewPage from "../pages/user/PdfsPreviewPage";
 
 import TopicsReadPage from "../pages/user/TopicsReadPage";
 import TopicsCreatePage from "../pages/user/TopicsCreatePage";
 
+import PdfsReadPage from "../pages/user/pdfs/PdfsReadPage";
+import PdfsPreviewPage from "../pages/user/pdfs/PdfsPreviewPage";
+
+import UsersReadPage from "../pages/user/UsersReadPage";
+import ChatsReadPage from "../pages/user/ChatsReadPage";
+
+import SearchPage from "../pages/user/pdfs/SearchPage";
 import AccountPage from "../pages/user/account/AccountPage";
-import UploadPhotoPage from "../pages/user/account/UploadPhotoPage";
-import ChangeAvatarPage from "../pages/user/account/ChangeAvatarPage";
 import ChangeEmailPage from "../pages/user/account/ChangeEmailPage";
+import ChangePhotoPage from "../pages/user/account/ChangePhotoPage";
 import ChangePasswordPage from "../pages/user/account/ChangePasswordPage";
 
 const Stack = createStackNavigator();
@@ -48,17 +49,21 @@ function Routes() {
   if (state.user ?? false) {
     return <Navigator>
         <Screen name="TabRoutes" component={TabRoutes} />
-        <Screen name="SearchPage" component={SearchPage}/>
-        <Screen name="PdfsReadPage" component={PdfsReadPage}/>
-        <Screen name="AccountPage" component={AccountPage} options={{...modalNav, title: "My Account"}} />
-        <Screen name="UsersReadPage" component={UsersReadPage} />
+
         <Screen name="TopicsReadPage" component={TopicsReadPage}  />
+        <Screen name="TopicsCreatePage" component={TopicsCreatePage} />
+
+        <Screen name="PdfsReadPage" component={PdfsReadPage}/>
         <Screen name="PdfsPreviewPage" component={PdfsPreviewPage} />
-        <Screen name="TopicsCreatePage" component={TopicsCreatePage} options={{title: "New Topic"}} />
-        <Screen name="UploadPhotoPage" component={UploadPhotoPage} options={{...modalNav,title: "Upload Photo"}} />
-        <Screen name="ChangeAvatarPage" component={ChangeAvatarPage} options={{...modalNav, title: "Change Avatar"}} />
-        <Screen name="ChangeEmailPage" component={ChangeEmailPage} options={{...modalNav, title: "Change Email"}} />
-        <Screen name="ChangePasswordPage" component={ChangePasswordPage} options={{...modalNav, title: "Change Password"}} />
+
+        <Screen name="UsersReadPage" component={UsersReadPage} />
+        <Screen name="ChatsReadPage" component={ChatsReadPage} />
+
+        <Screen name="SearchPage" component={SearchPage}/>
+        <Screen name="AccountPage" component={AccountPage} options={{...modalNav}} />
+        <Screen name="ChangePhotoPage" component={ChangePhotoPage} options={{...modalNav}} />
+        <Screen name="ChangeEmailPage" component={ChangeEmailPage} options={{...modalNav}} />
+        <Screen name="ChangePasswordPage" component={ChangePasswordPage} options={{...modalNav}} /> 
     </Navigator>
   }
 

@@ -1,54 +1,41 @@
 import React from "react";
+import { BACKEND_URL } from "../../../env";
+import Text from "../../components/TextComponent";
+import { FlatList, Platform } from "react-native";
 import { AppContext } from "../../providers/AppProvider";
-import { FlatList, Platform, StatusBar } from "react-native";
 import {
-  Text,
-  Icon,
   List,
   Left,
   Body,
-  View,
   Spinner,
   ListItem,
   Container,
+  Thumbnail,
 } from "native-base";
 
 class ItemPureComponent extends React.PureComponent {
   render() {
     const { item, navigation } = this.props;
 
-    console.log("rendering topic ", item.id);
+    console.log("rendering user ", item.id);
 
     const onPress = () => {
-      navigation.navigate("TopicsReadPage", item);
+      navigation.navigate("UsersReadPage", item);
     };
+
+    const uri = `${BACKEND_URL}/uploads/images/${item.photo_profile}`;
 
     return (
       <ListItem thumbnail onPress={onPress}>
         <Left>
-          <View
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 50,
-              backgroundColor: item.color,
-              justifyContent: "center",
-            }}
-          >
-            <Icon
-              name="message-square"
-              type="Feather"
-              style={{
-                color: "#FFFFFF",
-                textAlign: "center",
-              }}
-            />
-          </View>
+          <Thumbnail source={{ uri }} />
         </Left>
         <Body>
-          <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
-          <Text note>
-            {item.comments[item.comments.length - 1]?.content.substring(0, 50)}
+          <Text style={{ fontWeight: "bold" }}>
+            {item.first_name} {item.last_name}
+          </Text>
+          <Text note style={{ fontWeight: "300" }}>
+            {item.department}
           </Text>
         </Body>
       </ListItem>
@@ -56,23 +43,21 @@ class ItemPureComponent extends React.PureComponent {
   }
 }
 
-function TopicsPage({ navigation }) {
+function UsersPage({ navigation }) {
   const context = React.useContext(AppContext);
-  const { topics, refreshing, getRequestThenDispatch } = context;
+  const { state, refreshing, getRequestThenDispatch } = context;
+  const list = state.users;
+  const { data } = list;
 
-  const list = topics;
-  let { data } = list;
-
-  const dispatch = "UPDATE_TOPICS";
+  const dispatch = "UPDATE_USERS";
 
   const onRefresh = async () => {
-    getRequestThenDispatch("/api/topics", dispatch);
+    console.log("requesting users");
+    getRequestThenDispatch("/api/users", dispatch);
   };
 
   React.useEffect(() => {
-    if (!data.length) {
-      onRefresh();
-    }
+    onRefresh();
   }, []);
 
   const onEndReachedThreshold = 0.1;
@@ -81,9 +66,13 @@ function TopicsPage({ navigation }) {
     return item.id.toString();
   };
 
+  const ListHeaderComponent = () => {
+    return <Text style={{ marginLeft: 15, marginTop: 5 }}>COMMUNITY</Text>;
+  };
+
   const ListFooterComponent = () => {
     if (refreshing) {
-      if (Platform.OS == "ios") {
+      if (Platform.os == "ios") {
         return <Spinner />;
       } else {
         return <React.Fragment />;
@@ -93,7 +82,7 @@ function TopicsPage({ navigation }) {
   };
 
   const onEndReached = async () => {
-    console.log("on end reached topics");
+    console.log("on end reached users");
     if (!refreshing) {
       const { next_page_url } = list;
       if (next_page_url) {
@@ -108,16 +97,15 @@ function TopicsPage({ navigation }) {
 
   return (
     <Container>
-      <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" />
       <List style={{ flex: 1 }}>
         <FlatList
           {...{
             data,
             onRefresh,
-            onEndReached,
             renderItem,
             refreshing,
             keyExtractor,
+            onEndReached,
             ListFooterComponent,
             onEndReachedThreshold,
           }}
@@ -127,4 +115,4 @@ function TopicsPage({ navigation }) {
   );
 }
 
-export default TopicsPage;
+export default UsersPage;

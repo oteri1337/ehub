@@ -36,7 +36,7 @@ class AuthController extends NewApiController
         }
 
         $password = $this->encryptPassword($password);
-        $row = $this->model->where('email', $email)->where('password', $password)->first();
+        $row = $this->model->where('email', $email)->where('password', $password)->with($this->eagerRead)->first();
 
         if (!$row) {
             $this->data['errors'] =  ['invalid email or password'];
@@ -44,9 +44,9 @@ class AuthController extends NewApiController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $row = $this->relationships($row);
+        // $row = $this->relationships($row);
 
-        // $_SESSION[$this->authKey]['id'] = $row->id;
+        $_SESSION[$this->authKey]['id'] = $row->id;
 
         $key = time();
         $expires = time() + 30 * 24 * 60 * 60;
@@ -81,18 +81,21 @@ class AuthController extends NewApiController
 
         $id = $session->value;
 
-        $row = $this->model->where('id', $id)->first();
+        $row = $this->model->where('id', $id)->with($this->eagerRead)->first();
+
         if (!$row) {
             $this->data['data'] = false;
             $response->getBody()->write(json_encode($this->data));
             return $response->withHeader('Content-Type', 'application/json');
         }
-
-        $row = $this->relationships($row);
+        // $row = $this->relationships($row);
 
         $this->data['data'] = $row;
+
         $this->data['cookie'] = $_COOKIE[$this->authKey] ?? "";
+
         $response->getBody()->write(json_encode($this->data));
+
         return $response->withHeader('Content-Type', 'application/json');
     }
 
@@ -112,7 +115,7 @@ class AuthController extends NewApiController
         // expire cookie
         $this->data['cookie'] = "";
 
-        // unset($_SESSION[$this->authKey]);
+        unset($_SESSION[$this->authKey]);
         // session_destroy();
 
         // update csrf token in database
