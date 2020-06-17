@@ -10,6 +10,15 @@ function topicsReducer(state = defaultState, action) {
         data: [...state.data, ...action.data.data],
         object: { ...state.object, ...action.data.object },
       };
+    case "ADD_TOPIC":
+      return {
+        ...state,
+        data: [action.data, ...state.data],
+        object: {
+          ...state.object,
+          [action.data.slug]: action.data,
+        },
+      };
     case "UPDATE_TOPIC":
       return {
         ...state,

@@ -8,13 +8,13 @@ import { Ionicons, Feather } from "@expo/vector-icons";
 import AppProvider from "./src/providers/AppProvider";
 // import reducer from "./src/providers/reducers/rootReducer";
 
-// import * as Sentry from "sentry-expo";
-// Sentry.init({
-//   dsn:
-//     "https://c2b899d1cc574c5ebe2cdcbe2bee74fd@o402390.ingest.sentry.io/5263439",
-//   enableInExpoDevelopment: true,
-//   debug: true,
-// });
+import * as Sentry from "sentry-expo";
+Sentry.init({
+  dsn:
+    "https://c2b899d1cc574c5ebe2cdcbe2bee74fd@o402390.ingest.sentry.io/5263439",
+  enableInExpoDevelopment: true,
+  debug: true,
+});
 
 export default class App extends React.Component {
   constructor(props) {

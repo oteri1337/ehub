@@ -18,7 +18,7 @@ function SavedPdfsPage({ navigation }) {
 
       return (
         <TouchableHighlight key={book.id} onPress={onPress}>
-          <View style={{ margin: 1 }}>
+          <View style={{ margin: 1, backgroundColor: "silver" }}>
             <Thumbnail
               style={{ width: 170, height: 280 }}
               square

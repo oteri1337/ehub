@@ -1,8 +1,6 @@
 import React from "react";
 import { Keyboard } from "react-native";
 import { AppContext } from "../../providers/AppProvider";
-import HeaderComponent from "../../components/HeaderBackComponent";
-// import { sendRequestThenDispatch } from "../../providers/AppProvider";
 import {
   Container,
   Content,
@@ -16,18 +14,13 @@ import {
 } from "native-base";
 
 function TopicsCreatePage({ navigation }) {
-  console.log(" ");
-  console.log("topics page opened");
+  navigation.setOptions({ title: "New Topic" });
 
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
   const { state, fetching, sendRequestThenDispatch } = React.useContext(
     AppContext
   );
-
-  // const url = "/api/topics";
-  // const dispatch = "NO_DISPATCH";
-  // const { send, fetching } = sendRequestThenDispatch(url, dispatch);
 
   const onPress = async () => {
     if (title.length && content.length) {
@@ -38,12 +31,11 @@ function TopicsCreatePage({ navigation }) {
         user_id: state.user.id,
       });
       const url = "/api/topics";
-      const response = await sendRequestThenDispatch(url, "UPDATE_TOPIC", body);
+      const response = await sendRequestThenDispatch(url, "ADD_TOPIC", body);
+      console.log(response);
       if (!response.errors.length) {
         navigation.navigate("TopicsReadPage", response.data);
       }
-      // const data = await send(body);
-      // console.log(data);
     }
   };
 
@@ -53,7 +45,6 @@ function TopicsCreatePage({ navigation }) {
 
   return (
     <Container>
-      {/* <HeaderComponent navigation={navigation} title={"New Topic"} /> */}
       <Content style={{ padding: 15 }}>
         <Form>
           <Item regular>

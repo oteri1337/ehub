@@ -11,6 +11,7 @@ import SignUpPage from "../pages/SignUpPage";
 import PasswordPage from "../pages/PasswordPage";
 
 import TabRoutes from "./TabRoutes";
+import SearchPage from "../pages/user/pdfs/SearchPage";
 
 import TopicsReadPage from "../pages/user/TopicsReadPage";
 import TopicsCreatePage from "../pages/user/TopicsCreatePage";
@@ -21,11 +22,11 @@ import PdfsPreviewPage from "../pages/user/pdfs/PdfsPreviewPage";
 import UsersReadPage from "../pages/user/UsersReadPage";
 import ChatsReadPage from "../pages/user/ChatsReadPage";
 
-import SearchPage from "../pages/user/pdfs/SearchPage";
 import AccountPage from "../pages/user/account/AccountPage";
 import ChangeEmailPage from "../pages/user/account/ChangeEmailPage";
 import ChangePhotoPage from "../pages/user/account/ChangePhotoPage";
 import ChangePasswordPage from "../pages/user/account/ChangePasswordPage";
+import UpdateProfilePage from "../pages/user/account/UpdateProfilePage";
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -49,6 +50,7 @@ function Routes() {
   if (state.user ?? false) {
     return <Navigator>
         <Screen name="TabRoutes" component={TabRoutes} />
+        <Screen name="SearchPage" component={SearchPage}/>
 
         <Screen name="TopicsReadPage" component={TopicsReadPage}  />
         <Screen name="TopicsCreatePage" component={TopicsCreatePage} />
@@ -59,11 +61,11 @@ function Routes() {
         <Screen name="UsersReadPage" component={UsersReadPage} />
         <Screen name="ChatsReadPage" component={ChatsReadPage} />
 
-        <Screen name="SearchPage" component={SearchPage}/>
         <Screen name="AccountPage" component={AccountPage} options={{...modalNav}} />
         <Screen name="ChangePhotoPage" component={ChangePhotoPage} options={{...modalNav}} />
         <Screen name="ChangeEmailPage" component={ChangeEmailPage} options={{...modalNav}} />
         <Screen name="ChangePasswordPage" component={ChangePasswordPage} options={{...modalNav}} /> 
+        <Screen name="UpdateProfilePage" component={UpdateProfilePage} options={{...modalNav}} /> 
     </Navigator>
   }
 

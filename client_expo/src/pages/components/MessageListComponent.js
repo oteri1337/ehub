@@ -1,7 +1,7 @@
 import React from "react";
-import { Content, View, Text } from "native-base";
-import { AppContext } from "../providers/AppProvider";
 import { Platform } from "react-native";
+import { Content, View, Text } from "native-base";
+import { AppContext } from "../../providers/AppProvider";
 
 const s = {
   padding: 10,
@@ -11,7 +11,7 @@ const s = {
   borderColor: "#ebebeb",
 };
 
-function MessageListComponent({ messages = [] }) {
+function MessageListComponent({ messages = [], top = "", user }) {
   const sref = React.useRef();
   const { state } = React.useContext(AppContext);
 
@@ -43,6 +43,20 @@ function MessageListComponent({ messages = [] }) {
     );
   });
 
+  const renderTop = () => {
+    if (top.length) {
+      return (
+        <View style={s}>
+          <Text note style={{ marginBottom: 5 }}>
+            {user.first_name} {user.last_name}
+          </Text>
+          <Text>{top}</Text>
+        </View>
+      );
+    }
+    return <React.Fragment />;
+  };
+
   return (
     <Content
       padder
@@ -53,6 +67,7 @@ function MessageListComponent({ messages = [] }) {
         }
       }}
     >
+      {renderTop()}
       {renderedMessages}
     </Content>
   );

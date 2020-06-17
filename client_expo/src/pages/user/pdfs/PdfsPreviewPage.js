@@ -1,11 +1,8 @@
 import React from "react";
 import { Image } from "react-native";
 import { BACKEND_URL } from "../../../../env";
+import * as FileSystem from "expo-file-system";
 import { AppContext } from "../../../providers/AppProvider";
-import {
-  savePdfToDatabase,
-  removePdfFromDatabase,
-} from "../../../providers/functions/sqlite";
 import {
   Container,
   Content,
@@ -37,35 +34,29 @@ function PdfsPreviewPage({ navigation, route }) {
   };
 
   const savePdf = async () => {
-    const fileReader = new FileReader();
-    fileReader.onload = async () => {
-      const onSuccess = () => {
-        callReducer({ dispatch: "SAVE_PDF", data: params });
-        setSaving(false);
-      };
+    setSaving(true);
+    const path = `${FileSystem.documentDirectory}${file_name}`;
+    const file = await FileSystem.getInfoAsync(path);
 
-      await savePdfToDatabase(id, title, fileReader.result, onSuccess);
-    };
-
-    async function getPdfFromNetwork() {
-      setSaving(true);
-      let response = await fetch(uri);
-      const blob = await response.blob();
-      fileReader.readAsDataURL(blob);
+    if (!file.exists) {
+      await FileSystem.downloadAsync(uri, path);
     }
 
-    getPdfFromNetwork();
+    callReducer({ dispatch: "SAVE_PDF", data: params });
+    setSaving(false);
   };
 
-  const removePdf = () => {
+  const removePdf = async () => {
     setSaving(true);
+    const path = `${FileSystem.documentDirectory}${file_name}`;
+    const file = await FileSystem.getInfoAsync(path);
 
-    const onSuccess = () => {
-      callReducer({ dispatch: "REMOVE_PDF", data: params });
-      setSaving(false);
-    };
+    if (file.exists) {
+      await FileSystem.deleteAsync(path, { idempotent: true });
+    }
 
-    removePdfFromDatabase(id, onSuccess);
+    callReducer({ dispatch: "REMOVE_PDF", data: params });
+    setSaving(false);
   };
 
   if (saved) {

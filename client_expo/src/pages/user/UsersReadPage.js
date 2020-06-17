@@ -3,7 +3,7 @@ import * as Linking from "expo-linking";
 import { BACKEND_URL } from "../../../env";
 import { ImageBackground } from "react-native";
 import { AppContext } from "../../providers/AppProvider";
-import { Container, Button, View, Text } from "native-base";
+import { Container, Content, Button, View, Text, Icon } from "native-base";
 
 function UsersReadPage({ navigation, route }) {
   const { state } = React.useContext(AppContext);
@@ -38,7 +38,7 @@ function UsersReadPage({ navigation, route }) {
       return <React.Fragment />;
     }
     return (
-      <Button rounded full onPress={onPress}>
+      <Button bordered dark rounded full onPress={onPress}>
         <Text>Send Message</Text>
       </Button>
     );
@@ -46,23 +46,75 @@ function UsersReadPage({ navigation, route }) {
 
   return (
     <Container>
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 2, backgroundColor: "red" }}>
+      <Content>
+        <View style={{ height: 350, backgroundColor: "silver" }}>
           <ImageBackground
             style={{ width: "100%", height: "100%" }}
             source={{ uri: `${BACKEND_URL}/uploads/images/${photo_profile}` }}
           />
         </View>
-        <View style={{ flex: 1, padding: 10, alignItems: "center" }}>
-          <Text style={{ marginBottom: 5 }}>{department}</Text>
-          <Text style={{ marginBottom: 5 }}>{email}</Text>
-          <Text style={{ marginBottom: 10 }}>{bio}</Text>
-          <Text style={{ color: "blue" }} onPress={open}>
-            {link.substring(0, 40)}
+        <View style={{ padding: 10 }}>
+          {renderMessageButton()}
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              marginBottom: 10,
+              marginTop: 10,
+            }}
+          >
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Icon
+                name="award"
+                type="Feather"
+                style={{ color: "black", fontSize: 20 }}
+              />
+            </View>
+            <View style={{ flex: 4 }}>
+              <Text style={{ color: "black" }}>{department}</Text>
+            </View>
+          </View>
+
+          <View style={{ flex: 1, flexDirection: "row", marginBottom: 10 }}>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Icon
+                name="mail"
+                type="Feather"
+                style={{ color: "black", fontSize: 20 }}
+              />
+            </View>
+            <View style={{ flex: 4 }}>
+              <Text style={{ color: "black" }}>{email}</Text>
+            </View>
+          </View>
+
+          <View style={{ flex: 1, flexDirection: "row", marginBottom: 10 }}>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <Icon
+                name="link-2"
+                type="Feather"
+                style={{ color: "black", fontSize: 20 }}
+              />
+            </View>
+            <View style={{ flex: 4 }}>
+              <Text onPress={open} style={{ color: "black" }}>
+                {link}
+              </Text>
+            </View>
+          </View>
+          <Text
+            style={{
+              marginBottom: 10,
+              lineHeight: 25,
+              marginLeft: 10,
+              marginRight: 10,
+            }}
+          >
+            {bio}
           </Text>
         </View>
-      </View>
-      <View>{renderMessageButton()}</View>
+      </Content>
     </Container>
   );
 }

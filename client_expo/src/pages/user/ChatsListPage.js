@@ -1,6 +1,6 @@
 import React from "react";
 import { BACKEND_URL } from "../../../env";
-import Text from "../../components/TextComponent";
+import Text from "../components/TextComponent";
 import { AppContext } from "../../providers/AppProvider";
 import { FlatList, Platform } from "react-native";
 import {
@@ -30,6 +30,7 @@ class ItemPureComponent extends React.PureComponent {
             source={{
               uri: `${BACKEND_URL}/uploads/images/${item.recvr.photo_profile}`,
             }}
+            style={{ backgroundColor: "silver" }}
           />
         </Left>
         <Body>
@@ -71,7 +72,10 @@ function ChatsListPage({ navigation }) {
   const ListFooterComponent = () => {
     if (refreshing) {
       if (Platform.OS == "ios") {
-        return <Spinner />;
+        if (data.length > 11) {
+          return <Spinner />;
+        }
+        return <React.Fragment />;
       } else {
         return <React.Fragment />;
       }

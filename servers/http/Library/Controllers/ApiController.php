@@ -26,12 +26,6 @@ class ApiController extends ServicesController
         $this->readBy = $readBy;
         $this->perPage = $perPage;
         $this->searchBy = $searchBy;
-
-        // $this->container = $container;
-
-        // $this->searchBy = 'id';
-
-        // $this->perPage = 12;
     }
 
     public function create($request, $response)

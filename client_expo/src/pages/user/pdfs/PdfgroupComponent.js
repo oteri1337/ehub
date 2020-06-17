@@ -21,7 +21,7 @@ function PdfgroupComponent({ pdfs }) {
     };
 
     return (
-      <View style={{ margin: 1 }} onPress={onPress}>
+      <View style={{ margin: 1, backgroundColor: "silver" }} onPress={onPress}>
         <TouchableHighlight onPress={onPress}>
           <Thumbnail
             style={{ width: 120, height: 180 }}

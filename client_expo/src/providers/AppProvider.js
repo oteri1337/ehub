@@ -1,8 +1,9 @@
 import React from "react";
+import { Toast } from "native-base";
 import { AsyncStorage } from "react-native";
 import reducer from "./reducers/rootReducer";
+import NetInfo from "@react-native-community/netinfo";
 import { getRequest, sendRequest } from "./functions/http";
-import { Toast } from "native-base";
 
 export const AppContext = React.createContext({});
 
@@ -12,12 +13,27 @@ export default function AppProvider({ children, initialState }) {
 
   React.useEffect(() => {
     const asyncOperation = async () => {
-      let response = await getRequest("/api/users/auth/status");
-      if (response.errors.length === 0) {
-        //if (typeof state.user != typeof response.data) {
-        callReducer({ dispatch: "UPDATE_USER", data: response.data });
-        // }
+      const network = await NetInfo.fetch();
+
+      if (network.isConnected) {
+        console.log("connected");
+        let response = await getRequest("/api/users/auth/status");
+        if (response.errors.length === 0) {
+          callReducer({ dispatch: "UPDATE_USER", data: response.data });
+        }
+      } else {
+        console.log("not connected");
       }
+
+      // console.log(conn);
+
+      // .then((conn) => {
+      //   //console.log("Connection type", conn.type);
+      //   //console.log("Is connected?", conn.isConnected);
+      //   if (conn.isConnected) {
+
+      //   }
+      // });
     };
 
     asyncOperation();
@@ -40,10 +56,11 @@ export default function AppProvider({ children, initialState }) {
   const sendRequestThenDispatch = async (url, dispatch, body, method) => {
     setRefreshing(true);
     const response = await sendRequest(url, body, method);
-    console.log(response);
     setRefreshing(false);
-    if (!response.errors.length) {
+    if (response.errors.length === 0) {
       callReducer({ dispatch, data: response.data });
+    } else {
+      alert(response.errors[0]);
     }
     return response;
   };

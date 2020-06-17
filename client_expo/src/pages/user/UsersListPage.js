@@ -1,6 +1,6 @@
 import React from "react";
 import { BACKEND_URL } from "../../../env";
-import Text from "../../components/TextComponent";
+import Text from "../components/TextComponent";
 import { FlatList, Platform } from "react-native";
 import { AppContext } from "../../providers/AppProvider";
 import {
@@ -28,7 +28,7 @@ class ItemPureComponent extends React.PureComponent {
     return (
       <ListItem thumbnail onPress={onPress}>
         <Left>
-          <Thumbnail source={{ uri }} />
+          <Thumbnail source={{ uri }} style={{ backgroundColor: "silver" }} />
         </Left>
         <Body>
           <Text style={{ fontWeight: "bold" }}>

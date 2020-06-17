@@ -16,10 +16,10 @@ class TopicsController extends NewApiController
         $this->model = new Topic;
         $this->readBy = 'slug';
         $this->searchBy = 'title';
-        $this->eagerList = ['comments.user', 'comments' => function ($comments) {
+        $this->eagerList = ['user', 'comments.user', 'comments' => function ($comments) {
             $comments->orderBy('created_at', 'DESC')->limit(1);
         }];
-        $this->eagerRead = ['comments.user', 'comments'];
+        $this->eagerRead = ['user', 'comments.user', 'comments'];
     }
 
     public function list($request, $response)
@@ -70,21 +70,25 @@ class TopicsController extends NewApiController
 
     public function beforeCreate($body)
     {
+        $color = ['#2588ed', '#fe653b', '#8299cd', '#00adef'];
+
+        $body['color'] = $color[rand(0, 3)];
+
         $body["slug"] = $this->slugify($body["title"]);
 
-        return $this->filter($body, ['title', 'message', 'slug', 'user_id']);
+        return $this->filter($body, ['title', 'content', 'slug', 'user_id', 'color']);
     }
 
     public function createRules($body)
     {
 
         $title = $body['title'] ?? '';
-        $message = $body['message'] ?? '';
+        $content = $body['content'] ?? '';
         $user_id = $body['user_id'] ?? '';
 
         return [
             'title' => [$title, 'required'],
-            'message' => [$message, 'required'],
+            'content' => [$content, 'required'],
             'user id' => [$user_id, 'required']
         ];
     }

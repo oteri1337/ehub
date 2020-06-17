@@ -144,4 +144,40 @@ class NewApiController extends ServicesController
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }
+
+    public function search($request, $response)
+    {
+        $term = $request->getAttribute("attr") ?? '';
+
+        if (strlen($term) === 0) {
+            var_dump($term);
+            $this->data['errors'] = ['search term is required'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $paginator =  $this->model->where($this->searchBy, 'LIKE', "%{$term}%")->with($this->eagerList)->orderBy('created_at', 'DESC')->paginate($this->perPage);
+
+        $paginator = $paginator->toArray();
+        $collection = Collection::make($paginator['data'])->keyBy($this->readBy);
+        $paginator['object'] = $collection;
+
+        $this->data['data'] = $paginator;
+        $response->getBody()->write(json_encode($this->data));
+        return $response->withHeader('Content-Type', 'application/json');
+
+
+        // $body = $request->getParsedBody();
+        // $attr = $body['search'] ?? '';
+
+        // $row = $this->model->where($this->searchBy, 'LIKE', "%{$attr}%");
+        // $collection = $row->get();
+        // $paginator = $row->paginate("12");
+        // $row = $this->optimize($paginator, $collection);
+
+        // $this->data['data'] = $row;
+
+        // $response->getBody()->write(json_encode($this->data));
+        // return $response->withHeader('Content-Type', 'application/json');
+    }
 }

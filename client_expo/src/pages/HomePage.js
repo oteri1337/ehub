@@ -1,8 +1,8 @@
 import React from "react";
 import Logo from "../../assets/logo.png";
 import Signin from "../../assets/library.png";
-import Text from "../components/TextComponent";
-import { ImageBackground, Keyboard, KeyboardAvoidingView } from "react-native";
+import Text from "./components/TextComponent";
+import { ImageBackground, Keyboard } from "react-native";
 import { sendRequestThenDispatch } from "../providers/AppProvider";
 import {
   View,

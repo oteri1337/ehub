@@ -8,12 +8,40 @@ import ChatsListPage from "../pages/user/ChatsListPage";
 import PdfgroupsPage from "../pages/user/pdfs/PdfgroupsPage";
 import SavedPdfsPage from "../pages/user/pdfs/SavedPdfsPage";
 
-import { Button, Icon } from "native-base";
+import { Button, Icon, View, Text } from "native-base";
+
+function IconWithBadge({ name, badgeCount, color, size }) {
+  return (
+    <View style={{ width: 24, height: 24, margin: 5 }}>
+      <Feather name={name} size={size} color={color} />
+      {badgeCount > 0 && (
+        <View
+          style={{
+            // On React Native < 0.57 overflow outside of parent will not work on Android, see https://git.io/fhLJ8
+            position: "absolute",
+            right: -6,
+            top: -3,
+            backgroundColor: "red",
+            borderRadius: 6,
+            width: 12,
+            height: 12,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 10, fontWeight: "bold" }}>
+            {badgeCount}
+          </Text>
+        </View>
+      )}
+    </View>
+  );
+}
 
 const Tab = createBottomTabNavigator();
 const { Screen, Navigator } = Tab;
 
-function TabNavigator({ navigation }) {
+function TabNavigator({ navigation, route }) {
   const goToAccountPage = () => {
     navigation.navigate("AccountPage");
   };
@@ -22,23 +50,38 @@ function TabNavigator({ navigation }) {
     navigation.navigate("SearchPage");
   };
 
+  const goToTopicsCreatePage = () => {
+    navigation.navigate("TopicsCreatePage");
+  };
+
+  let current = "";
+
+  if (route.state) {
+    current = route.state.routes[route.state.index].name;
+  }
+
   navigation.setOptions({
     title: "eHUB",
     headerLeft: () => (
-      <Button transparent onPress={goToAccountPage}>
-        <Icon name="user" type="Feather" style={{ color: "black" }} />
-      </Button>
-    ),
-    headerRight: () => (
       <Button transparent onPress={goToSearchPage}>
         <Icon name="search" type="Feather" style={{ color: "black" }} />
       </Button>
     ),
+    headerRight: () => {
+      if (current == "TopicsPage") {
+        return (
+          <Button transparent onPress={goToTopicsCreatePage}>
+            <Icon name="plus" type="Feather" style={{ color: "black" }} />
+          </Button>
+        );
+      }
+      return (
+        <Button transparent onPress={goToAccountPage}>
+          <Icon name="user" type="Feather" style={{ color: "black" }} />
+        </Button>
+      );
+    },
   });
-
-  const goToTopicCreate = () => {
-    navigation.navigate("TopicsCreatePage");
-  };
 
   const screenOptions = ({ route }) => {
     // if (route.name == "TopicsPage") {
@@ -66,7 +109,14 @@ function TabNavigator({ navigation }) {
           return <Feather name="users" size={size} color={color} />;
         } else if (route.name === "ChatsListPage") {
           iconName = focused ? "ios-chatbubbles" : "ios-chatbubbles";
-          return <Feather name="message-circle" size={size} color={color} />;
+          return (
+            <IconWithBadge
+              name="message-circle"
+              color={color}
+              size={size}
+              badgeCount={10}
+            />
+          );
         } else if (route.name === "SearchPage") {
           iconName = focused ? "ios-search" : "ios-search";
         } else if (route.name === "SavedPdfsPage") {

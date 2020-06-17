@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList, Platform } from "react-native";
-import Text from "../../../components/TextComponent";
+import Text from "../../components/TextComponent";
 import PdfgroupComponent from "./PdfgroupComponent";
 import { View, Spinner, Container } from "native-base";
 import { AppContext } from "../../../providers/AppProvider";

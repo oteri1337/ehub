@@ -10,19 +10,19 @@ class Topic extends Model
     protected $fillable = [
         'slug',
         'title',
+        'color',
         'content',
         'user_id'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(LightUser::class);
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);
-    }
-
-    public function getUserIdAttribute($row)
-    {
-        $user = User::where("id", $row)->first();
-        return $user->first_name . " " . $user->last_name;
     }
 
     public function getCreatedAtAttribute($row)

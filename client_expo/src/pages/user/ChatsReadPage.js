@@ -1,8 +1,8 @@
 import React from "react";
 import { AppContext } from "../../providers/AppProvider";
 import { Container, Button, Icon } from "native-base";
-import MessageListComponent from "../../components/MessageListComponent";
-import MessageFormComponent from "../../components/MessageFormComponent";
+import MessageListComponent from "../components/MessageListComponent";
+import MessageFormComponent from "../components/MessageFormComponent";
 
 function ChatsReadPage({ navigation, route }) {
   const { params } = route;

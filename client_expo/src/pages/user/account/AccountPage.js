@@ -2,8 +2,6 @@ import React from "react";
 import { BACKEND_URL } from "../../../../env";
 import { useNavigation } from "@react-navigation/native";
 import { AppContext } from "../../../providers/AppProvider";
-import HeaderComponent from "../../../components/HeaderBackComponent";
-
 import {
   Container,
   Content,
@@ -18,7 +16,6 @@ import {
   H1,
   View,
   Thumbnail,
-  Picker,
 } from "native-base";
 
 function Li({ text = "", icon = "ios-today", color, to }) {
@@ -66,7 +63,11 @@ function AccountPage({ navigation }) {
         <View
           style={{ paddingBottom: 15, paddingTop: 15, alignItems: "center" }}
         >
-          <Thumbnail large source={{ uri }} />
+          <Thumbnail
+            large
+            source={{ uri }}
+            style={{ backgroundColor: "silver" }}
+          />
           <H1 style={{ textAlign: "center", fontWeight: "bold" }}>
             {first_name} {last_name}
           </H1>
@@ -75,6 +76,13 @@ function AccountPage({ navigation }) {
         </View>
         <List>
           <Li to="ChangeEmailPage" text="Change Email" icon="ios-mail" />
+
+          <Li
+            to="UpdateProfilePage"
+            text="Update Profile"
+            icon="md-person"
+            color="purple"
+          />
 
           <Li
             to="ChangePasswordPage"

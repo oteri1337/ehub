@@ -1,9 +1,8 @@
 import React from "react";
-import { FlatList, Platform } from "react-native";
 import { BACKEND_URL } from "../../../env";
-import Text from "../../components/TextComponent";
+import Text from "../components/TextComponent";
+import { FlatList, Platform } from "react-native";
 import { AppContext } from "../../providers/AppProvider";
-import HeaderComponent from "../../components/HeaderComponent";
 import {
   List,
   Left,
