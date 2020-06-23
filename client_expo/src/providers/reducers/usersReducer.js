@@ -3,7 +3,11 @@ const defaultState = { data: [], object: {}, search_keys: {} };
 function usersReducer(state = defaultState, action) {
   switch (action.dispatch) {
     case "UPDATE_USERS":
-      return action.data;
+      if (JSON.stringify(state) === JSON.stringify(action.data)) {
+        return state;
+      } else {
+        return action.data;
+      }
     case "UPDATE_USER_IN_USERS":
       return {
         ...state,

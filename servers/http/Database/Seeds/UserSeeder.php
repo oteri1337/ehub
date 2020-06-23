@@ -60,9 +60,11 @@ class UserSeeder extends AbstractSeed
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
 
-        User::create($known[0]);
-        User::create($known[1]);
-        User::create($known[2]);
+        $this->table('users')->insert($known)->save();
+
+        // User::create($known[0]);
+        // User::create($known[1]);
+        // User::create($known[2]);
 
         $departments = [
             'Petroleum Engineering',

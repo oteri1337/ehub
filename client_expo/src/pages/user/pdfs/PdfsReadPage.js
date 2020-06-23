@@ -2,8 +2,8 @@ import React from "react";
 import PDFReader from "rn-pdf-reader-js";
 import { BACKEND_URL } from "../../../../env";
 import * as FileSystem from "expo-file-system";
-import { Spinner, Button, Icon, View, Text } from "native-base";
 import { AppContext } from "../../../providers/AppProvider";
+import { Spinner, Button, Icon, View, Text } from "native-base";
 
 function PdfsReadPage({ navigation, route }) {
   const { params } = route;

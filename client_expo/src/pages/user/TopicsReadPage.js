@@ -7,6 +7,7 @@ import MessageFormComponent from "../components/MessageFormComponent";
 function TopicsReadPage({ navigation, route }) {
   const { slug } = route.params;
   const { state, sendRequestThenDispatch } = React.useContext(AppContext);
+  const { resfreshing, send } = sendRequestThenDispatch();
   const { id, title, content, comments, user } = state.topics.object[slug];
 
   navigation.setOptions({
@@ -39,7 +40,7 @@ function TopicsReadPage({ navigation, route }) {
 
   const onSubmit = (message) => {
     const body = { topic_id: id, message };
-    sendRequestThenDispatch("/api/topics/comment", "UPDATE_TOPIC", body);
+    send("/api/topics/comment", "UPDATE_TOPIC", body);
   };
 
   return (

@@ -3,7 +3,11 @@ const defaultState = { data: [], object: {}, search_keys: {} };
 function chatsReducer(state = defaultState, action) {
   switch (action.dispatch) {
     case "UPDATE_CHATS":
-      return action.data;
+      if (JSON.stringify(state) === JSON.stringify(action.data)) {
+        return state;
+      } else {
+        return action.data;
+      }
     case "UPDATE_CHATS_PAGE":
       return {
         ...action.data,

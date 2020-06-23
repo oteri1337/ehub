@@ -3,31 +3,30 @@ import { List, Container } from "native-base";
 import { AppContext } from "../../providers/AppProvider";
 import TopicsList from "../components/TopicsListComponent";
 
-function TopicsPage() {
+function TopicsListPage() {
   const context = React.useContext(AppContext);
-  const { refreshing, getRequestThenDispatch, state } = context;
+  const { getRequestThenDispatch, state } = context;
+  const dispatch = "UPDATE_TOPICS";
+  const { refreshing, send } = getRequestThenDispatch("/api/topics", dispatch);
   const list = state.topics;
 
-  const dispatch = "UPDATE_TOPICS";
-
   const onRefresh = async () => {
-    getRequestThenDispatch("/api/topics", dispatch);
+    send("/api/topics", dispatch);
   };
+
+  // React.useEffect(() => {
+  //   console.log("on mount topics list");
+  //   onRefresh();
+  // }, []);
 
   const onEndReached = async () => {
     if (!refreshing) {
       const { next_page_url } = list;
       if (next_page_url) {
-        getRequestThenDispatch(next_page_url, `${dispatch}_PAGE`);
+        send(next_page_url, `${dispatch}_PAGE`);
       }
     }
   };
-
-  React.useEffect(() => {
-    if (!list.data.length) {
-      onRefresh();
-    }
-  }, []);
 
   return (
     <Container>
@@ -38,4 +37,4 @@ function TopicsPage() {
   );
 }
 
-export default TopicsPage;
+export default TopicsListPage;

@@ -23,11 +23,11 @@ class CreateUsersTable extends ParentMigration
 
             $table->string('department');
 
-            $table->string('bio')->default("");
+            $table->string('phone_number')->default("");
 
             $table->string('link')->default("");
 
-            $table->string('phone_number')->nullable();
+            $table->string('bio')->default("");
 
             $table->integer('pin')->nullable();
 

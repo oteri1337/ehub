@@ -1,47 +1,38 @@
 import React from "react";
+import { BACKEND_URL } from "../../../env";
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Text, ListItem, Left, View, Body, Icon, Spinner } from "native-base";
+import { TouchableHighlight } from "react-native";
+import { View, Spinner, Thumbnail, Text } from "native-base";
 
 class SingleTopicComponent extends React.PureComponent {
   render() {
     const { item, navigation } = this.props;
 
-    console.log("rendering topic ", item.id);
+    console.log("rendering pdf", item.id);
 
     const onPress = () => {
-      navigation.navigate("TopicsReadPage", item);
+      navigation.navigate("PdfsPreviewPage", item);
     };
 
     return (
-      <ListItem thumbnail onPress={onPress}>
-        <Left>
+      <TouchableHighlight key={item.id} onPress={onPress}>
+        <View>
+          <Text style={{ marginLeft: 5 }}>{item.title}</Text>
+
           <View
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 50,
-              backgroundColor: item.color,
-              justifyContent: "center",
-            }}
+            style={{ margin: 1, backgroundColor: "silver", marginBottom: 10 }}
           >
-            <Icon
-              name="message-square"
-              type="Feather"
-              style={{
-                color: "#FFFFFF",
-                textAlign: "center",
+            <Thumbnail
+              style={{ width: 180, height: 280 }}
+              square
+              source={{
+                uri: `${BACKEND_URL}/uploads/images/${item.image_name}`,
               }}
             />
           </View>
-        </Left>
-        <Body>
-          <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
-          <Text note style={{ fontWeight: "300" }}>
-            {item.content?.replace(/\s/g, " ").substring(0, 75)}
-          </Text>
-        </Body>
-      </ListItem>
+        </View>
+      </TouchableHighlight>
     );
   }
 }
@@ -50,7 +41,7 @@ const keyExtractor = (item) => {
   return item.id.toString();
 };
 
-function TopicsListComponent({ list, refreshing, onRefresh, onEndReached }) {
+function PdfsListComponent({ list, refreshing, onRefresh, onEndReached }) {
   const navigation = useNavigation();
   const { data } = list;
 
@@ -73,6 +64,7 @@ function TopicsListComponent({ list, refreshing, onRefresh, onEndReached }) {
 
   return (
     <FlatList
+      contentContainerStyle={{ margin: 7 }}
       {...{
         data,
         onRefresh,
@@ -83,8 +75,9 @@ function TopicsListComponent({ list, refreshing, onRefresh, onEndReached }) {
         ListFooterComponent,
         onEndReachedThreshold,
       }}
+      numColumns={2}
     />
   );
 }
 
-export default TopicsListComponent;
+export default PdfsListComponent;

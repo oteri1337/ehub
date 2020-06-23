@@ -1,7 +1,9 @@
 import React from "react";
+import { AppContext } from "../../../providers/AppProvider";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import {
   Container,
+  Content,
   View,
   Form,
   Item,
@@ -9,88 +11,84 @@ import {
   Button,
   Text,
   Textarea,
-  Picker,
 } from "native-base";
 
 function UpdateProfilePage({ navigation }) {
   navigation.setOptions({ title: "Update Profile" });
+  const { state, sendRequestThenDispatch } = React.useContext(AppContext);
+  const { refreshing, send, response } = sendRequestThenDispatch();
 
-  const [fetching, setFetching] = React.useState(false);
-  const [password, setPassword] = React.useState("");
-  const [new_password, setNewPassword] = React.useState("");
-  const [confirm_password, setConfirmPassword] = React.useState("");
+  const [bio, setBio] = React.useState(state.user.bio);
+  const [link, setLink] = React.useState(state.user.link);
+  const [department, setDept] = React.useState(state.user.department);
+  const [phone_number, setPhone] = React.useState(state.user.phone_number);
 
   const dissmiss = () => {
     Keyboard.dismiss();
   };
 
-  const change = () => {
-    if (password.length && new_password.length && confirm_password.length) {
-      setFetching(true);
+  const change = async () => {
+    const body = {
+      bio,
+      link,
+      department,
+      phone_number,
+    };
 
-      setTimeout(() => {
-        setFetching(false);
-      }, 3000);
-    }
+    await send("/api/users/auth/profile", "UPDATE_USER", body, "PATCH");
   };
 
   return (
     <Container style={{ flex: 1 }}>
-      <TouchableWithoutFeedback onPress={dissmiss}>
-        <View style={{ flex: 1, padding: 20 }}>
-          <Form>
-            <Text style={{ marginBottom: 5 }}>Url</Text>
-            <Item regular>
-              <Input
-                secureTextEntry={true}
-                onChangeText={(p) => setPassword(p)}
-              />
-            </Item>
+      <Content>
+        <TouchableWithoutFeedback onPress={dissmiss}>
+          <View style={{ flex: 1, padding: 20 }}>
+            <Text>
+              Enter your profile information, then click update to proceed.
+            </Text>
+            <Form>
+              <Text style={{ marginBottom: 5, marginTop: 40 }}>Link</Text>
+              <Item regular>
+                <Input value={link} onChangeText={(t) => setLink(t)} />
+              </Item>
 
-            <Text style={{ marginTop: 40, marginBottom: 5 }}>Phone</Text>
-            <Item regular>
-              <Input
-                secureTextEntry={true}
-                onChangeText={(p) => setPassword(p)}
-              />
-            </Item>
+              <Text style={{ marginTop: 40, marginBottom: 5 }}>Department</Text>
+              <Item regular>
+                <Input value={department} onChangeText={(t) => setDept(t)} />
+              </Item>
 
-            <Text style={{ marginTop: 40, marginBottom: 5 }}>About</Text>
-            <Item regular>
-              <Textarea rowSpan={5} />
-            </Item>
+              <Text style={{ marginTop: 40, marginBottom: 5 }}>
+                Phone Number
+              </Text>
+              <Item regular>
+                <Input value={phone_number} onChangeText={(t) => setPhone(t)} />
+              </Item>
 
-            <Picker
-              selectedValue="key0"
-              note
-              mode="dialog"
-              style={{ marginTop: 40 }}
-              onValueChange={(p) => {
-                console.log(p);
-              }}
-            >
-              <Picker.Item label="Petroleum Engineering" value="key0" />
-              <Picker.Item label="Chemical Engineering" value="key3" />
-              <Picker.Item label="Electrical Engineering" value="key1" />
-              <Picker.Item label="Mechanical Engineering" value="key2" />
-              <Picker.Item label="Chemical Engineering" value="key2" />
-            </Picker>
-          </Form>
+              <Text style={{ marginTop: 40, marginBottom: 5 }}>About</Text>
+              <Item regular>
+                <Textarea
+                  value={bio}
+                  onChangeText={(t) => setBio(t)}
+                  rowSpan={4}
+                />
+              </Item>
+            </Form>
+          </View>
+        </TouchableWithoutFeedback>
+        <View style={{ padding: 20, marginTop: 40 }}>
+          {!refreshing && (
+            <Button full onPress={change}>
+              <Text>Update </Text>
+            </Button>
+          )}
+
+          {refreshing && (
+            <Button bordered full>
+              <Text>Updating Profile</Text>
+            </Button>
+          )}
         </View>
-      </TouchableWithoutFeedback>
-      <View style={{ padding: 20 }}>
-        {!fetching && (
-          <Button full onPress={change}>
-            <Text>Update </Text>
-          </Button>
-        )}
-
-        {fetching && (
-          <Button bordered full>
-            <Text>Updating Password</Text>
-          </Button>
-        )}
-      </View>
+      </Content>
     </Container>
   );
 }

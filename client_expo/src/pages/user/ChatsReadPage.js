@@ -6,7 +6,13 @@ import MessageFormComponent from "../components/MessageFormComponent";
 
 function ChatsReadPage({ navigation, route }) {
   const { params } = route;
+
+  console.log(params);
+
   const { state, sendRequestThenDispatch } = React.useContext(AppContext);
+
+  const { send } = sendRequestThenDispatch();
+
   const chat = state.chats.object[params.recvr_id];
 
   navigation.setOptions({
@@ -25,7 +31,7 @@ function ChatsReadPage({ navigation, route }) {
 
   const start = (message) => {
     const body = { recvr_id: params.recvr_id, message };
-    sendRequestThenDispatch("/api/chats", "UPDATE_CHATS", body);
+    send("/api/chats", "UPDATE_CHATS", body);
   };
 
   if (!chat) {
@@ -42,7 +48,8 @@ function ChatsReadPage({ navigation, route }) {
 
   const onSubmit = (message) => {
     const body = { chat_id: chat_id, message };
-    sendRequestThenDispatch("/api/chats/message", "UPDATE_CHATS", body);
+    // error coming from here
+    send("/api/chats/message", "UPDATE_CHATS", body);
   };
 
   return (

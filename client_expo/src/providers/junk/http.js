@@ -27,7 +27,7 @@ export async function getRequest(endpoint) {
   //   response = { ...ERROR_OBJECT, jsError: e };
   // }
 
-  console.log(response);
+  // console.log(response);
 
   return response;
 }

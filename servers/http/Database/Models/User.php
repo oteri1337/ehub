@@ -9,14 +9,16 @@ class User extends Model
 
 
     protected $fillable = [
+        'bio',
+        'link',
         'email',
         'password',
-        'first_name',
         'last_name',
+        'first_name',
         'department',
-        'mobile_number',
+        'phone_number',
+        'photo_profile',
         'push_subscription',
-        'photo_profile'
     ];
 
     protected $hidden = [

@@ -10,23 +10,27 @@ import HomePage from "../pages/HomePage";
 import SignUpPage from "../pages/SignUpPage";
 import PasswordPage from "../pages/PasswordPage";
 
+import AccountPage from "../pages/user/account/AccountPage";
+import ChangeEmailPage from "../pages/user/account/ChangeEmailPage";
+import ChangePhotoPage from "../pages/user/account/UpdatePhotoPage";
+import ChangePasswordPage from "../pages/user/account/UpdatePasswordPage";
+import UpdateProfilePage from "../pages/user/account/UpdateProfilePage";
+
 import TabRoutes from "./TabRoutes";
-import SearchPage from "../pages/user/pdfs/SearchPage";
 
-import TopicsReadPage from "../pages/user/TopicsReadPage";
-import TopicsCreatePage from "../pages/user/TopicsCreatePage";
-
-import PdfsReadPage from "../pages/user/pdfs/PdfsReadPage";
-import PdfsPreviewPage from "../pages/user/pdfs/PdfsPreviewPage";
+import SearchPage from "../pages/user/SearchPage";
 
 import UsersReadPage from "../pages/user/UsersReadPage";
 import ChatsReadPage from "../pages/user/ChatsReadPage";
 
-import AccountPage from "../pages/user/account/AccountPage";
-import ChangeEmailPage from "../pages/user/account/ChangeEmailPage";
-import ChangePhotoPage from "../pages/user/account/ChangePhotoPage";
-import ChangePasswordPage from "../pages/user/account/ChangePasswordPage";
-import UpdateProfilePage from "../pages/user/account/UpdateProfilePage";
+import PdfsListPage from "../pages/user/pdfs/PdfsListPage";
+import PdfsReadPage from "../pages/user/pdfs/PdfsReadPage";
+import PdfsPreviewPage from "../pages/user/pdfs/PdfsPreviewPage";
+
+import TopicsReadPage from "../pages/user/TopicsReadPage";
+import TopicsCreatePage from "../pages/user/TopicsCreatePage";
+
+import EventsListPage from "../pages/user/EventsListPage";
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -50,22 +54,27 @@ function Routes() {
   if (state.user ?? false) {
     return <Navigator>
         <Screen name="TabRoutes" component={TabRoutes} />
+
+        <Screen name="AccountPage" component={AccountPage} options={{...modalNav}} initialParams={{test: 1}} />
+        <Screen name="ChangeEmailPage" component={ChangeEmailPage} options={{...modalNav}} />
+        <Screen name="ChangePhotoPage" component={ChangePhotoPage} options={{...modalNav}} />
+        <Screen name="ChangePasswordPage" component={ChangePasswordPage} options={{...modalNav}} /> 
+        <Screen name="UpdateProfilePage" component={UpdateProfilePage} options={{...modalNav}} />
+
         <Screen name="SearchPage" component={SearchPage}/>
-
-        <Screen name="TopicsReadPage" component={TopicsReadPage}  />
-        <Screen name="TopicsCreatePage" component={TopicsCreatePage} />
-
-        <Screen name="PdfsReadPage" component={PdfsReadPage}/>
-        <Screen name="PdfsPreviewPage" component={PdfsPreviewPage} />
 
         <Screen name="UsersReadPage" component={UsersReadPage} />
         <Screen name="ChatsReadPage" component={ChatsReadPage} />
 
-        <Screen name="AccountPage" component={AccountPage} options={{...modalNav}} />
-        <Screen name="ChangePhotoPage" component={ChangePhotoPage} options={{...modalNav}} />
-        <Screen name="ChangeEmailPage" component={ChangeEmailPage} options={{...modalNav}} />
-        <Screen name="ChangePasswordPage" component={ChangePasswordPage} options={{...modalNav}} /> 
-        <Screen name="UpdateProfilePage" component={UpdateProfilePage} options={{...modalNav}} /> 
+        <Screen name="PdfsListPage" component={PdfsListPage} />
+        <Screen name="PdfsPreviewPage" component={PdfsPreviewPage} />
+        <Screen name="PdfsReadPage" component={PdfsReadPage}/>
+
+        <Screen name="TopicsReadPage" component={TopicsReadPage}  />
+        <Screen name="TopicsCreatePage" component={TopicsCreatePage} />
+
+        <Screen name="EventsListPage" component={EventsListPage} />
+
     </Navigator>
   }
 

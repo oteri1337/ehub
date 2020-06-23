@@ -2,11 +2,12 @@ import React from "react";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import SavedPdfsPage from "../pages/user/pdfs/SavedPdfsPage";
+
 import UsersPage from "../pages/user/UsersListPage";
 import TopicsPage from "../pages/user/TopicsListPage";
 import ChatsListPage from "../pages/user/ChatsListPage";
 import PdfgroupsPage from "../pages/user/pdfs/PdfgroupsPage";
-import SavedPdfsPage from "../pages/user/pdfs/SavedPdfsPage";
 
 import { Button, Icon, View, Text } from "native-base";
 
@@ -42,6 +43,9 @@ const Tab = createBottomTabNavigator();
 const { Screen, Navigator } = Tab;
 
 function TabNavigator({ navigation, route }) {
+  // const { state, callReducer } = React.useContext(AppContext);
+  // console.log("re render bros", state.users.data.length);
+
   const goToAccountPage = () => {
     navigation.navigate("AccountPage");
   };
@@ -82,6 +86,12 @@ function TabNavigator({ navigation, route }) {
       );
     },
   });
+
+  // if (current == "PdfgroupsPage") {
+  //   navigation.setOptions({ headerShown: false });
+  // } else {
+  //   navigation.setOptions({ headerShown: true });
+  // }
 
   const screenOptions = ({ route }) => {
     // if (route.name == "TopicsPage") {
@@ -140,29 +150,33 @@ function TabNavigator({ navigation, route }) {
   return (
     <Navigator {...{ tabBarOptions, screenOptions, initialRouteName }}>
       <Screen
-        name="TopicsPage"
-        component={TopicsPage}
-        options={{ title: "Forum" }}
+        name="SavedPdfsPage"
+        component={SavedPdfsPage}
+        options={{ title: "Saved" }}
       />
-      <Screen
-        name="PdfgroupsPage"
-        component={PdfgroupsPage}
-        options={{ title: "Library" }}
-      />
+
       <Screen
         name="UsersPage"
         component={UsersPage}
         options={{ title: "Community" }}
       />
+
       <Screen
-        name="SavedPdfsPage"
-        component={SavedPdfsPage}
-        options={{ title: "Saved" }}
+        name="TopicsPage"
+        component={TopicsPage}
+        options={{ title: "Forum" }}
       />
+
       <Screen
         name="ChatsListPage"
         component={ChatsListPage}
         options={{ title: "Messages" }}
+      />
+
+      <Screen
+        name="PdfgroupsPage"
+        component={PdfgroupsPage}
+        options={{ title: "Library" }}
       />
     </Navigator>
   );

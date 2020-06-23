@@ -5,8 +5,8 @@ import { AppContext } from "../../../providers/AppProvider";
 import { Container, View, Thumbnail, Content, Text } from "native-base";
 
 function SavedPdfsPage({ navigation }) {
-  const { state } = React.useContext(AppContext);
-  const { saved } = state;
+  const { state, callReducer } = React.useContext(AppContext);
+  const saved = state?.saved ?? {};
 
   const renderBooks = () => {
     return Object.keys(saved).map((id) => {

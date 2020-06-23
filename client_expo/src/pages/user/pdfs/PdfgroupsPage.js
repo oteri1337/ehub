@@ -1,20 +1,10 @@
 import React from "react";
-import { FlatList, Platform } from "react-native";
+import { BACKEND_URL } from "../../../../env";
 import Text from "../../components/TextComponent";
 import PdfgroupComponent from "./PdfgroupComponent";
-import { View, Spinner, Container } from "native-base";
 import { AppContext } from "../../../providers/AppProvider";
-
-// const renderItem = ({ item }) => {
-//   console.log("rendering group ", item.id);
-
-// return (
-//   <View>
-//     <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
-//     <PdfgroupComponent pdfs={item.pdfs} />
-//   </View>
-// );
-// };
+import { View, Spinner, Container, Button } from "native-base";
+import { FlatList, Platform, ImageBackground } from "react-native";
 
 class ItemPureComponent extends React.PureComponent {
   render() {
@@ -22,7 +12,9 @@ class ItemPureComponent extends React.PureComponent {
     console.log("rendering group", this.props.item.id);
     return (
       <View>
-        <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
+        <Text style={{ fontWeight: "bold", marginLeft: 10, marginBottom: 5 }}>
+          {item.title}
+        </Text>
         <PdfgroupComponent pdfs={item.pdfs} />
       </View>
     );
@@ -30,23 +22,30 @@ class ItemPureComponent extends React.PureComponent {
 }
 
 function PdfgroupsPage({ navigation }) {
+  // navigation.setOptions({ headerShown: false });
+
   const context = React.useContext(AppContext);
-  const { state, refreshing, getRequestThenDispatch } = context;
+  const { state, getRequestThenDispatch } = context;
   const list = state.pdfgroups;
   const { data } = list;
 
   const dispatch = "UPDATE_PDFGROUPS";
+  const { refreshing, send } = getRequestThenDispatch(
+    "/api/pdfgroups",
+    dispatch
+  );
 
   const onRefresh = async () => {
     console.log("requesting group");
-    getRequestThenDispatch("/api/pdfgroups", dispatch);
+    send("/api/pdfgroups", dispatch);
   };
 
-  React.useEffect(() => {
-    // if (!data.length) {
-    onRefresh();
-    // }
-  }, []);
+  // React.useEffect(() => {
+  //   console.log("on month pdf groups page");
+  //   // if (!data.length) {
+  //   onRefresh();
+  //   // }
+  // }, []);
 
   const onEndReachedThreshold = 0.1;
 
@@ -54,9 +53,9 @@ function PdfgroupsPage({ navigation }) {
     return item.id.toString();
   }, []);
 
-  const ListHeaderComponent = React.memo(() => {
-    return <Text style={{ marginLeft: 15, marginTop: 5 }}>LIBRARY</Text>;
-  });
+  // const ListHeaderComponent = React.memo(() => {
+  //   return <Text style={{ marginLeft: 15, marginTop: 5 }}>LIBRARY</Text>;
+  // });
 
   const ListFooterComponent = React.memo(() => {
     if (refreshing) {
@@ -74,32 +73,59 @@ function PdfgroupsPage({ navigation }) {
     if (!refreshing) {
       const { next_page_url } = list;
       if (next_page_url) {
-        getRequestThenDispatch(next_page_url, `${dispatch}_PAGE`);
+        send(next_page_url, `${dispatch}_PAGE`);
       }
     }
   };
-
-  // const renderItem = ({ item }) => {
-  //   console.log("rendering group ", item.id);
-  //   return React.useMemo(() => {
-  //     return (
-  //       <View>
-  //         <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
-  //         <PdfgroupComponent pdfs={item.pdfs} />
-  //       </View>
-  //     );
-  //   }, [state.pdfgroups]);
-
-  //   return <React.Fragment />;
-  // };
 
   const renderItem = ({ item }) => {
     return <ItemPureComponent item={item} />;
   };
 
+  const uri = `${BACKEND_URL}/uploads/images/event6.jpg`;
+
+  const ListHeaderComponent = () => {
+    return (
+      <View style={{ marginBottom: 5 }}>
+        <ImageBackground
+          source={{ uri }}
+          style={{ width: "100%", height: 350 }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-around",
+            }}
+          >
+            <Button
+              transparent
+              onPress={() => {
+                navigation.navigate("PdfsListPage");
+              }}
+            >
+              <Text style={{ fontWeight: "bold", color: "white" }}>
+                ALL BOOKS
+              </Text>
+            </Button>
+            <Button
+              transparent
+              onPress={() => {
+                navigation.navigate("EventsListPage");
+              }}
+            >
+              <Text style={{ fontWeight: "bold", color: "white" }}>
+                NEWS AND EVENTS
+              </Text>
+            </Button>
+          </View>
+        </ImageBackground>
+      </View>
+    );
+  };
+
   return (
     <Container>
-      {/* <HeaderComponent navigation={navigation} title="Library" /> */}
       <FlatList
         style={{ padding: 5 }}
         {...{
@@ -108,6 +134,7 @@ function PdfgroupsPage({ navigation }) {
           refreshing,
           renderItem,
           keyExtractor,
+          ListHeaderComponent,
           ListFooterComponent,
           onEndReached,
           onEndReachedThreshold,

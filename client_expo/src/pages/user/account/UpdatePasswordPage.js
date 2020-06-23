@@ -1,26 +1,48 @@
 import React from "react";
+import { sendRequest } from "../../../providers/functions";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Container, View, Form, Item, Input, Button, Text } from "native-base";
 
-function ChangePasswordPage({ navigation }) {
+function UpdatePasswordPage({ navigation }) {
   navigation.setOptions({ title: "Change Password" });
-
   const [fetching, setFetching] = React.useState(false);
+
   const [password, setPassword] = React.useState("");
   const [new_password, setNewPassword] = React.useState("");
-  const [confirm_password, setConfirmPassword] = React.useState("");
+  const [new_password_confirm, setConfirmPassword] = React.useState("");
 
   const dissmiss = () => {
     Keyboard.dismiss();
   };
 
-  const change = () => {
-    if (password.length && new_password.length && confirm_password.length) {
+  const change = async () => {
+    if (password.length && new_password.length && new_password_confirm.length) {
       setFetching(true);
 
-      setTimeout(() => {
-        setFetching(false);
-      }, 3000);
+      const body = {
+        password,
+        new_password,
+        new_password_confirm,
+      };
+
+      const url = "/api/users/auth/password";
+
+      const response = await sendRequest(url, body, "PATCH");
+
+      console.log(response);
+
+      if (response.errors.length) {
+        alert(response.errors[0]);
+      }
+
+      if (response.message.length) {
+        alert(response.message);
+        setPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      }
+
+      setFetching(false);
     }
   };
 
@@ -37,6 +59,7 @@ function ChangePasswordPage({ navigation }) {
             <Text style={{ marginTop: 40, marginBottom: 5 }}>Password</Text>
             <Item regular>
               <Input
+                value={password}
                 secureTextEntry={true}
                 onChangeText={(p) => setPassword(p)}
               />
@@ -45,17 +68,19 @@ function ChangePasswordPage({ navigation }) {
             <Text style={{ marginTop: 40, marginBottom: 5 }}>New Password</Text>
             <Item regular>
               <Input
+                value={new_password}
                 secureTextEntry={true}
                 onChangeText={(p) => setNewPassword(p)}
               />
             </Item>
 
             <Text style={{ marginTop: 40, marginBottom: 5 }}>
-              Confirm Password
+              Confirm New Password
             </Text>
             <Item regular>
               <Input
                 secureTextEntry={true}
+                value={new_password_confirm}
                 onChangeText={(p) => setConfirmPassword(p)}
               />
             </Item>
@@ -79,4 +104,4 @@ function ChangePasswordPage({ navigation }) {
   );
 }
 
-export default ChangePasswordPage;
+export default UpdatePasswordPage;

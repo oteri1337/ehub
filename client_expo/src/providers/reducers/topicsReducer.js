@@ -3,7 +3,11 @@ const defaultState = { data: [], object: {}, search_keys: {} };
 function topicsReducer(state = defaultState, action) {
   switch (action.dispatch) {
     case "UPDATE_TOPICS":
-      return action.data;
+      if (JSON.stringify(state) === JSON.stringify(action.data)) {
+        return state;
+      } else {
+        return action.data;
+      }
     case "UPDATE_TOPICS_PAGE":
       return {
         ...action.data,

@@ -130,9 +130,202 @@ class AuthController extends NewApiController
         return sha1($password);
     }
 
+
+    // Updates
+
+    public function updatePassword($request, $response)
+    {
+        $body = $request->getParsedBody();
+        $user = $request->getAttribute("user");
+
+        $password = $body['password'] ?? '';
+        $new_password = $body['new_password'] ?? '';
+        $new_password_confirmation = $body['new_password_confirm'] ?? '';
+
+        $rules = [
+            'Password' => [$password, 'required'],
+            'New_password' => [$new_password, 'required|min(7)'],
+            'New password confirmation' => [$new_password_confirmation, 'required|matches(New_password)'],
+        ];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $password = $this->encryptPassword($password);
+        $row = $this->model->where('id', $user->id)->where('password', $password)->first();
+
+        if (!$row) {
+            $this->data['errors'] =  ['incorrect password'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $new_password = $this->encryptPassword($new_password);
+        $row->update(['password' => $new_password]);
+
+        $this->data['message'] = "Password Updated Successfully";
+
+        $response->getBody()->write(json_encode($this->data));
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function updateProfile($request, $response)
+    {
+        $body = $request->getParsedBody();
+
+        $user = $request->getAttribute("user");
+
+        $filtered = $this->filter($body, ["link", "department", "phone_number", "bio"]);
+
+        $user->update($filtered);
+
+        $row = $this->model->where('id', $user->id)->first();
+
+        $this->data['data'] = $row;
+
+        $this->data['message'] = "Profile Updated";
+
+        $response->getBody()->write(json_encode($this->data));
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function updatePhoto($request, $response)
+    {
+
+        $user = $request->getAttribute('user');
+
+        $photo = $_FILES['photo']['name'] ?? '';
+
+        if ($_FILES['photo']['size'] === 0) {
+            $this->data['errors'] = ['Photo Rejected'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $rules = [
+            'photo' => [$photo, 'required|imageformat'],
+        ];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $photo = $this->uploadImage($_FILES['photo']);
+
+        $user->update([
+            'photo_profile' => $photo,
+        ]);
+
+        $user = $this->model->where('id', $user->id)->first();
+        $user = $this->relationships($user);
+
+        $this->data['data'] = $user;
+        $this->data['message'] = "Photo Updated";
+
+        $response->getBody()->write(json_encode($this->data));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+
+
     // Tokens 
 
-    public function tokenForDeviceVerify($request, $response)
+    public function tokenForNewEmail($request, $response)
+    {
+        $row = $request->getAttribute('user');
+
+        $token = rand(0, 999999);
+
+        $row->update([
+            'email_token' => $token
+        ]);
+
+
+        $data = ['title' => 'Email Token', 'content' => ' Your email token is ' . $row->email_token];
+
+        $body = $this->renderer->render('email.html', $data);
+
+        $sent = $this->sender->sendEmail([$row->email], $body, "Email Update");
+
+        if (!$sent) {
+            $this->data['errors'] = ['Failed to send token, please contact ' . getenv("MAIL_USERNAME") . ' or try again later.'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $this->data['message'] = 'Email update link sent successfully, please check your mail box.';
+        $response->getBody()->write(json_encode($this->data));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function tokenForNewPassword($request, $response)
+    {
+        $body = $request->getParsedBody();
+
+        $email = $body['email'] ?? '';
+
+        $rules = [
+            'email' => [$email, 'required|email'],
+        ];
+
+        $this->validator->validate($rules);
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $row = $this->model->where('email', $email);
+
+        if (!$row->exists()) {
+            $this->data['errors'] = ['email not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $row = $row->first();
+
+        $token = rand(0, 999999);
+
+        $row->update([
+            'password_token' => $token
+        ]);
+
+        $data = ['title' => 'Password Reset Password', 'content' => 'Your password token is' . $token];
+
+        $body = $this->renderer->render('email.html', $data);
+
+        $sent = $this->sender->sendEmail([$row->email], $body, "Reset Password");
+
+        if (!$sent) {
+            $this->data['errors'] = ['Failed to send token, please contact ' . getenv("MAIL_USERNAME") . ' or try again later.'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $this->data['message'] = 'Password reset token sent successfully';
+        $response->getBody()->write(json_encode($this->data));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function tokenForVerification($request, $response)
     {
         $body = $request->getParsedBody();
         $user = $request->getAttribute('user');
@@ -197,91 +390,7 @@ class AuthController extends NewApiController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function tokenForPasswordUpdate($request, $response)
-    {
-        $body = $request->getParsedBody();
-
-        $email = $body['email'] ?? '';
-
-        $rules = [
-            'email' => [$email, 'required|email'],
-        ];
-
-        $this->validator->validate($rules);
-        $errors = $this->validator->errors()->all();
-
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $row = $this->model->where('email', $email);
-
-        if (!$row->exists()) {
-            $this->data['errors'] = ['email not found'];
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $row = $row->first();
-
-        $token = rand(0, 999999);
-
-        $row->update([
-            'password_token' => $token
-        ]);
-
-        $data = ['title' => 'Password Reset Password', 'content' => 'Your password token is' . $token];
-
-        $body = $this->renderer->render('email.html', $data);
-
-        $sent = $this->sender->sendEmail([$row->email], $body, "Reset Password");
-
-        if (!$sent) {
-            $this->data['errors'] = ['Failed to send token, please contact ' . getenv("MAIL_USERNAME") . ' or try again later.'];
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $this->data['message'] = 'Password reset token sent successfully';
-        $response->getBody()->write(json_encode($this->data));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function tokenForEmailUpdate($request, $response)
-    {
-        $row = $request->getAttribute('user');
-
-        $token = rand(0, 999999);
-
-        $row->update([
-            'email_token' => $token
-        ]);
-
-
-        $data = ['title' => 'Email Token', 'content' => ' Your email token is ' . $row->email_token];
-
-        $body = $this->renderer->render('email.html', $data);
-
-        $sent = $this->sender->sendEmail([$row->email], $body, "Email Update");
-
-        if (!$sent) {
-            $this->data['errors'] = ['Failed to send token, please contact ' . getenv("MAIL_USERNAME") . ' or try again later.'];
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $this->data['message'] = 'Email update link sent successfully, please check your mail box.';
-        $response->getBody()->write(json_encode($this->data));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-
-
-    //  Verification
-
-    public function verifyDevice($request, $response)
+    public function verifyVerificationToken($request, $response)
     {
         $body = $request->getParsedBody();
         $email = $body['email'] ?? '';
@@ -316,167 +425,10 @@ class AuthController extends NewApiController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function userVerifyId($request, $response)
-    {
 
-        $user = $request->getAttribute('user');
+    // Resets
 
-        $front_name = $_FILES['front']['name'] ?? '';
-        $front_size = $_FILES['front']['size'] ?? 0;
-
-        $back_name = $_FILES['back']['name'] ?? '';
-        $back_size = $_FILES['back']['size'] ?? 0;
-
-        $rules = [
-            'front view' => [$front_name, 'required|imageformat'],
-            'front view' => [$front_size, 'imagesize'],
-            'back view' => [$back_name, 'required|imageformat'],
-            'back view' => [$back_size, 'imagesize'],
-        ];
-
-        $this->validator->validate($rules);
-        $errors = $this->validator->errors()->all();
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $back = $this->uploadImage($_FILES['back']);
-        $front = $this->uploadImage($_FILES['front']);
-
-        $user->update([
-            'photo_back_view' => $back,
-            'photo_front_view' => $front,
-        ]);
-
-        $user = $this->model->where('id', $user->id)->first();
-        $user = $this->relationships($user);
-
-        $this->data['data'] = $user;
-        $this->data['message'] = "Upload Successful. Your identification card is currently being reviewed, if successful your account will be approved within 24 hours.";
-
-        $response->getBody()->write(json_encode($this->data));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function adminVerifyId($request, $response)
-    {
-
-        // Body Validation
-        $body = $request->getParsedBody();
-        $id = $body['id'] ?? '';
-        $action = $body['action'] ?? '';
-
-        $rules = [
-            'id' => [$id, 'required'],
-            'action' => [$action, 'required']
-        ];
-
-        $this->validator->validate($rules);
-        $errors = $this->validator->errors()->all();
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        // Database Validation
-        $row = $this->model->where('id', $id);
-        if ($row->exists() === false) {
-            $this->data['errors'] = ['not found'];
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        // Processing
-        $row->first()->update(['identity_verified' => $action]);
-        $row = $this->model->where('id', $id)->first();
-        $row = $this->relationships($row);
-
-        // send approved mail
-        $url = getenv("APP_URL");
-
-
-
-        $data = ['title' => 'Account Activated', 'url' => $url, 'content' => '        
-            <p>Your account has been activated, Click on this <a href="' . $url . 'signin.html">link</a> to login </p>
-        '];
-
-        if ($action == 2) {
-            $data = ['title' => 'Account Approval Declined', 'url' => $url, 'content' => '        
-            <p>Your account has been declined, Follow this <a href="' . $url . 'user/verifyidentity.html">link</a> to re-upload your valid government issued Identification Card.</p>
-        '];
-        }
-
-        $body = $this->renderer->render('email.html', $data);
-
-        $this->sender->sendEmail([$row->email], $body, "Account Status");
-
-        $this->data['data'] = $row;
-
-        $response->getBody()->write(json_encode($this->data));
-
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-
-
-
-
-
-    // Updates
-
-    public function updatePassword($request, $response)
-    {
-        $body = $request->getParsedBody();
-
-        $email = $body['email'] ?? '';
-        $token = $body['password_token'] ?? '';
-        $password = $body['new_password'] ?? '';
-        $confirm_password = $body['confirm_new_password'] ?? '';
-
-        $rules = [
-            'email' => [$email, 'required'],
-            'token' => [$token, 'required'],
-            'password' => [$password, 'required|min(7)'],
-            'password confirmation' => [$confirm_password, 'required|matches(password)'],
-        ];
-
-        $this->validator->validate($rules);
-
-        $errors = $this->validator->errors()->all();
-
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $row = $this->model->where('email', $email)->where('password_token', $token);
-
-        if (!$row->exists()) {
-            $this->data['errors'] =  ['invalid/expired token'];
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $row = $row->first();
-
-        $row->update([
-            'password' => $password,
-            'password_token' => rand(0, 999999)
-        ]);
-
-        $row = $this->relationships($row);
-
-        $this->data['data'] = $row;
-        $this->data['message'] = "Password Updated Successfully";
-        $response->getBody()->write(json_encode($this->data));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function updateEmail($request, $response)
+    public function setNewEmail($request, $response)
     {
         $user = $request->getAttribute("user");
         $body = $request->getParsedBody();
@@ -514,20 +466,23 @@ class AuthController extends NewApiController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function updatePhone($request, $response)
+    public function setNewPassword($request, $response)
     {
+        $user = $request->getAttribute("user");
         $body = $request->getParsedBody();
-        $user = $request->getAttribute('user');
 
-        $phone_number = $body['phone_number'] ?? '';
+        $token = $body['email_token'] ?? '';
+        $email = $body['new_email'] ?? '';
+        $email_confirmation = $body['confirm_new_email'] ?? '';
 
         $rules = [
-            'new phone number' => [$phone_number, 'required|number'],
+            'token' => [$token, 'required'],
+            'email' => [$email, 'required|email'],
+            'confirmation' => [$email_confirmation, 'required|email|matches(email)'],
         ];
 
         $this->validator->validate($rules);
         $errors = $this->validator->errors()->all();
-
         if ($errors) {
             $this->data['errors'] = $errors;
             $response->getBody()->write(json_encode($this->data));
@@ -535,7 +490,8 @@ class AuthController extends NewApiController
         }
 
         $user->update([
-            'phone_number' => $phone_number
+            'email' => $email,
+            'email_verified' => 0
         ]);
 
         $id = $_SESSION[$this->authKey]['id'];
@@ -543,95 +499,13 @@ class AuthController extends NewApiController
         $user = $this->relationships($user);
 
         $this->data['data'] = $user;
-        $this->data['message'] = 'Phone Number Updated Successfully';
-        $response->getBody()->write(json_encode($this->data));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function updateAddress($request, $response)
-    {
-        $body = $request->getParsedBody();
-        $user = $request->getAttribute('user');
-
-        $street_address = $body['street_address'] ?? '';
-        $city = $body['city'] ?? '';
-        $state = $body['state'] ?? '';
-        $post_code = $body['post_code'] ?? '';
-        $country = $body['country'] ?? '';
-
-        $rules = [
-            'street address' => [$street_address, 'required'],
-            'city' => [$city, 'required'],
-            'state' => [$state, 'required'],
-            'post code' => [$post_code, 'required'],
-            'country' => [$country, 'required']
-        ];
-
-        $this->validator->validate($rules);
-        $errors = $this->validator->errors()->all();
-
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $body = $this->filter($body, [
-            'street_address',
-            'city',
-            'state',
-            'post_code',
-            'country'
-        ]);
-
-        $user->update($body);
-
-        $id = $_SESSION[$this->authKey]['id'];
-        $user = $this->model->where('id', $id)->first();
-        $user = $this->relationships($user);
-
-        $this->data['data'] = $user;
-        $this->data['message'] = 'Update Successful';
-        $response->getBody()->write(json_encode($this->data));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function updatePhoto($request, $response)
-    {
-
-        $user = $request->getAttribute('user');
-
-        $photo = $_FILES['photo']['name'] ?? '';
-
-        $rules = [
-            'photo' => [$photo, 'required|imageformat'],
-        ];
-
-        $this->validator->validate($rules);
-
-        $errors = $this->validator->errors()->all();
-
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $photo = $this->uploadImage($_FILES['photo']);
-
-        $user->update([
-            'photo_profile' => $photo,
-        ]);
-
-        $user = $this->model->where('id', $user->id)->first();
-        $user = $this->relationships($user);
-
-        $this->data['data'] = $user;
-        $this->data['message'] = "Photo Updated";
 
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }
+
+
+    // Notifications
 
     public function sendPush($request, $response)
     {

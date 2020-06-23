@@ -48,20 +48,30 @@ class ItemPureComponent extends React.PureComponent {
 
 function ChatsListPage({ navigation }) {
   const context = React.useContext(AppContext);
-  const { state, refreshing, getRequestThenDispatch } = context;
-
+  const { state, getRequestThenDispatch } = context;
   const list = state.chats;
   let { data } = list;
-
   const dispatch = "UPDATE_CHATS";
+  const { refreshing, send } = getRequestThenDispatch("/api/chats", dispatch);
 
   const onRefresh = async () => {
-    getRequestThenDispatch("/api/chats", dispatch);
+    send("/api/chats", dispatch);
   };
 
-  React.useEffect(() => {
-    onRefresh();
-  }, []);
+  // React.useEffect(() => {
+  //   console.log("on mount chat list");
+  //   onRefresh();
+  // }, []);
+
+  const onEndReached = async () => {
+    if (!refreshing) {
+      const { next_page_url } = list;
+      if (next_page_url) {
+        console.log("on end reached chats");
+        send(next_page_url, `${dispatch}_PAGE`);
+      }
+    }
+  };
 
   const onEndReachedThreshold = 0.1;
 
@@ -81,16 +91,6 @@ function ChatsListPage({ navigation }) {
       }
     }
     return <React.Fragment />;
-  };
-
-  const onEndReached = async () => {
-    console.log("on end reached topics");
-    if (!refreshing) {
-      const { next_page_url } = list;
-      if (next_page_url) {
-        getRequestThenDispatch(next_page_url, `${dispatch}_PAGE`);
-      }
-    }
   };
 
   const renderItem = ({ item }) => {
