@@ -25,10 +25,7 @@ import {
 
 function SignUpPage({ navigation }) {
   const url = "/api/users";
-  const { send, fetching, response } = sendRequestThenDispatch(
-    url,
-    "UPDATE_USER"
-  );
+  const { send, fetching } = sendRequestThenDispatch(url, "UPDATE_USER");
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -91,7 +88,10 @@ function SignUpPage({ navigation }) {
                 SIGN UP
               </H1>
               <Form>
-                <Item rounded style={{ marginBottom: 25, marginTop: 25 }}>
+                <Item
+                  regular
+                  style={{ marginBottom: 25, marginTop: 25, borderRadius: 5 }}
+                >
                   <Icon name="ios-contact" style={{ color: "#fff" }} />
                   <Input
                     placeholder="First Name"
@@ -101,7 +101,7 @@ function SignUpPage({ navigation }) {
                     onChangeText={(text) => setFirstName(text)}
                   />
                 </Item>
-                <Item rounded style={{ marginBottom: 25 }}>
+                <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
                   <Icon name="ios-person" style={{ color: "#fff" }} />
                   <Input
                     placeholder="Last Name"
@@ -111,7 +111,7 @@ function SignUpPage({ navigation }) {
                     onChangeText={(text) => setLastName(text)}
                   />
                 </Item>
-                <Item rounded style={{ marginBottom: 25 }}>
+                <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
                   <Icon name="ios-mail" style={{ color: "#fff" }} />
                   <Input
                     placeholder="Email"
@@ -121,7 +121,7 @@ function SignUpPage({ navigation }) {
                     value={email}
                   />
                 </Item>
-                <Item rounded style={{ marginBottom: 25 }}>
+                <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
                   <Icon name="ios-lock" style={{ color: "#fff" }} />
                   <Input
                     placeholder="Password"
@@ -132,7 +132,7 @@ function SignUpPage({ navigation }) {
                     value={password}
                   />
                 </Item>
-                <Item rounded style={{ marginBottom: 25 }}>
+                <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
                   <Icon name="ios-lock" style={{ color: "#fff" }} />
                   <Input
                     placeholder="Confirm Password"
@@ -143,7 +143,7 @@ function SignUpPage({ navigation }) {
                     value={password_confirmation}
                   />
                 </Item>
-                <Item rounded style={{ marginBottom: 25 }}>
+                <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
                   <Icon name="ios-school" style={{ color: "#fff" }} />
                   <Input
                     placeholder="Department"
@@ -166,8 +166,6 @@ function SignUpPage({ navigation }) {
                 )}
 
                 {fetching && <Spinner />}
-
-                <ErrorsComponent errors={response.errors} />
               </Form>
             </View>
           </Content>

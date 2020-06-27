@@ -25,12 +25,13 @@ import ChatsReadPage from "../pages/user/ChatsReadPage";
 
 import PdfsListPage from "../pages/user/pdfs/PdfsListPage";
 import PdfsReadPage from "../pages/user/pdfs/PdfsReadPage";
+import PdfsSavedPage from "../pages/user/pdfs/PdfsSavedPage";
 import PdfsPreviewPage from "../pages/user/pdfs/PdfsPreviewPage";
 
 import TopicsReadPage from "../pages/user/TopicsReadPage";
 import TopicsCreatePage from "../pages/user/TopicsCreatePage";
 
-import EventsListPage from "../pages/user/EventsListPage";
+import EventsReadPage from "../pages/user/EventsReadPage";
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -67,13 +68,14 @@ function Routes() {
         <Screen name="ChatsReadPage" component={ChatsReadPage} />
 
         <Screen name="PdfsListPage" component={PdfsListPage} />
-        <Screen name="PdfsPreviewPage" component={PdfsPreviewPage} />
         <Screen name="PdfsReadPage" component={PdfsReadPage}/>
+        <Screen name="PdfsSavedPage" component={PdfsSavedPage}/>
+        <Screen name="PdfsPreviewPage" component={PdfsPreviewPage} />
 
         <Screen name="TopicsReadPage" component={TopicsReadPage}  />
         <Screen name="TopicsCreatePage" component={TopicsCreatePage} />
 
-        <Screen name="EventsListPage" component={EventsListPage} />
+        <Screen name="EventsReadPage" component={EventsReadPage} />
 
     </Navigator>
   }

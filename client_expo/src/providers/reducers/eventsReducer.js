@@ -1,17 +1,17 @@
 const defaultState = { data: [], object: {}, search_keys: {} };
 
-function newsReducer(state = defaultState, action) {
+function eventsReducer(state = defaultState, action) {
   switch (action.dispatch) {
-    case "UPDATE_NEWS":
+    case "UPDATE_EVENTS":
       return action.data;
-    case "UPDATE_NEWS_IN_NEWS":
+    case "UPDATE_EVENTS_IN_EVENTS":
       return {
         ...state,
         object: {
-          [action.data.id]: action.data,
+          [action.data.slug]: action.data,
         },
       };
-    case "UPDATE_NEWS_PAGE":
+    case "UPDATE_EVENTS_PAGE":
       return {
         ...action.data,
         data: [...state.data, ...action.data.data],
@@ -21,4 +21,4 @@ function newsReducer(state = defaultState, action) {
   }
 }
 
-export default newsReducer;
+export default eventsReducer;

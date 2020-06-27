@@ -1,39 +1,32 @@
 import React from "react";
-import { List, Container, Text } from "native-base";
-// import { AppContext } from "../../providers/AppProvider";
-// import TopicsList from "../components/TopicsListComponent";
+import { List, Container } from "native-base";
+import EventsList from "../components/EventsListComponent";
+import { getRequestThenDispatch } from "../../providers/AppProvider";
 
 function EventsListPage() {
-  //   const context = React.useContext(AppContext);
-  //   const { getRequestThenDispatch, state } = context;
-  //   const dispatch = "UPDATE_TOPICS";
-  //   const { refreshing, send } = getRequestThenDispatch("/api/topics", dispatch);
-  //   const list = state.topics;
+  const url = "/api/events";
+  const dispatch = "UPDATE_EVENTS";
+  const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
+  const list = state.events;
 
-  //   const onRefresh = async () => {
-  //     send("/api/topics", dispatch);
-  //   };
+  const onRefresh = async () => {
+    send(url, dispatch);
+  };
 
-  //   // React.useEffect(() => {
-  //   //   console.log("on mount topics list");
-  //   //   onRefresh();
-  //   // }, []);
-
-  //   const onEndReached = async () => {
-  //     if (!refreshing) {
-  //       const { next_page_url } = list;
-  //       if (next_page_url) {
-  //         send(next_page_url, `${dispatch}_PAGE`);
-  //       }
-  //     }
-  //   };
+  const onEndReached = async () => {
+    if (!refreshing) {
+      const { next_page_url } = list;
+      if (next_page_url) {
+        send(next_page_url, `${dispatch}_PAGE`);
+      }
+    }
+  };
 
   return (
     <Container>
-      <Text>Events List Page</Text>
-      {/* <List>
-        <TopicsList {...{ list, onRefresh, refreshing, onEndReached }} />
-      </List> */}
+      <List>
+        <EventsList {...{ list, onRefresh, refreshing, onEndReached }} />
+      </List>
     </Container>
   );
 }

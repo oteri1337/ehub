@@ -114,7 +114,7 @@ function SearchPage({ navigation }) {
           navigation.pop();
         }}
       >
-        <Icon name="arrow-left" type="Feather" style={{ color: "black" }} />
+        <Icon name="arrow-back" style={{ color: "black" }} />
       </Button>
     ),
     headerRight: () => (

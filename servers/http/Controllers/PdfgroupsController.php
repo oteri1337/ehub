@@ -2,7 +2,6 @@
 
 namespace Server\Controllers;
 
-use Illuminate\Database\Eloquent\Collection;
 use Server\Database\Models\Pdfgroup;
 use Server\Library\Controllers\NewApiController;
 
@@ -15,7 +14,7 @@ class PdfgroupsController extends NewApiController
         $this->readBy = 'slug';
         $this->searchBy = 'title';
         $this->model = new Pdfgroup;
-        // $this->relationships = ['pdfs'];
+        $this->eagerList = ['pdfs'];
     }
 
     public function createRules($body)

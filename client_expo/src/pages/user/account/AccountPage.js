@@ -47,21 +47,14 @@ function Li({ text = "", icon = "ios-today", color, to, param = {} }) {
 function AccountPage({ navigation }) {
   navigation.setOptions({ title: "My Account" });
 
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, signOut } = React.useContext(AppContext);
 
   const { first_name, last_name, photo_profile, department } = state.user;
 
   const uri = `${BACKEND_URL}/uploads/images/${photo_profile}`;
 
-  console.log(uri);
-
-  const signOut = () => {
-    callReducer({ dispatch: "UPDATE_USER", data: false });
-  };
-
   return (
     <Container>
-      {/* <HeaderComponent navigation={navigation} title="My Account" /> */}
       <Content>
         <View
           style={{ paddingBottom: 15, paddingTop: 15, alignItems: "center" }}

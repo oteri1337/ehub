@@ -32,7 +32,7 @@ function PdfsReadPage({ navigation, route }) {
 
   let saved = false;
 
-  if (state.saved[id]) {
+  if (state.saved.object[id]) {
     saved = true;
   }
 

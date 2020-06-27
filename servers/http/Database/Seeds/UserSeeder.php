@@ -19,7 +19,7 @@ class UserSeeder extends AbstractSeed
         $faker = Faker\Factory::create();
 
         $known[] = [
-            'email' => "test@gmail.com",
+            'email' => "oteri2021@gmail.com",
             'password' => sha1("password"),
             'first_name' => "Oteri",
             'last_name' => "Avwunudiogba",
@@ -33,7 +33,7 @@ class UserSeeder extends AbstractSeed
         ];
 
         $known[] = [
-            'email' => "jenny@gmail.com",
+            'email' => "test@gmail.com",
             'password' => sha1("password"),
             'first_name' => "Jennifer",
             'last_name' => "Ugwu",

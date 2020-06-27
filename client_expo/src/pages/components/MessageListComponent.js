@@ -1,5 +1,6 @@
 import React from "react";
-import { Platform } from "react-native";
+import { BACKEND_URL } from "../../../env";
+import { Platform, Image } from "react-native";
 import { Content, View, Text } from "native-base";
 import { AppContext } from "../../providers/AppProvider";
 
@@ -11,7 +12,7 @@ const s = {
   borderColor: "#ebebeb",
 };
 
-function MessageListComponent({ messages = [], top = "", user }) {
+function MessageListComponent({ messages = [], top = "", user, image = "" }) {
   const sref = React.useRef();
   const { state } = React.useContext(AppContext);
 
@@ -32,9 +33,6 @@ function MessageListComponent({ messages = [], top = "", user }) {
 
     return (
       <View key={message.id} style={{ ...s, marginRight: 25 }}>
-        {/* <Text note>
-          {message.user.first_name} {message.user.last_name}
-        </Text> */}
         <Text style={{ lineHeight: 25 }}>{message.message}</Text>
         <Text note style={{ marginTop: 5 }}>
           {message.created_at}
@@ -47,8 +45,16 @@ function MessageListComponent({ messages = [], top = "", user }) {
     if (top.length) {
       return (
         <View style={s}>
+          {image.length ? (
+            <Image
+              source={{ uri: `${BACKEND_URL}/uploads/images/${image}` }}
+              style={{ height: 400 }}
+            />
+          ) : (
+            <React.Fragment />
+          )}
           <Text note style={{ marginBottom: 5 }}>
-            {user.first_name} {user.last_name}
+            {user?.first_name} {user?.last_name}
           </Text>
           <Text>{top}</Text>
         </View>

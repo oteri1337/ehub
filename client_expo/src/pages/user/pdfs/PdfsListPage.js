@@ -1,15 +1,26 @@
 import React from "react";
-import { Container, List, Text } from "native-base";
-import { AppContext } from "../../../providers/AppProvider";
+import { Container, List, Button, Icon } from "native-base";
 import PdfsList from "../../components/PdfsListComponent";
+import { getRequestThenDispatch } from "../../../providers/AppProvider";
 
 function PdfsListPage({ navigation }) {
-  navigation.setOptions({ title: "All Books" });
+  navigation.setOptions({
+    title: "All Books",
+    headerRight: () => (
+      <Button
+        transparent
+        onPress={() => {
+          navigation.navigate("SearchPage");
+        }}
+      >
+        <Icon name="search" type="Feather" style={{ color: "black" }} />
+      </Button>
+    ),
+  });
 
-  const context = React.useContext(AppContext);
-  const { getRequestThenDispatch, state } = context;
+  const url = "/api/pdfs";
   const dispatch = "UPDATE_PDFS";
-  const { refreshing, send } = getRequestThenDispatch("/api/pdfs", dispatch);
+  const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
   const list = state.pdfs;
 
   const onRefresh = async () => {

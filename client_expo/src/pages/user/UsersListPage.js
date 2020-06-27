@@ -1,21 +1,17 @@
 import React from "react";
 import { List, Container } from "native-base";
-import { AppContext } from "../../providers/AppProvider";
 import UsersList from "../components/UsersListComponent";
+import { getRequestThenDispatch } from "../../providers/AppProvider";
 
 const UsersListPage = function Users({ route }) {
-  const { users, getRequestThenDispatch } = React.useContext(AppContext);
+  const url = "/api/users";
   const dispatch = "UPDATE_USERS";
-  const { send, refreshing } = getRequestThenDispatch("/api/users", dispatch);
-  const list = users;
+  const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
+  const list = state.users;
 
   const onRefresh = async () => {
     send("/api/users", dispatch);
   };
-
-  // React.useEffect(() => {
-  //   onRefresh();
-  // }, []);
 
   const onEndReached = () => {
     if (!refreshing) {

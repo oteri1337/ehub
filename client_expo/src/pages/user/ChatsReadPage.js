@@ -1,17 +1,13 @@
 import React from "react";
-import { AppContext } from "../../providers/AppProvider";
 import { Container, Button, Icon } from "native-base";
 import MessageListComponent from "../components/MessageListComponent";
 import MessageFormComponent from "../components/MessageFormComponent";
+import { sendRequestThenDispatch } from "../../providers/AppProvider";
 
 function ChatsReadPage({ navigation, route }) {
   const { params } = route;
 
-  console.log(params);
-
-  const { state, sendRequestThenDispatch } = React.useContext(AppContext);
-
-  const { send } = sendRequestThenDispatch();
+  const { state, send } = sendRequestThenDispatch();
 
   const chat = state.chats.object[params.recvr_id];
 
@@ -24,7 +20,7 @@ function ChatsReadPage({ navigation, route }) {
           navigation.pop();
         }}
       >
-        <Icon name="arrow-left" type="Feather" style={{ color: "black" }} />
+        <Icon name="arrow-back" style={{ color: "black" }} />
       </Button>
     ),
   });

@@ -3,16 +3,13 @@ import { BACKEND_URL } from "../../../../env";
 import { ImageBackground } from "react-native";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import { AppContext } from "../../../providers/AppProvider";
 import { Container, View, Button, Text, Picker } from "native-base";
+import { sendRequestThenDispatch } from "../../../providers/AppProvider";
 
 function UpdatePhotoPage({ navigation }) {
   navigation.setOptions({ title: "Change Photo" });
 
-  const { state, sendRequestThenDispatch } = React.useContext(AppContext);
-  const { refreshing, send } = sendRequestThenDispatch();
-
-  console.log(refreshing);
+  const { state, refreshing, send } = sendRequestThenDispatch();
 
   const { photo_profile } = state.user;
 

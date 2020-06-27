@@ -1,15 +1,13 @@
 import React from "react";
-import { Ionicons, Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import { Button, Icon, View, Text } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import SavedPdfsPage from "../pages/user/pdfs/SavedPdfsPage";
-
-import UsersPage from "../pages/user/UsersListPage";
-import TopicsPage from "../pages/user/TopicsListPage";
 import ChatsListPage from "../pages/user/ChatsListPage";
-import PdfgroupsPage from "../pages/user/pdfs/PdfgroupsPage";
-
-import { Button, Icon, View, Text } from "native-base";
+import UsersListPage from "../pages/user/UsersListPage";
+import TopicsListPage from "../pages/user/TopicsListPage";
+import EventsListPage from "../pages/user/EventsListPage";
+import PdfgroupsPage from "../pages/user/pdfs/groups/PdfgroupsPage";
 
 function IconWithBadge({ name, badgeCount, color, size }) {
   return (
@@ -43,21 +41,6 @@ const Tab = createBottomTabNavigator();
 const { Screen, Navigator } = Tab;
 
 function TabNavigator({ navigation, route }) {
-  // const { state, callReducer } = React.useContext(AppContext);
-  // console.log("re render bros", state.users.data.length);
-
-  const goToAccountPage = () => {
-    navigation.navigate("AccountPage");
-  };
-
-  const goToSearchPage = () => {
-    navigation.navigate("SearchPage");
-  };
-
-  const goToTopicsCreatePage = () => {
-    navigation.navigate("TopicsCreatePage");
-  };
-
   let current = "";
 
   if (route.state) {
@@ -66,57 +49,86 @@ function TabNavigator({ navigation, route }) {
 
   navigation.setOptions({
     title: "eHUB",
-    headerLeft: () => (
-      <Button transparent onPress={goToSearchPage}>
-        <Icon name="search" type="Feather" style={{ color: "black" }} />
-      </Button>
-    ),
-    headerRight: () => {
-      if (current == "TopicsPage") {
+    headerLeft: () => {
+      if (current == "PdfgroupsPage") {
         return (
-          <Button transparent onPress={goToTopicsCreatePage}>
+          <Button
+            transparent
+            onPress={() => {
+              navigation.navigate("PdfsListPage");
+            }}
+          >
+            <Icon name="server" type="Feather" style={{ color: "black" }} />
+          </Button>
+        );
+      }
+
+      return (
+        <Button
+          transparent
+          onPress={() => {
+            navigation.navigate("SearchPage");
+          }}
+        >
+          <Icon name="search" type="Feather" style={{ color: "black" }} />
+        </Button>
+      );
+    },
+    headerRight: () => {
+      if (current == "TopicsListPage") {
+        return (
+          <Button
+            transparent
+            onPress={() => {
+              navigation.navigate("TopicsCreatePage");
+            }}
+          >
             <Icon name="plus" type="Feather" style={{ color: "black" }} />
           </Button>
         );
       }
+
+      if (current == "PdfgroupsPage") {
+        return (
+          <Button
+            transparent
+            onPress={() => {
+              navigation.navigate("PdfsSavedPage");
+            }}
+          >
+            <Icon name="save" type="Feather" style={{ color: "black" }} />
+          </Button>
+        );
+      }
+
       return (
-        <Button transparent onPress={goToAccountPage}>
+        <Button
+          transparent
+          onPress={() => {
+            navigation.navigate("AccountPage");
+          }}
+        >
           <Icon name="user" type="Feather" style={{ color: "black" }} />
         </Button>
       );
     },
   });
 
-  // if (current == "PdfgroupsPage") {
-  //   navigation.setOptions({ headerShown: false });
-  // } else {
-  //   navigation.setOptions({ headerShown: true });
-  // }
-
   const screenOptions = ({ route }) => {
-    // if (route.name == "TopicsPage") {
-    //   navigation.setOptions({
-    //     headerRight: () => (
-    //       <Button transparent onPress={goToTopicCreate}>
-    //         <Icon name="add" />
-    //       </Button>
-    //     ),
-    //   });
-    // }
-
     return {
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
         if (route.name === "PdfgroupsPage") {
-          iconName = focused ? "ios-filing" : "ios-filing";
-          return <Feather name="archive" size={size} color={color} />;
-        } else if (route.name === "TopicsPage") {
-          iconName = focused ? "ios-image" : "ios-image";
-          return <Feather name="image" size={size} color={color} />;
-        } else if (route.name === "UsersPage") {
-          iconName = focused ? "ios-contacts" : "ios-contacts";
-          return <Feather name="users" size={size} color={color} />;
+          iconName = focused ? "archive" : "archive";
+        } else if (route.name === "TopicsListPage") {
+          iconName = focused ? "compass" : "compass";
+        } else if (route.name === "UsersListPage") {
+          iconName = focused ? "users" : "users";
+        } else if (route.name === "SearchPage") {
+          iconName = focused ? "ios-search" : "ios-search";
+        } else if (route.name === "EventsListPage") {
+          iconName = focused ? "calendar" : "calendar";
         } else if (route.name === "ChatsListPage") {
           iconName = focused ? "ios-chatbubbles" : "ios-chatbubbles";
           return (
@@ -124,18 +136,11 @@ function TabNavigator({ navigation, route }) {
               name="message-circle"
               color={color}
               size={size}
-              badgeCount={10}
+              badgeCount={1}
             />
           );
-        } else if (route.name === "SearchPage") {
-          iconName = focused ? "ios-search" : "ios-search";
-        } else if (route.name === "SavedPdfsPage") {
-          iconName = focused ? "ios-save" : "ios-save";
-          return <Feather name="save" size={size} color={color} />;
         }
-
-        // You can return any component that you like here!
-        return <Ionicons name={iconName} size={size} color={color} />;
+        return <Feather name={iconName} size={size} color={color} />;
       },
     };
   };
@@ -145,38 +150,38 @@ function TabNavigator({ navigation, route }) {
     inactiveTintColor: "gray",
   };
 
-  const initialRouteName = "PdfgroupsPage";
+  const initialRouteName = "EventsListPage";
 
   return (
     <Navigator {...{ tabBarOptions, screenOptions, initialRouteName }}>
       <Screen
-        name="SavedPdfsPage"
-        component={SavedPdfsPage}
-        options={{ title: "Saved" }}
-      />
-
-      <Screen
-        name="UsersPage"
-        component={UsersPage}
+        name="UsersListPage"
+        component={UsersListPage}
         options={{ title: "Community" }}
       />
 
       <Screen
-        name="TopicsPage"
-        component={TopicsPage}
-        options={{ title: "Forum" }}
+        name="EventsListPage"
+        component={EventsListPage}
+        options={{ title: "Events" }}
       />
 
       <Screen
-        name="ChatsListPage"
-        component={ChatsListPage}
-        options={{ title: "Messages" }}
+        name="TopicsListPage"
+        component={TopicsListPage}
+        options={{ title: "Forum" }}
       />
 
       <Screen
         name="PdfgroupsPage"
         component={PdfgroupsPage}
         options={{ title: "Library" }}
+      />
+
+      <Screen
+        name="ChatsListPage"
+        component={ChatsListPage}
+        options={{ title: "Messages" }}
       />
     </Navigator>
   );

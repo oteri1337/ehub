@@ -69,7 +69,10 @@ function PasswordPage({ navigation }) {
           <H1 style={{ textAlign: "center", color: "#fff" }}>
             Password Recovery
           </H1>
-          <Item rounded style={{ marginBottom: 25, marginTop: 25 }}>
+          <Item
+            regular
+            style={{ marginBottom: 25, marginTop: 25, borderRadius: 5 }}
+          >
             <Icon name="ios-mail" style={{ color: "#fff" }} />
             <Input
               placeholder="Email"

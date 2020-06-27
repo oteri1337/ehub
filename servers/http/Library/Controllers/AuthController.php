@@ -241,6 +241,54 @@ class AuthController extends NewApiController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+    public function updateEmail($request, $response)
+    {
+        $user = $request->getAttribute("user");
+
+        $body = $request->getParsedBody();
+
+        $pin = $body['pin'] ?? '';
+
+        $email = $body['email'] ?? '';
+
+        $rules = [
+            'pin' => [$pin, 'required'],
+            'email' => [$email, 'required|email'],
+        ];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $row = $this->model->where('email', $user->email)->where('pin', $pin)->first();
+
+        if (!$row) {
+            $this->data['errors'] = ['Invalid Pin'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $pin = rand(0, 999999);
+
+        $row->update(['email' => $email, 'pin' => $pin, 'verified' => 0]);
+
+        $row = $this->model->where('id', $row->id)->first();
+
+        $this->data['data'] = $row;
+
+        $this->data['message'] = "Email Upadted";
+
+        $response->getBody()->write(json_encode($this->data));
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
 
 
     // Tokens 
@@ -249,21 +297,18 @@ class AuthController extends NewApiController
     {
         $row = $request->getAttribute('user');
 
-        $token = rand(0, 999999);
+        $pin = rand(0, 999999);
 
-        $row->update([
-            'email_token' => $token
-        ]);
+        $row->update(['pin' => $pin]);
 
-
-        $data = ['title' => 'Email Token', 'content' => ' Your email token is ' . $row->email_token];
+        $data = ['title' => 'Pin', 'content' => ' Your pin is ' . $pin];
 
         $body = $this->renderer->render('email.html', $data);
 
-        $sent = $this->sender->sendEmail([$row->email], $body, "Email Update");
+        $sent = $this->sender->sendEmail([$row->email], $body, "Pin");
 
         if (!$sent) {
-            $this->data['errors'] = ['Failed to send token, please contact ' . getenv("MAIL_USERNAME") . ' or try again later.'];
+            $this->data['errors'] = ['Failed to send pin, please contact ' . getenv("MAIL_USERNAME") . ' or try again later.'];
             $response->getBody()->write(json_encode($this->data));
             return $response->withHeader('Content-Type', 'application/json');
         }
@@ -428,43 +473,7 @@ class AuthController extends NewApiController
 
     // Resets
 
-    public function setNewEmail($request, $response)
-    {
-        $user = $request->getAttribute("user");
-        $body = $request->getParsedBody();
 
-        $token = $body['email_token'] ?? '';
-        $email = $body['new_email'] ?? '';
-        $email_confirmation = $body['confirm_new_email'] ?? '';
-
-        $rules = [
-            'token' => [$token, 'required'],
-            'email' => [$email, 'required|email'],
-            'confirmation' => [$email_confirmation, 'required|email|matches(email)'],
-        ];
-
-        $this->validator->validate($rules);
-        $errors = $this->validator->errors()->all();
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $user->update([
-            'email' => $email,
-            'email_verified' => 0
-        ]);
-
-        $id = $_SESSION[$this->authKey]['id'];
-        $user = $this->model->where('id', $id)->first();
-        $user = $this->relationships($user);
-
-        $this->data['data'] = $user;
-
-        $response->getBody()->write(json_encode($this->data));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
 
     public function setNewPassword($request, $response)
     {

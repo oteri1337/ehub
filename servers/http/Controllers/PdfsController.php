@@ -15,6 +15,8 @@ class PdfsController extends NewApiController
         $this->model = new Pdf;
         $this->readBy = 'slug';
         $this->searchBy = 'title';
+        $this->orderBy = 'title';
+        $this->order = 'ASC';
     }
 
     public function createRules($body)
@@ -100,13 +102,4 @@ class PdfsController extends NewApiController
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }
-
-    // private function getExtension($file)
-    // {
-    //     $filename = $file['name'];
-    //     $filename = strtolower($filename);
-    //     $end = strlen($filename);
-    //     $start = $end - 4;
-    //     return substr($filename, $start, $end);
-    // }
 }

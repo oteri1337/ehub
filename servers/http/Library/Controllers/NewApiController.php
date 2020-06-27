@@ -3,7 +3,6 @@
 namespace Server\Library\Controllers;
 
 use Illuminate\Support\Collection;
-use Server\Database\Models\LightUser;
 
 class NewApiController extends ServicesController
 {
@@ -15,6 +14,8 @@ class NewApiController extends ServicesController
     public $perPage = 12;
     public $readBy = "id";
     public $searchBy = "id";
+    public $orderBy = "created_at";
+    public $order = 'DESC';
     public $data = [
         'errors' => [],
         'message' => '',
@@ -106,7 +107,7 @@ class NewApiController extends ServicesController
     public function list($request, $response)
     {
 
-        $paginator =  $this->model->with($this->eagerList)->orderBy('created_at', 'DESC')->paginate($this->perPage);
+        $paginator =  $this->model->with($this->eagerList)->orderBy($this->orderBy, $this->order)->paginate($this->perPage);
 
         $paginator = $paginator->toArray();
 
@@ -165,19 +166,5 @@ class NewApiController extends ServicesController
         $this->data['data'] = $paginator;
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
-
-
-        // $body = $request->getParsedBody();
-        // $attr = $body['search'] ?? '';
-
-        // $row = $this->model->where($this->searchBy, 'LIKE', "%{$attr}%");
-        // $collection = $row->get();
-        // $paginator = $row->paginate("12");
-        // $row = $this->optimize($paginator, $collection);
-
-        // $this->data['data'] = $row;
-
-        // $response->getBody()->write(json_encode($this->data));
-        // return $response->withHeader('Content-Type', 'application/json');
     }
 }

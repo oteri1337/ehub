@@ -15,25 +15,30 @@ class Sender
 
         try {
 
+            $mail_type = getenv("MAIL_TYPE");
+
             $mailer = new PHPMailer;
-            $mailer->isMail();
-            $mailer->From = getenv("MAIL_USERNAME");
+            $mailer->isHTML(true);
 
-            //$mailer->Sender = getenv("MAIL_NAME");
-            //$mailer->setFrom("test", "test");
+            if ($mail_type == "mail") {
+                $mailer->isMail();
+                $mailer->From = getenv("MAIL_USERNAME");
+            }
 
-            // $mailer->Host = getenv("MAIL_HOST");
-            // $mailer->Port = getenv("MAIL_PORT");
-            // $name = getenv("MAIL_NAME");
-            // $email = ;
-            // $mailer->isHTML(true);
-            // $mailer->isSMTP();
-            // $mailer->SMTPDebug = getenv("MAIL_ERRORS");
-            // $mailer->SMTPAuth = true;
-            // $mailer->Username = $email;
-            // $mailer->Password = getenv("MAIL_PASSWORD");
+            if ($mail_type == "smtp") {
+                $name = getenv("MAIL_NAME");
+                $email = getenv("MAIL_USERNAME");
 
-            // $mailer->addReplyTo($email, $name);
+                $mailer->isSMTP();
+                $mailer->SMTPAuth = true;
+                $mailer->SMTPDebug = getenv("MAIL_ERRORS");
+                $mailer->Host = getenv("MAIL_HOST");
+                $mailer->Port = getenv("MAIL_PORT");
+                $mailer->Username = $email;
+                $mailer->Password = getenv("MAIL_PASSWORD");
+                $mailer->setFrom($email, $name);
+                $mailer->addReplyTo($email, $name);
+            }
 
             foreach ($emails as $email) {
                 $mailer->addAddress($email);
@@ -41,10 +46,6 @@ class Sender
 
             $mailer->Subject = $subject;
             $mailer->Body = $body;
-
-            // echo "<pre>";
-            // var_dump($mailer);
-
             $sent =  $mailer->send();
 
             return $sent;

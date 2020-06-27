@@ -9,9 +9,11 @@ class User extends Model
 
 
     protected $fillable = [
+        'pin',
         'bio',
         'link',
         'email',
+        'verified',
         'password',
         'last_name',
         'first_name',

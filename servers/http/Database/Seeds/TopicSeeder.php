@@ -18,6 +18,8 @@ class TopicSeeder extends AbstractSeed
 
         $color = ['#2588ed', '#fe653b', '#8299cd', '#00adef'];
 
+        $icon = ["rocket1", "bulb1", "wallet", "notification", "videocamera", "team", "car"];
+
         $faker = Faker\Factory::create();
         $data = [];
         for ($i = 0; $i < 85; $i++) {
@@ -26,6 +28,7 @@ class TopicSeeder extends AbstractSeed
                 'title' => $faker->name,
                 'content' => $faker->text(1000),
                 'color' => $color[rand(0, 3)],
+                'icon' => $icon[rand(0, 6)],
                 'user_id' => rand(1, 10),
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),

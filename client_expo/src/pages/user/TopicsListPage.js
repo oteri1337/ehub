@@ -1,23 +1,17 @@
 import React from "react";
 import { List, Container } from "native-base";
-import { AppContext } from "../../providers/AppProvider";
 import TopicsList from "../components/TopicsListComponent";
+import { getRequestThenDispatch } from "../../providers/AppProvider";
 
 function TopicsListPage() {
-  const context = React.useContext(AppContext);
-  const { getRequestThenDispatch, state } = context;
+  const url = "/api/topics";
   const dispatch = "UPDATE_TOPICS";
-  const { refreshing, send } = getRequestThenDispatch("/api/topics", dispatch);
+  const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
   const list = state.topics;
 
   const onRefresh = async () => {
     send("/api/topics", dispatch);
   };
-
-  // React.useEffect(() => {
-  //   console.log("on mount topics list");
-  //   onRefresh();
-  // }, []);
 
   const onEndReached = async () => {
     if (!refreshing) {

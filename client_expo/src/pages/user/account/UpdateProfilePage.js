@@ -1,6 +1,6 @@
 import React from "react";
-import { AppContext } from "../../../providers/AppProvider";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import { sendRequestThenDispatch } from "../../../providers/AppProvider";
 import {
   Container,
   Content,
@@ -15,8 +15,7 @@ import {
 
 function UpdateProfilePage({ navigation }) {
   navigation.setOptions({ title: "Update Profile" });
-  const { state, sendRequestThenDispatch } = React.useContext(AppContext);
-  const { refreshing, send, response } = sendRequestThenDispatch();
+  const { state, refreshing, send } = sendRequestThenDispatch();
 
   const [bio, setBio] = React.useState(state.user.bio);
   const [link, setLink] = React.useState(state.user.link);

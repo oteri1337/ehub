@@ -26,6 +26,10 @@ function UsersReadPage({ navigation, route }) {
     Linking.openURL(link);
   };
 
+  const openMail = () => {
+    Linking.openURL(`mailto:${email}`);
+  };
+
   const onPress = () => {
     navigation.navigate("ChatsReadPage", {
       recvr: params,

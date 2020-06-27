@@ -26,8 +26,8 @@ class SingleTopicComponent extends React.PureComponent {
             }}
           >
             <Icon
-              name="message-square"
-              type="Feather"
+              name={item.icon}
+              type="AntDesign"
               style={{
                 color: "#FFFFFF",
                 textAlign: "center",
