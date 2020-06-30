@@ -3,7 +3,7 @@ import { BACKEND_URL } from "../../../../env";
 import { ImageBackground } from "react-native";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import { Container, View, Button, Text, Picker } from "native-base";
+import { Container, View, Button, Text } from "native-base";
 import { sendRequestThenDispatch } from "../../../providers/AppProvider";
 
 function UpdatePhotoPage({ navigation }) {

@@ -2,6 +2,8 @@
 
 namespace Server\Library\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
+
 class ApiController extends ServicesController
 {
     use UtilsTrait;
@@ -22,7 +24,7 @@ class ApiController extends ServicesController
             'data' => (object) [],
         ];
 
-        $this->model = $model;
+        $this->model = new Model;
         $this->readBy = $readBy;
         $this->perPage = $perPage;
         $this->searchBy = $searchBy;

@@ -16,6 +16,7 @@ class NewApiController extends ServicesController
     public $searchBy = "id";
     public $orderBy = "created_at";
     public $order = 'DESC';
+    public $meta = [];
     public $data = [
         'errors' => [],
         'message' => '',
@@ -93,6 +94,8 @@ class NewApiController extends ServicesController
         //     $chat->recvr = LightUser::where('id', $chat->pivot->recvr_id)->first();
         // }
 
+        // $row['pdfs'] = $this->meta;
+
         $this->data['data'] = $row;
 
         $response->getBody()->write(json_encode($this->data));
@@ -107,15 +110,17 @@ class NewApiController extends ServicesController
     public function list($request, $response)
     {
 
-        $paginator =  $this->model->with($this->eagerList)->orderBy($this->orderBy, $this->order)->paginate($this->perPage);
+        $list = $this->model->with($this->eagerList)->orderBy($this->orderBy, $this->order)->paginate($this->perPage);
 
-        $paginator = $paginator->toArray();
+        $list = $this->modifyList($list);
 
-        $collection = Collection::make($paginator['data'])->keyBy($this->readBy);
+        $list = $list->toArray();
 
-        $paginator['object'] = $collection;
+        $object = Collection::make($list['data'])->keyBy($this->readBy);
 
-        $this->data['data'] = $paginator;
+        $list['object'] = $object;
+
+        $this->data['data'] = $list;
 
         $response->getBody()->write(json_encode($this->data));
 
@@ -166,5 +171,10 @@ class NewApiController extends ServicesController
         $this->data['data'] = $paginator;
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function modifyList($list)
+    {
+        return $list;
     }
 }

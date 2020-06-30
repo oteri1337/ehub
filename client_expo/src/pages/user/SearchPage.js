@@ -1,10 +1,13 @@
 import React from "react";
 import { TextInput } from "react-native";
-import { AppContext } from "../../providers/AppProvider";
-import { Container, Icon, Button, View, Text } from "native-base";
+import { Icon, Button } from "native-base";
 import PdfsListComponent from "../components/PdfsListComponent";
 import UsersListComponent from "../components/UsersListComponent";
 import TopicsListComponent from "../components/TopicsListComponent";
+import {
+  AppContext,
+  getRequestThenDispatch,
+} from "../../providers/AppProvider";
 
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
@@ -15,7 +18,9 @@ const BooksPage = ({ navigation }) => {
 
   const root = state.pdfs;
 
-  const { term } = state.search;
+  const { term, refreshing } = state.search;
+
+  console.log(refreshing);
 
   const [list, setList] = React.useState(root);
 
@@ -27,7 +32,7 @@ const BooksPage = ({ navigation }) => {
   return (
     <PdfsListComponent
       list={list}
-      refreshing={false}
+      refreshing={refreshing}
       navigation={navigation}
       onRefresh={() => {}}
       onEndReached={() => {}}
@@ -40,7 +45,7 @@ const TopicsPage = ({ navigation }) => {
 
   const root = state.topics;
 
-  const { term } = state.search;
+  const { term, refreshing } = state.search;
 
   const [list, setList] = React.useState(root);
 
@@ -52,7 +57,7 @@ const TopicsPage = ({ navigation }) => {
   return (
     <TopicsListComponent
       list={list}
-      refreshing={false}
+      refreshing={refreshing}
       navigation={navigation}
       onRefresh={() => {}}
       onEndReached={() => {}}
@@ -65,7 +70,7 @@ const UsersPage = ({ navigation }) => {
 
   const root = state.users;
 
-  const { term } = state.search;
+  const { term, refreshing } = state.search;
 
   const [list, setList] = React.useState(root);
 
@@ -79,7 +84,7 @@ const UsersPage = ({ navigation }) => {
   return (
     <UsersListComponent
       list={list}
-      refreshing={false}
+      refreshing={refreshing}
       navigation={navigation}
       onRefresh={() => {}}
       onEndReached={() => {}}
@@ -87,10 +92,14 @@ const UsersPage = ({ navigation }) => {
   );
 };
 
-function SearchPage({ navigation }) {
-  const { state, callReducer } = React.useContext(AppContext);
+function SearchPage({ navigation, route }) {
+  const { state, callReducer, send } = getRequestThenDispatch();
 
   navigation.setOptions({
+    headerStyle: {
+      elevation: 0,
+      shadowOpacity: 0,
+    },
     headerTitle: () => (
       <TextInput
         style={{
@@ -101,7 +110,30 @@ function SearchPage({ navigation }) {
         }}
         value={state.search.term}
         placeholder="Search"
-        onSubmitEditing={() => {}}
+        onSubmitEditing={async () => {
+          const { term } = state.search;
+
+          if (term.length) {
+            callReducer({ dispatch: "UPDATE_SEARCH_REFRESHING", data: true });
+
+            const current = route.state.routes[route.state.index].name;
+
+            if (current == "Users") {
+              await send(`/api/users/search/${term}`, `UPDATE_USERS`);
+            }
+
+            if (current == "Topics") {
+              await send(`/api/topics/search/${term}`, `UPDATE_TOPICS`);
+            }
+
+            if (current == "Books") {
+              await send(`/api/pdfs/search/${term}`, `UPDATE_PDFS`);
+            }
+
+            callReducer({ dispatch: "UPDATE_SEARCH_REFRESHING", data: false });
+            callReducer({ dispatch: "UPDATE_SEARCH_TERM", data: "" });
+          }
+        }}
         onChangeText={(data) => {
           callReducer({ dispatch: "UPDATE_SEARCH_TERM", data });
         }}

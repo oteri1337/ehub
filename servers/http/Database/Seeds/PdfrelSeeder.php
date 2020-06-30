@@ -30,15 +30,15 @@ class PdfrelSeeder extends AbstractSeed
         $num = 1;
 
         for ($j = 1; $j <= 5; $j++) {
-            for ($i = 1; $i <= 4; $i++) {
+            for ($i = 1; $i <= 18; $i++) {
                 $data[] =
                     [
-                        'pdf_id'    =>  $num,
+                        'pdf_id'    =>  $i,
                         'pdfgroup_id'      => $j,
                         'created_at'    => date('Y-m-d H:i:s'),
                         'updated_at'    => date('Y-m-d H:i:s'),
                     ];
-                $num++;
+                // $num++;
             }
         }
 

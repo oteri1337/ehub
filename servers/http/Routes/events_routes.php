@@ -10,4 +10,6 @@ $app->delete('/api/events', EventsController::class . ':delete')->add($admin_log
 
 $app->post('/api/events/search', EventsController::class . ':search');
 
+$app->post('/api/events/comment', EventsController::class . ':comment')->add($user_logged_in);
+
 $app->get('/api/events/{attr}', EventsController::class . ':read');

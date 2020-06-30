@@ -4,31 +4,19 @@ namespace Server\Database\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Topic extends Model
+class Eventcomment extends Model
 {
 
     protected $fillable = [
-        'slug',
-        'title',
-        'color',
-        'content',
-        'user_id'
+        'message',
+        'user_id',
+        'event_id'
     ];
 
     public function user()
     {
         return $this->belongsTo(LightUser::class);
     }
-
-    public function comments()
-    {
-        return $this->hasMany(Topiccomment::class);
-    }
-
-    // public function getCommentsAtribute()
-    // {
-    //     return "msksm";
-    // }
 
     public function getCreatedAtAttribute($row)
     {

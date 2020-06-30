@@ -3,7 +3,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class CommentSeeder extends AbstractSeed
+class TopiccommentSeeder extends AbstractSeed
 {
     /**
      * Run Method.
@@ -19,7 +19,7 @@ class CommentSeeder extends AbstractSeed
         $data = [];
         for ($i = 1; $i < 20; $i++) {
             $data[] = [
-                'topic_id' => 1,
+                'topic_id' => rand(1, 2),
                 'user_id' => rand(1, 20),
                 'message' => $faker->text,
                 'created_at'    => date('Y-m-d H:i:s'),
@@ -27,6 +27,6 @@ class CommentSeeder extends AbstractSeed
             ];
         }
 
-        $this->table('comments')->insert($data)->save();
+        $this->table('topiccomments')->insert($data)->save();
     }
 }

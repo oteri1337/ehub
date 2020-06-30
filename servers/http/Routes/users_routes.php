@@ -12,9 +12,7 @@ $app->delete('/api/users', UsersController::class . ':delete')->add($admin_logge
 
 $app->get('/api/users', UsersController::class . ':list');
 
-$app->post('/api/users/search', UsersController::class . ':search')->add($admin_logged_in);
-
-
+$app->get('/api/users/search/{attr}', UsersController::class . ':search');
 
 $app->post('/api/users/send/email', UsersController::class . ':sendEmail')->add($admin_logged_in);
 

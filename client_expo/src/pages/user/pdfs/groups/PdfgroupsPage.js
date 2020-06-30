@@ -14,7 +14,7 @@ class ItemPureComponent extends React.PureComponent {
         <Text style={{ fontWeight: "bold", marginLeft: 10, marginBottom: 5 }}>
           {item.title}
         </Text>
-        <PdfgroupComponent data={item.pdfs} />
+        <PdfgroupComponent group={item} />
       </View>
     );
   }
@@ -31,8 +31,6 @@ function PdfgroupsPage() {
     send("/api/pdfgroups", dispatch);
   };
 
-  const onEndReachedThreshold = 0.1;
-
   const keyExtractor = React.useCallback((item) => {
     return item.id.toString();
   }, []);
@@ -48,17 +46,21 @@ function PdfgroupsPage() {
     return <React.Fragment />;
   });
 
+  const onEndReachedThreshold = 0.1;
+
   const onEndReached = async () => {
-    console.log("on end reached pdfs");
     if (!refreshing) {
       const { next_page_url } = list;
       if (next_page_url) {
+        console.log("on end reached pdf groups");
         send(next_page_url, `${dispatch}_PAGE`);
       }
     }
   };
 
   const renderItem = ({ item }) => {
+    console.log("rendering pdfgroup ", item.id);
+
     return <ItemPureComponent item={item} />;
   };
 

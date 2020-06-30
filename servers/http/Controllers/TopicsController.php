@@ -3,8 +3,7 @@
 namespace Server\Controllers;
 
 use Server\Database\Models\Topic;
-use Illuminate\Support\Collection;
-use Server\Database\Models\Comment;
+use Server\Database\Models\Topiccomment;
 use Server\Library\Controllers\NewApiController;
 
 class TopicsController extends NewApiController
@@ -16,57 +15,9 @@ class TopicsController extends NewApiController
         $this->model = new Topic;
         $this->readBy = 'slug';
         $this->searchBy = 'title';
-        $this->eagerList = ['user', 'comments.user', 'comments' => function ($comments) {
-            $comments->orderBy('created_at', 'DESC')->limit(1);
-        }];
-        $this->eagerRead = ['user', 'comments.user', 'comments'];
+        $this->eagerRead = ['user', 'comments.user'];
+        $this->eagerList = ['user', 'comments.user', 'comments'];
     }
-
-    public function list($request, $response)
-    {
-
-        $paginator =  $this->model->with($this->eagerList)->orderBy('created_at', 'DESC')->paginate($this->perPage);
-
-        $paginator = $paginator->toArray();
-
-        $collection = Collection::make($paginator['data'])->keyBy($this->readBy);
-
-        $paginator['object'] = $collection;
-
-        $this->data['data'] = $paginator;
-
-        $response->getBody()->write(json_encode($this->data));
-
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function read($request, $response)
-    {
-        $attr = $request->getAttribute('attr');
-
-        $row =  $this->model->where($this->readBy, $attr)->with($this->eagerRead)->first();
-
-        if (!$row) {
-            $this->data['errors'] = ['not found'];
-
-            $response->getBody()->write(json_encode($this->data));
-
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        // $comments = $row->comments()->paginate($this->perPage)->toArray();
-
-        // $row['comments_total'] = $comments['total'];
-
-        // $row['comments_next_page'] = $comments['next_page_url'];
-
-        $this->data['data'] = $row;
-
-        $response->getBody()->write(json_encode($this->data));
-
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
 
     public function beforeCreate($body)
     {
@@ -110,7 +61,7 @@ class TopicsController extends NewApiController
 
         $this->validator->validate($rules);
 
-        $errors = $this->validator->errors()->all();
+        $errors = $this->validator->errors;
 
         if ($errors) {
             $this->data['errors'] = $errors;
@@ -126,7 +77,7 @@ class TopicsController extends NewApiController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $comment = new Comment(['user_id' => $user_id, 'topic_id', 'message' => $message]);
+        $comment = new Topiccomment(['user_id' => $user_id, 'message' => $message]);
 
         $topic->comments()->save($comment);
 

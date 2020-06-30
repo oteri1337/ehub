@@ -71,7 +71,9 @@ class SingleTopicComponent extends React.PureComponent {
                   type="Feather"
                   style={{ color: "black" }}
                 />
-                <Text style={{ color: "black" }}>4 Comments</Text>
+                <Text style={{ color: "black" }}>
+                  {item.comments.length} Comments
+                </Text>
               </Button>
             </Right>
           </CardItem>

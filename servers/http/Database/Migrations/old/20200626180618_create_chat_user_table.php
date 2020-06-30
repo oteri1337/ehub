@@ -3,19 +3,20 @@
 use Server\Database\Migrations\ParentMigration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateMessagesTable extends ParentMigration
+class CreateChatUserTable extends ParentMigration
 {
 
     public function up()
     {
-        $this->schema->create('messages', function (Blueprint $table) {
+        $this->schema->create('chat_user', function (Blueprint $table) {
+
             $table->increments('id');
 
             $table->integer('chat_id');
 
             $table->integer('user_id');
 
-            $table->text('message');
+            $table->integer('recvr_id');
 
             $table->timestamps();
         });
@@ -23,6 +24,6 @@ class CreateMessagesTable extends ParentMigration
 
     public function down()
     {
-        $this->schema->drop('messages');
+        $this->schema->drop('chat_user');
     }
 }

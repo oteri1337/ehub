@@ -10,6 +10,6 @@ $app->post('/api/topics/comment', TopicsController::class . ':comment')->add($us
 
 $app->delete('/api/topics', TopicsController::class . ':delete')->add($admin_logged_in);
 
-$app->post('/api/topics/search', TopicsController::class . ':search');
+$app->get('/api/topics/search/{attr}', TopicsController::class . ':search');
 
 $app->get('/api/topics/{attr}', TopicsController::class . ':read');

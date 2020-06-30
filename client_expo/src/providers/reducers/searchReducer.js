@@ -1,4 +1,4 @@
-const defaultState = { term: "", fetching: false };
+const defaultState = { term: "", refreshing: false };
 
 function searchReducer(state = defaultState, action) {
   switch (action.dispatch) {
@@ -7,10 +7,10 @@ function searchReducer(state = defaultState, action) {
         ...state,
         term: action.data,
       };
-    case "UDPATE_SEARCH_FETCHING":
+    case "UPDATE_SEARCH_REFRESHING":
       return {
         ...state,
-        fetching: action.data,
+        refreshing: action.data,
       };
     default:
       return state;

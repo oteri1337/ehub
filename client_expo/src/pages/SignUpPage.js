@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/icon.png";
 import Text from "./components/TextComponent";
 import Signup from "../../assets/library.png";
 import { ImageBackground, Keyboard } from "react-native";

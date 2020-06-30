@@ -21,7 +21,7 @@ class Validator extends Violin
         $this->addRuleMessage('pdfformat', 'file format must be pdf');
 
         $this->addRuleMessage('imagesize', 'image is too large, max upload size is ' . $max . 'B. Please upload a smaller file or contact webmaster');
-        
+
         $this->addRuleMessage('filesize', 'file is too large, max upload size is ' . $max . 'B. Please upload a smaller file or contact webmaster');
 
 
@@ -90,8 +90,9 @@ class Validator extends Violin
         return $this->checkFormat($single, ['pdf']);
     }
 
-    public function validate_filesize($single, $all, $args) {
-        
+    public function validate_filesize($single, $all, $args)
+    {
+
         if ($single == 0) {
             return false;
         }
@@ -100,12 +101,12 @@ class Validator extends Violin
     }
 
 
-    public function validate_musicformat($single, $all, $args) {
+    public function validate_musicformat($single, $all, $args)
+    {
         if ($single == '') {
             return true;
         }
 
         return $this->checkFormat($single, ['mp3']);
     }
-
 }

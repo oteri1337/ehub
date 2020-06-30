@@ -48,39 +48,49 @@ export default function AppProvider({ children, initialState }) {
   );
 }
 
-export const getRequestThenDispatch = (starturl, startdispatch) => {
+export const getRequestThenDispatch = (starturl = "", startdispatch = "") => {
+  let initialState = false;
+
+  if (starturl.length && startdispatch.length) {
+    initialState = true;
+  }
+
   const { state, callReducer } = React.useContext(AppContext);
-  const defaultResponse = { errors: [], data: {}, message: "" };
-  const [refreshing, setRefreshing] = React.useState(true);
-  const [response, setResponse] = React.useState(defaultResponse);
 
-  const send = async (url, dispatch) => {
-    setRefreshing(true);
-    setResponse(defaultResponse);
+  const [refreshing, setRefreshing] = React.useState(initialState);
 
-    let fetchResponse = await getRequest(url);
-
-    setRefreshing(false);
-    setResponse(fetchResponse);
-
-    if (fetchResponse.errors.length === 0) {
-      callReducer({ dispatch, data: fetchResponse.data });
-    }
-  };
+  // const defaultResponse = { errors: [], data: {}, message: "" };
+  // const [response, setResponse] = React.useState(defaultResponse);
 
   React.useEffect(() => {
     const as = async () => {
-      let fetchResponse = await getRequest(starturl);
-      if (fetchResponse.errors.length === 0) {
-        callReducer({ dispatch: startdispatch, data: fetchResponse.data });
-        setRefreshing(false);
+      if (starturl.length && startdispatch.length) {
+        let fetchResponse = await getRequest(starturl);
+        if (fetchResponse.errors.length === 0) {
+          callReducer({ dispatch: startdispatch, data: fetchResponse.data });
+          setRefreshing(false);
+        }
       }
     };
 
     as();
   }, []);
 
-  return { state, refreshing, response, send };
+  const send = async (url, dispatch) => {
+    setRefreshing(true);
+    // setResponse(defaultResponse);
+
+    let fetchResponse = await getRequest(url);
+
+    setRefreshing(false);
+    //  setResponse(fetchResponse);
+
+    if (fetchResponse.errors.length === 0) {
+      callReducer({ dispatch, data: fetchResponse.data });
+    }
+  };
+
+  return { state, refreshing, callReducer, send };
 };
 
 export const sendRequestThenDispatch = () => {
@@ -107,5 +117,5 @@ export const sendRequestThenDispatch = () => {
     }
   };
 
-  return { state, refreshing, send };
+  return { state, refreshing, callReducer, send };
 };

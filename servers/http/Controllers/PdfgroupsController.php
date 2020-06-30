@@ -2,6 +2,7 @@
 
 namespace Server\Controllers;
 
+use Illuminate\Database\Eloquent\Collection;
 use Server\Database\Models\Pdfgroup;
 use Server\Library\Controllers\NewApiController;
 
@@ -14,7 +15,24 @@ class PdfgroupsController extends NewApiController
         $this->readBy = 'slug';
         $this->searchBy = 'title';
         $this->model = new Pdfgroup;
+        $this->eagerRead = ['pdfs' => function ($pdfs) {
+            $pdfs->paginate(12);
+        }];
         $this->eagerList = ['pdfs'];
+    }
+
+    public function modifyList($list)
+    {
+
+        foreach ($list as $li) {
+            $pdfs = $li->pdfs->slice(0, 12);
+
+            unset($li->pdfs);
+
+            $li->pdfs = $pdfs;
+        }
+
+        return $list;
     }
 
     public function createRules($body)

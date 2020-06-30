@@ -4,7 +4,7 @@ namespace Server\Database\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class Topiccomment extends Model
 {
 
     protected $fillable = [

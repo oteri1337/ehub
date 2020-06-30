@@ -17,13 +17,19 @@ class Pdfgroup extends Model
         return $this->belongsToMany(Pdf::class);
     }
 
-    // public function getPdfsAttribute()
-    // {
-    //     return $this->pdfs()->paginate(12);
-    // }
+    public function getNextPageUrlAttribute()
+    {
 
-    // public function getPdfsCountAttribute()
-    // {
-    //     return $this->pdfs()->count();
-    // }
+        $count = $this->pdfs->count();
+
+        if ($count === 0 || $count < 12) {
+            return null;
+        }
+
+        $page = $_GET['page'] ?? 1;
+
+        $next_page_url = $page + 1;
+
+        return "/api/pdfgroups/" . $this->slug .  "?page=" . $next_page_url;
+    }
 }

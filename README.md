@@ -1,3 +1,5 @@
+https://developers.google.com/calendar/quickstart/js
+
 Open client_expo/env.js
 
 Basically you have to configure this file to work on your environment

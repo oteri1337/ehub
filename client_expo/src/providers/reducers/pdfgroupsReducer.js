@@ -8,13 +8,15 @@ function pdfGroupsReducer(state = defaultState, action) {
       } else {
         return action.data;
       }
-    case "UPDATE_PDFGROUP":
-      return {
-        ...state,
-        object: {
-          [action.data.slug]: action.data,
-        },
+    case "UPDATE_PDFGROUP_PAGE":
+      const index = state.data.findIndex((g) => g.id == action.data.id);
+
+      state.data[index] = {
+        ...action.data,
+        pdfs: [...state.data[index].pdfs, ...action.data.pdfs],
       };
+
+      return state;
     case "UPDATE_PDFGROUPS_PAGE":
       return {
         ...action.data,
