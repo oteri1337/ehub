@@ -4,6 +4,12 @@
 
 [Expo Link](https://expo.io/@oteri2021/eHUB)
 
+### Demo Account
+
+email: test@gmail.com
+
+password: password
+
 # Project Setup
 
 Open client_expo/env.js
