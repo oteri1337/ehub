@@ -128,7 +128,7 @@ function TabNavigator({ navigation, route }) {
         } else if (route.name === "SearchPage") {
           iconName = focused ? "ios-search" : "ios-search";
         } else if (route.name === "EventsListPage") {
-          iconName = focused ? "calendar" : "calendar";
+          iconName = focused ? "home" : "home";
         } else if (route.name === "ChatsListPage") {
           iconName = focused ? "ios-chatbubbles" : "ios-chatbubbles";
           return (
@@ -163,7 +163,7 @@ function TabNavigator({ navigation, route }) {
       <Screen
         name="EventsListPage"
         component={EventsListPage}
-        options={{ title: "Events" }}
+        options={{ title: "Home" }}
       />
 
       <Screen

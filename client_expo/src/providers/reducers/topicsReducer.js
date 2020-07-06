@@ -23,6 +23,19 @@ function topicsReducer(state = defaultState, action) {
           [action.data.slug]: action.data,
         },
       };
+    case "ADD_COMMENT_TO_TOPIC":
+      const slug = action.data.topic.slug;
+
+      return {
+        ...state,
+        object: {
+          ...state.object,
+          [slug]: {
+            ...state.object[slug],
+            comments: [...state.object[slug].comments, action.data],
+          },
+        },
+      };
     case "UPDATE_TOPIC":
       return {
         ...state,
@@ -31,18 +44,18 @@ function topicsReducer(state = defaultState, action) {
           [action.data.slug]: action.data,
         },
       };
-    case "ADD_COMMENT_TO_TOPIC":
-      const { slug, comment } = action.data;
-      return {
-        ...state,
-        object: {
-          ...state.object,
-          [slug]: {
-            ...state.object[slug],
-            comments: [...state.object[slug].comments, comment],
-          },
-        },
-      };
+    // case "ADD_COMMENT_TO_TOPIC":
+    //   const { slug, comment } = action.data;
+    //   return {
+    //     ...state,
+    //     object: {
+    //       ...state.object,
+    //       [slug]: {
+    //         ...state.object[slug],
+    //         comments: [...state.object[slug].comments, comment],
+    //       },
+    //     },
+    //   };
     default:
       return state;
   }

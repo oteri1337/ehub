@@ -15,13 +15,24 @@ class TopiccommentSeeder extends AbstractSeed
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
+
+        $images = [
+            'boy1.jpg',
+            'boy2.jpg',
+            'boy3.jpg',
+            'girl1.jpg',
+            'girl2.jpg'
+        ];
+
+        // $faker = Faker\Factory::create();
         $data = [];
+
         for ($i = 1; $i < 20; $i++) {
             $data[] = [
-                'topic_id' => rand(1, 2),
+                'type' => rand(0, 1),
                 'user_id' => rand(1, 20),
-                'message' => $faker->text,
+                'topic_id' => rand(1, 2),
+                'message' => $images[rand(0, 4)],
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ];

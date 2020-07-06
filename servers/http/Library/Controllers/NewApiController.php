@@ -32,7 +32,7 @@ class NewApiController extends ServicesController
 
         $this->validator->validate($createRules);
 
-        $errors = $this->validator->errors()->all();
+        $errors = $this->validator->errors;
 
         if ($errors) {
             $this->data['errors'] = $errors;
@@ -45,11 +45,14 @@ class NewApiController extends ServicesController
 
         $row = $this->model->create($body);
 
+        $row = $this->model->where('id', $row->id)->with($this->eagerRead)->first();
+
         $row = $this->afterRead($row);
 
         $this->data['data'] = $row;
-        $this->data['message'] = "Created";
+
         $response->getBody()->write(json_encode($this->data));
+
         return $response->withHeader('Content-Type', 'application/json');
     }
 

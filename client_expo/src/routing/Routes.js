@@ -32,6 +32,7 @@ import TopicsReadPage from "../pages/user/TopicsReadPage";
 import TopicsCreatePage from "../pages/user/TopicsCreatePage";
 
 import EventsReadPage from "../pages/user/EventsReadPage";
+import CommentsReadPage from "../pages/user/CommentsReadPage";
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -76,6 +77,8 @@ function Routes() {
         <Screen name="TopicsCreatePage" component={TopicsCreatePage} />
 
         <Screen name="EventsReadPage" component={EventsReadPage} />
+
+        <Screen name="CommentsReadPage" component={CommentsReadPage} />
 
     </Navigator>
   }

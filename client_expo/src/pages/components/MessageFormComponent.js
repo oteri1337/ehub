@@ -1,21 +1,63 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Keyboard } from "react-native";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 import { View, Textarea, Button, Icon, ActionSheet } from "native-base";
 
 var BUTTONS = ["Image", "Document", "Cancel"];
 var DESTRUCTIVE_INDEX = 1;
 var CANCEL_INDEX = 2;
 
-function MessageFormComponent({ onSubmit }) {
+function MessageFormComponent({ onSubmit, onImage, onDocument }) {
+  onImage =
+    onImage ||
+    function (formData) {
+      console.log("upload image", formData);
+    };
+
+  onDocument =
+    onDocument ||
+    function () {
+      console.log("upload document");
+    };
+
   const [message, setMessage] = React.useState("");
 
   const onPress = () => {
     onSubmit(message);
     setMessage("");
+    Keyboard.dismiss();
+  };
+
+  const uploadPhoto = async () => {
+    const perm = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    const result = await ImagePicker.launchImageLibraryAsync();
+
+    const name = Date.now();
+
+    if (!result.cancelled) {
+      const formData = new FormData();
+
+      formData.append("image", {
+        uri: result.uri,
+        type: "image/jpeg",
+        name: `${name}.jpg`,
+      });
+
+      onImage(formData);
+
+      Keyboard.dismiss();
+    }
   };
 
   return (
-    <View style={{ flexDirection: "row", alignItems: "center" }}>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+      }}
+    >
       <View style={{ padding: 5 }}>
         <Button
           bordered
@@ -29,15 +71,19 @@ function MessageFormComponent({ onSubmit }) {
                 title: "Share",
               },
               (buttonIndex) => {
-                console.log("aamk");
+                console.log(buttonIndex);
+
+                if (buttonIndex === 0) {
+                  uploadPhoto();
+                }
               }
             );
           }}
           style={{ height: 50, width: 50 }}
         >
           <Icon
-            name="ios-images"
-            type="Ionicons"
+            name="image"
+            type="Feather"
             style={{ fontSize: 18, lineHeight: 30 }}
           />
         </Button>

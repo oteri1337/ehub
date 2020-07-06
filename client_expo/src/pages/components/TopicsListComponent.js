@@ -38,7 +38,7 @@ class SingleTopicComponent extends React.PureComponent {
         <Body>
           <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
           <Text note style={{ fontWeight: "300" }}>
-            {item.content?.replace(/\s/g, " ").substring(0, 75)}
+            {item.content?.replace(/\s/g, " ").substring(0, 70)}
           </Text>
         </Body>
       </ListItem>

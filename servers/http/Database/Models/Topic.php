@@ -8,6 +8,7 @@ class Topic extends Model
 {
 
     protected $fillable = [
+        'icon',
         'slug',
         'title',
         'color',
@@ -22,8 +23,13 @@ class Topic extends Model
 
     public function comments()
     {
-        return $this->hasMany(Topiccomment::class);
+        return $this->hasMany(Topiccomment::class)->orderBy('created_at', 'DESC');
     }
+
+    // public function getCommentsAttribute()
+    // {
+    //     return 1;
+    // }
 
     // public function getCommentsAtribute()
     // {

@@ -76,6 +76,7 @@ trait UtilsTrait
     {
         $slug = strtolower($string);
         $slug = str_replace(' ', '-', $slug);
+        $slug = time() . $slug;
         return $slug;
     }
 

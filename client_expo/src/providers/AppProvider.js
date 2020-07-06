@@ -103,6 +103,7 @@ export const sendRequestThenDispatch = () => {
     setRefreshing(true);
 
     const fetchResponse = await sendRequest(url, body, method);
+    // console.log(fetchResponse);
 
     setRefreshing(false);
 
@@ -115,6 +116,8 @@ export const sendRequestThenDispatch = () => {
     } else {
       alert(fetchResponse.errors[0]);
     }
+
+    return fetchResponse;
   };
 
   return { state, refreshing, callReducer, send };

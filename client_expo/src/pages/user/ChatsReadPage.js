@@ -1,5 +1,6 @@
 import React from "react";
-import { Container, Button, Icon } from "native-base";
+import { Container, Button, Icon, View } from "native-base";
+import { KeyboardAvoidingView, Platform } from "react-native";
 import MessageListComponent from "../components/MessageListComponent";
 import MessageFormComponent from "../components/MessageFormComponent";
 import { sendRequestThenDispatch } from "../../providers/AppProvider";
@@ -30,13 +31,23 @@ function ChatsReadPage({ navigation, route }) {
     send("/api/chats", "UPDATE_CHATS", body);
   };
 
+  let avoid = false;
+
+  if (Platform.OS == "ios") {
+    avoid = true;
+  }
+
   if (!chat) {
-    console.log("new chat");
     return (
-      <Container>
+      <KeyboardAvoidingView
+        enabled={avoid}
+        behavior="padding"
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={60}
+      >
         <MessageListComponent />
         <MessageFormComponent onSubmit={start} />
-      </Container>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -49,10 +60,15 @@ function ChatsReadPage({ navigation, route }) {
   };
 
   return (
-    <Container>
-      <MessageListComponent messages={messages} />
+    <KeyboardAvoidingView
+      enabled={avoid}
+      behavior="padding"
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={60}
+    >
+      <MessageListComponent data={messages} />
       <MessageFormComponent onSubmit={onSubmit} />
-    </Container>
+    </KeyboardAvoidingView>
   );
 }
 

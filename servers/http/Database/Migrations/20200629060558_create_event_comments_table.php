@@ -16,6 +16,8 @@ class CreateEventCommentsTable extends ParentMigration
 
             $table->integer('user_id');
 
+            $table->integer('type')->default(0);
+
             $table->text('message');
 
             $table->timestamps();

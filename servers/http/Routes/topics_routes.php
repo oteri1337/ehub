@@ -8,7 +8,9 @@ $app->post('/api/topics', TopicsController::class . ':create')->add($user_logged
 
 $app->post('/api/topics/comment', TopicsController::class . ':comment')->add($user_logged_in);
 
-$app->delete('/api/topics', TopicsController::class . ':delete')->add($admin_logged_in);
+$app->post('/api/topics/comment/image', TopicsController::class . ':imageComment')->add($user_logged_in);
+
+$app->delete('/api/topics', TopicsController::class . ':delete');
 
 $app->get('/api/topics/search/{attr}', TopicsController::class . ':search');
 

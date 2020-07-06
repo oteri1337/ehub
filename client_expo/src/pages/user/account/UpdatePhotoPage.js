@@ -15,16 +15,19 @@ function UpdatePhotoPage({ navigation }) {
 
   const uri = `${BACKEND_URL}/uploads/images/${photo_profile}`;
 
-  React.useEffect(() => {
-    const asyncOperation = async () => {
-      const perm = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      console.log(perm);
-    };
+  // React.useEffect(() => {
+  //   const asyncOperation = async () => {
+  //     // console.log(perm);
+  //   };
 
-    asyncOperation();
-  }, []);
+  //   asyncOperation();
+  // }, []);
 
   const uploadPhoto = async () => {
+    const perm = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    console.log(perm);
+
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
     });

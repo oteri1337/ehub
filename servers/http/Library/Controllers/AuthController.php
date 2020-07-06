@@ -27,7 +27,7 @@ class AuthController extends NewApiController
 
         $this->validator->validate($rules);
 
-        $errors = $this->validator->errors()->all();
+        $errors = $this->validator->errors;
 
         if ($errors) {
             $this->data['errors'] =  $errors;
@@ -150,7 +150,7 @@ class AuthController extends NewApiController
 
         $this->validator->validate($rules);
 
-        $errors = $this->validator->errors()->all();
+        $errors = $this->validator->errors;
 
         if ($errors) {
             $this->data['errors'] = $errors;
@@ -217,7 +217,7 @@ class AuthController extends NewApiController
 
         $this->validator->validate($rules);
 
-        $errors = $this->validator->errors()->all();
+        $errors = $this->validator->errors;
 
         if ($errors) {
             $this->data['errors'] = $errors;
@@ -258,7 +258,7 @@ class AuthController extends NewApiController
 
         $this->validator->validate($rules);
 
-        $errors = $this->validator->errors()->all();
+        $errors = $this->validator->errors;
 
         if ($errors) {
             $this->data['errors'] = $errors;
@@ -329,7 +329,7 @@ class AuthController extends NewApiController
         ];
 
         $this->validator->validate($rules);
-        $errors = $this->validator->errors()->all();
+        $errors = $this->validator->errors;
 
         if ($errors) {
             $this->data['errors'] = $errors;
@@ -393,7 +393,7 @@ class AuthController extends NewApiController
         }
 
         $this->validator->validate($rules);
-        $errors = $this->validator->errors()->all();
+        $errors = $this->validator->errors;
         if ($errors) {
             $this->data['errors'] = $errors;
             $response->getBody()->write(json_encode($this->data));
@@ -491,7 +491,7 @@ class AuthController extends NewApiController
         ];
 
         $this->validator->validate($rules);
-        $errors = $this->validator->errors()->all();
+        $errors = $this->validator->errors;
         if ($errors) {
             $this->data['errors'] = $errors;
             $response->getBody()->write(json_encode($this->data));
@@ -530,7 +530,7 @@ class AuthController extends NewApiController
         ];
 
         $this->validator->validate($rules);
-        $errors = $this->validator->errors()->all();
+        $errors = $this->validator->errors;
 
         if ($errors) {
             $this->data['errors'] = $errors;
@@ -578,7 +578,7 @@ class AuthController extends NewApiController
         ];
 
         $this->validator->validate($rules);
-        $errors = $this->validator->errors()->all();
+        $errors = $this->validator->errors;
 
         if ($errors) {
             $this->data['errors'] = $errors;

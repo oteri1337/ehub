@@ -1,7 +1,7 @@
 import React from "react";
 import * as Calendar from "expo-calendar";
+import { Button, Icon } from "native-base";
 import { KeyboardAvoidingView, Platform } from "react-native";
-import { Container, Button, Icon, View } from "native-base";
 import { sendRequestThenDispatch } from "../../providers/AppProvider";
 import MessageListComponent from "../components/MessageListComponent";
 import MessageFormComponent from "../components/MessageFormComponent";
@@ -126,7 +126,7 @@ function EventsReadPage({ navigation, route }) {
       style={{ flex: 1 }}
       keyboardVerticalOffset={60}
     >
-      <MessageListComponent messages={comments} top={content} image={image} />
+      <MessageListComponent data={comments} header={content} image={image} />
       <MessageFormComponent onSubmit={onSubmit} />
     </KeyboardAvoidingView>
   );

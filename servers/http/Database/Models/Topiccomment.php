@@ -8,6 +8,7 @@ class Topiccomment extends Model
 {
 
     protected $fillable = [
+        'type',
         'message',
         'user_id',
         'topic_id'
@@ -16,6 +17,11 @@ class Topiccomment extends Model
     public function user()
     {
         return $this->belongsTo(LightUser::class);
+    }
+
+    public function topic()
+    {
+        return $this->belongsTo(Topic::class);
     }
 
     public function getCreatedAtAttribute($row)

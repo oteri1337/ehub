@@ -24,6 +24,8 @@ class CreateTopicsTable extends ParentMigration
 
             $table->text("content");
 
+            $table->string("next_page_url")->default("");
+
             $table->timestamps();
         });
     }
