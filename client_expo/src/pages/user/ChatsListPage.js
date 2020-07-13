@@ -38,7 +38,7 @@ class ItemPureComponent extends React.PureComponent {
             {item.recvr.first_name} {item.recvr.last_name}
           </Text>
           <Text note style={{ fontWeight: "300" }}>
-            {item.messages[item.messages.length - 1]?.message.substring(0, 80)}
+            {item.messages[item.messages.length - 1]?.data.substring(0, 80)}
           </Text>
         </Body>
       </ListItem>
@@ -52,6 +52,8 @@ function ChatsListPage({ navigation }) {
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
   const list = state.chats;
   let { data } = list;
+
+  console.log("chats", data);
 
   const onRefresh = async () => {
     send("/api/chats", dispatch);
@@ -101,7 +103,7 @@ function ChatsListPage({ navigation }) {
 
   return (
     <Container>
-      <List style={{ flex: 1 }}>
+      <List>
         <FlatList
           {...{
             data,

@@ -15,10 +15,31 @@ class TopicsController extends NewApiController
         $this->model = new Topic;
         $this->readBy = 'slug';
         $this->searchBy = 'title';
-        $this->eagerRead = ['user', 'comments.user', 'comments' => function ($data) {
-            $data->paginate(12);
-        }];
         $this->eagerList = ['user', 'comments.user'];
+    }
+
+    public function createRules($body)
+    {
+        $data = $body['data'] ?? '';
+        $title = $body['title'] ?? '';
+        $user_id = $body['user_id'] ?? '';
+
+        return [
+            'data' => [$data, 'required'],
+            'title' => [$title, 'required'],
+            'user id' => [$user_id, 'required']
+        ];
+    }
+
+    public function updateRules($body)
+    {
+        $id = $body['id'] ?? '';
+        $data = $body['data'] ?? '';
+
+        return [
+            'id' => [$id, 'required'],
+            'data' => [$data, 'required'],
+        ];
     }
 
     public function beforeCreate($body)
@@ -26,27 +47,38 @@ class TopicsController extends NewApiController
 
         $body["slug"] = $this->slugify($body["title"]);
 
-        return $this->filter($body, ['title', 'content', 'slug', 'user_id', 'color', 'icon']);
+        return $this->filter($body, ['title', 'data', 'slug', 'user_id', 'color', 'icon']);
     }
 
-    public function createRules($body)
+    public function beforeUpdate($body)
     {
 
-        $title = $body['title'] ?? '';
-        $content = $body['content'] ?? '';
-        $user_id = $body['user_id'] ?? '';
+        return $this->filter($body, ['data']);
+    }
 
-        return [
-            'title' => [$title, 'required'],
-            'content' => [$content, 'required'],
-            'user id' => [$user_id, 'required']
-        ];
+    public function lazyLoadRelationships($row)
+    {
+
+        $row->user = $row->user;
+
+        $paginator = $row->comments()->with('user')->paginate(12);
+
+        $row->comments = $paginator->items();
+
+        $row->comments_count = $paginator->total();
+
+        $row->next_page_url = $paginator->nextPageUrl();
+
+
+        return $row;
     }
 
     public function modifyList($list)
     {
 
         foreach ($list as $li) {
+
+            $li->comments_count = $li->comments->count();
 
             $comments = array_reverse($li->comments->slice(0, 12)->toArray());
 
@@ -65,12 +97,12 @@ class TopicsController extends NewApiController
         $user_id = $user->id;
 
         $topic_id = $body['topic_id'] ?? '';
-        $message = $body['message'] ?? '';
+        $data = $body['data'] ?? '';
 
         $rules = [
             'user id'  => [$user_id, 'required'],
             'topic id' => [$topic_id, 'required'],
-            'message' => [$message, 'required'],
+            'data' => [$data, 'required'],
         ];
 
         $this->validator->validate($rules);
@@ -91,7 +123,7 @@ class TopicsController extends NewApiController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $comment = new Topiccomment(['user_id' => $user_id, 'message' => $message]);
+        $comment = new Topiccomment(['user_id' => $user_id, 'data' => $data]);
 
         $data = $topic->comments()->save($comment);
 
@@ -105,6 +137,60 @@ class TopicsController extends NewApiController
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }
+
+    public function updateComment($request, $response)
+    {
+        $body = $request->getParsedBody();
+
+        $data = $body['data'] ?? '';
+        $comment_id = $body['id'] ?? '';
+        $topic_id = $body['topic_id'] ?? '';
+
+        $rules = [
+            'data' => [$data, 'required'],
+            'topic id' => [$topic_id, 'required'],
+            'comment id' => [$comment_id, 'required'],
+        ];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $comment = Topiccomment::where('id', $comment_id)->first();
+
+        if (!$comment) {
+            $this->data['errors'] = ['comment not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $comment->update(['data' => $data]);
+
+        $topic = $this->model->where('id', $topic_id)->first();
+
+        if (!$topic) {
+            $this->data['errors'] = ['topic not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $topic = $this->lazyLoadRelationships($topic);
+
+        $this->data['data'] = $topic;
+
+        $this->data['message'] = "Comment Updated";
+
+        $response->getBody()->write(json_encode($this->data));
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
 
     public function imageComment($request, $response)
     {
@@ -159,7 +245,7 @@ class TopicsController extends NewApiController
 
         $image = $this->uploadImage($_FILES['image']);
 
-        $comment = new Topiccomment(['user_id' => $user_id, 'type' => 1, 'message' => $image]);
+        $comment = new Topiccomment(['user_id' => $user_id, 'type' => 1, 'data' => $image]);
 
         $data =  $topic->comments()->save($comment);
 

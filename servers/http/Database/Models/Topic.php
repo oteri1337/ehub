@@ -8,11 +8,11 @@ class Topic extends Model
 {
 
     protected $fillable = [
+        'data',
         'icon',
         'slug',
         'title',
         'color',
-        'content',
         'user_id'
     ];
 
@@ -26,15 +26,30 @@ class Topic extends Model
         return $this->hasMany(Topiccomment::class)->orderBy('created_at', 'DESC');
     }
 
-    // public function getCommentsAttribute()
+    // public function getCommentsCountAttribute($data)
     // {
-    //     return 1;
+    //     return $this->comments->count();
     // }
 
-    // public function getCommentsAtribute()
-    // {
-    //     return "msksm";
-    // }
+    public function getNextPageUrlAttribute($data)
+    {
+
+        if ($data) {
+            return $data;
+        }
+
+        $count = count($this->comments);
+
+        if ($count === 0 || $count < 12) {
+            return null;
+        }
+
+        $page = $_GET['page'] ?? 1;
+
+        $next_page_url = $page + 1;
+
+        return "/api/topics/" . $this->slug .  "?page=" . $next_page_url;
+    }
 
     public function getCreatedAtAttribute($row)
     {

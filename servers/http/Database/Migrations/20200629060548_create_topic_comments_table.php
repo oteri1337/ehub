@@ -18,7 +18,7 @@ class CreateTopicCommentsTable extends ParentMigration
 
             $table->integer('type')->default(0);
 
-            $table->text('message');
+            $table->text('data');
 
             $table->timestamps();
         });

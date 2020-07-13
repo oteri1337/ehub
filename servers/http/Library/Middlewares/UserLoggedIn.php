@@ -17,18 +17,18 @@ class UserLoggedIn
 
         if (!$cookie) {
             $response = new Response;
-            $response->getBody()->write(json_encode(['errors' => ['please sign in']]));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
+            $response->getBody()->write(json_encode(['errors' => ['please sign out then sign in']]));
+            return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $id = Session::where("key",$cookie)->first()->value;
+        $id = Session::where("key", $cookie)->first()->value;
 
         $user = User::where('id', $id)->first();
 
         if (!$user) {
             $response = new Response;
-            $response->getBody()->write(json_encode(['errors' => ['please sign in']]));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
+            $response->getBody()->write(json_encode(['errors' => ['please sign out then sign in']]));
+            return $response->withHeader('Content-Type', 'application/json');
         }
 
         $request = $request->withAttribute('user', $user);

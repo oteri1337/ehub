@@ -89,6 +89,8 @@ export async function sendRequest(url, data, method = "POST") {
     response = { ...ERROR_OBJECT, jsError: e };
   }
 
+  console.log(response);
+
   return response;
 
   // try {

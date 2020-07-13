@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Button, Icon, View } from "native-base";
+import { Button, Icon } from "native-base";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import MessageListComponent from "../components/MessageListComponent";
 import MessageFormComponent from "../components/MessageFormComponent";
@@ -26,8 +26,8 @@ function ChatsReadPage({ navigation, route }) {
     ),
   });
 
-  const start = (message) => {
-    const body = { recvr_id: params.recvr_id, message };
+  const start = (data) => {
+    const body = { recvr_id: params.recvr_id, data };
     send("/api/chats", "UPDATE_CHATS", body);
   };
 
@@ -53,9 +53,8 @@ function ChatsReadPage({ navigation, route }) {
 
   const { chat_id, title, messages } = chat;
 
-  const onSubmit = (message) => {
-    const body = { chat_id: chat_id, message };
-    // error coming from here
+  const onSubmit = (data) => {
+    const body = { chat_id: chat_id, data };
     send("/api/chats/message", "UPDATE_CHATS", body);
   };
 

@@ -8,7 +8,7 @@ class Eventcomment extends Model
 {
 
     protected $fillable = [
-        'message',
+        'data',
         'user_id',
         'event_id'
     ];

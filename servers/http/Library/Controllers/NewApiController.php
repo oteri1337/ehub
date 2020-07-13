@@ -32,7 +32,7 @@ class NewApiController extends ServicesController
 
         $this->validator->validate($createRules);
 
-        $errors = $this->validator->errors;
+        $errors = $this->validator->errors()->all();
 
         if ($errors) {
             $this->data['errors'] = $errors;
@@ -45,9 +45,9 @@ class NewApiController extends ServicesController
 
         $row = $this->model->create($body);
 
-        $row = $this->model->where('id', $row->id)->with($this->eagerRead)->first();
+        // $row = $this->model->where('id', $row->id)->with($this->eagerRead)->first();
 
-        $row = $this->afterRead($row);
+        $row = $this->lazyLoadRelationships($row);
 
         $this->data['data'] = $row;
 
@@ -66,6 +66,11 @@ class NewApiController extends ServicesController
         return $body;
     }
 
+    public function beforeUpdate($body)
+    {
+        return $body;
+    }
+
     public function afterCreate($row)
     {
         return $row;
@@ -74,6 +79,11 @@ class NewApiController extends ServicesController
     public function afterRead($row)
     {
         return $this->afterCreate($row);
+    }
+
+    public function lazyLoadRelationships($row)
+    {
+        return $row;
     }
 
     public function read($request, $response)
@@ -91,13 +101,7 @@ class NewApiController extends ServicesController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $this->loadPivots($row);
-
-        // foreach ($row->chats as $chat) {
-        //     $chat->recvr = LightUser::where('id', $chat->pivot->recvr_id)->first();
-        // }
-
-        // $row['pdfs'] = $this->meta;
+        $row = $this->lazyLoadRelationships($row);
 
         $this->data['data'] = $row;
 
@@ -179,5 +183,40 @@ class NewApiController extends ServicesController
     public function modifyList($list)
     {
         return $list;
+    }
+
+    public function update($request, $response)
+    {
+        $body = $request->getParsedBody();
+        $attr = $body["id"] ?? "";
+        $rules = $this->updateRules($body) ?? [];
+
+        $this->validator->validate($rules);
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $row = $this->model->where("id", $attr)->first();
+        if (!$row) {
+            $this->data['errors'] = ['not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $cleanBody = $this->beforeUpdate($body);
+        $row = $row->update($cleanBody);
+
+        $row = $this->model->where("id", $attr)->first();
+
+        $row = $this->lazyLoadRelationships($row);
+
+        $this->data['data'] = $row;
+        $this->data['message'] = 'Update Successful';
+        $response->getBody()->write(json_encode($this->data));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

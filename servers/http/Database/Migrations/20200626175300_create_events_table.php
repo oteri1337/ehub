@@ -24,6 +24,10 @@ class CreateEventsTable extends ParentMigration
 
             $table->string("date")->default("");
 
+            $table->integer('comments_count')->nullable();
+
+            $table->string("next_page_url")->default("");
+
             $table->timestamps();
         });
     }

@@ -21,7 +21,7 @@ function TopicsReadPage({ navigation, route }) {
     );
   }
 
-  const { id, title, content, comments, user } = topic;
+  const { id, title, comments } = topic;
 
   navigation.setOptions({
     title,
@@ -67,8 +67,8 @@ function TopicsReadPage({ navigation, route }) {
     });
   }
 
-  const onSubmit = (message) => {
-    const body = { topic_id: id, message };
+  const onSubmit = (data) => {
+    const body = { topic_id: id, data };
     send("/api/topics/comment", "ADD_COMMENT_TO_TOPIC", body);
   };
 
@@ -98,7 +98,7 @@ function TopicsReadPage({ navigation, route }) {
       style={{ flex: 1 }}
       keyboardVerticalOffset={60}
     >
-      <MessageListComponent data={comments} header={content} user={user} />
+      <MessageListComponent data={comments} list={topic} />
       <MessageFormComponent onSubmit={onSubmit} onImage={onImage} />
     </KeyboardAvoidingView>
   );

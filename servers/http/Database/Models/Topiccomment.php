@@ -9,7 +9,7 @@ class Topiccomment extends Model
 
     protected $fillable = [
         'type',
-        'message',
+        'data',
         'user_id',
         'topic_id'
     ];

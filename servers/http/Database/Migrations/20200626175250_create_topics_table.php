@@ -16,15 +16,17 @@ class CreateTopicsTable extends ParentMigration
 
             $table->string("title");
 
+            $table->string("slug")->unique();
+
+            $table->string("next_page_url")->default("");
+
+            $table->text("data");
+
             $table->string("icon")->default("rocket1");
 
             $table->string("color")->default("#2588ed");
 
-            $table->string("slug")->unique();
-
-            $table->text("content");
-
-            $table->string("next_page_url")->default("");
+            $table->integer('comments_count')->default(0);
 
             $table->timestamps();
         });

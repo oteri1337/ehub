@@ -15,9 +15,10 @@ function topicsReducer(state = defaultState, action) {
         object: { ...state.object, ...action.data.object },
       };
     case "ADD_TOPIC":
+      const sliced = state.data.slice(0, state.data.length - 1);
       return {
         ...state,
-        data: [action.data, ...state.data],
+        data: [action.data, ...sliced],
         object: {
           ...state.object,
           [action.data.slug]: action.data,

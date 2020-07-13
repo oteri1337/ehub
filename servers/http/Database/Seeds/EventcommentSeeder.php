@@ -21,7 +21,7 @@ class EventcommentSeeder extends AbstractSeed
             $data[] = [
                 'event_id' => 1,
                 'user_id' => rand(1, 20),
-                'message' => $faker->text,
+                'data' => $faker->text,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ];

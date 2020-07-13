@@ -24,19 +24,19 @@ function TopicsCreatePage({ navigation }) {
 
   const [title, setTitle] = React.useState("");
   const [icon, setIcon] = React.useState("bulb1");
-  const [content, setContent] = React.useState("");
+  const [data, setContent] = React.useState("");
   const [color, setColor] = React.useState("#fe653b");
 
   const { state, refreshing, send } = sendRequestThenDispatch(AppContext);
 
   const onPress = async () => {
-    if (title.length && content.length) {
+    if (title.length && data.length) {
       Keyboard.dismiss();
       const body = JSON.stringify({
         icon,
         color,
         title,
-        content,
+        data,
         user_id: state.user.id,
       });
       const url = "/api/topics";
@@ -122,7 +122,7 @@ function TopicsCreatePage({ navigation }) {
             bordered
             rowSpan={7}
             onBlur={onBlur}
-            value={content}
+            value={data}
             placeholder="Content"
             onChangeText={(text) => setContent(text)}
           />

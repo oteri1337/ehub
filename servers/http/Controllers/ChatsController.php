@@ -75,31 +75,13 @@ class ChatsController extends NewApiController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    // public function list($request, $response)
-    // {
-    //     $user = $request->getAttribute('user');
-
-    //     $this->data['data'] = $this->getChats($user);
-
-    //     $response->getBody()->write(json_encode($this->data));
-
-    //     return $response->withHeader('Content-Type', 'application/json');
-    // }
-
-
-    // public function loadPivots($rows)
-    // {
-    //     foreach ($rows->chats as $chat) {
-    //         $chat->recvr = LightUser::where('id', $chat->pivot->recvr_id)->first();
-    //     }
-    // }
 
     public function create($request, $response)
     {
         $user = $request->getAttribute('user');
         $body = $request->getParsedBody();
 
-        $message = $body['message'] ?? '';
+        $message = $body['data'] ?? '';
         $recvr_id = $body['recvr_id'] ?? '';
 
         $chat = Chat::create(['title' => 'test']);
@@ -108,17 +90,8 @@ class ChatsController extends NewApiController
 
         ChatUser::create(['chat_id' => $chat->id, 'user_id' => $recvr_id, 'recvr_id' => $user->id]);
 
-        Message::create(['chat_id' => $chat->id, 'user_id' => $user->id, 'message' => $message]);
+        Message::create(['chat_id' => $chat->id, 'user_id' => $user->id, 'data' => $message]);
 
-        // $chat->messages()->save($message);
-
-        // $paginator =  $this->model->where('user_id', $user->id)->orWhere('recvr_id', $user->id)->with($this->eagerList)->orderBy('updated_at', 'DESC')->paginate($this->perPage);
-
-        // $paginator = $paginator->toArray();
-
-        // $collection = Collection::make($paginator['data'])->keyBy($this->readBy);
-
-        // $paginator['object'] = $collection;
 
         $this->data['data'] = $this->getChats($user);
 
@@ -134,7 +107,7 @@ class ChatsController extends NewApiController
         $user_id = $user->id;
 
         $chat_id = $body['chat_id'] ?? '';
-        $message = $body['message'] ?? '';
+        $message = $body['data'] ?? '';
 
         $rules = [
             'user id'  => [$user_id, 'required'],
@@ -162,7 +135,7 @@ class ChatsController extends NewApiController
 
         $chat->update(['title' => new \DateTime()]);
 
-        $message = new Message(['user_id' => $user_id, 'chat_id' => $chat_id, 'message' => $message]);
+        $message = new Message(['user_id' => $user_id, 'chat_id' => $chat_id, 'data' => $message]);
 
         $chat->messages()->save($message);
 
