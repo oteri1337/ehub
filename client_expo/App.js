@@ -45,11 +45,11 @@ export default class App extends React.Component {
     }
 
     return (
-      <Root>
-        <AppProvider initialState={this.state.persisted}>
+      <AppProvider initialState={this.state.persisted}>
+        <Root>
           <Router />
-        </AppProvider>
-      </Root>
+        </Root>
+      </AppProvider>
     );
   }
 }

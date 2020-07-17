@@ -1,6 +1,6 @@
 import React from "react";
 import { Platform } from "react-native";
-import { AppContext } from "../providers/AppProvider";
+import { Store } from "../providers/AppProvider";
 import {
   createStackNavigator,
   CardStyleInterpolators,
@@ -38,7 +38,7 @@ const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 function Routes() {
-  const { state } = React.useContext(AppContext);
+  const { state } = React.useContext(Store);
 
   let modalNav = {
     cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,

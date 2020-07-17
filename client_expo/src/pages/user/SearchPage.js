@@ -4,17 +4,14 @@ import { Icon, Button } from "native-base";
 import PdfsListComponent from "../components/PdfsListComponent";
 import UsersListComponent from "../components/UsersListComponent";
 import TopicsListComponent from "../components/TopicsListComponent";
-import {
-  AppContext,
-  getRequestThenDispatch,
-} from "../../providers/AppProvider";
+import { Store, getRequestThenDispatch } from "../../providers/AppProvider";
 
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 const Tab = createMaterialTopTabNavigator();
 
 const BooksPage = ({ navigation }) => {
-  const { state } = React.useContext(AppContext);
+  const { state } = React.useContext(Store);
 
   const root = state.pdfs;
 
@@ -41,7 +38,7 @@ const BooksPage = ({ navigation }) => {
 };
 
 const TopicsPage = ({ navigation }) => {
-  const { state } = React.useContext(AppContext);
+  const { state } = React.useContext(Store);
 
   const root = state.topics;
 
@@ -66,7 +63,7 @@ const TopicsPage = ({ navigation }) => {
 };
 
 const UsersPage = ({ navigation }) => {
-  const { state } = React.useContext(AppContext);
+  const { state } = React.useContext(Store);
 
   const root = state.users;
 

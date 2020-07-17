@@ -1,7 +1,7 @@
 const defaultState = { data: [], object: {}, search_keys: {} };
 
 function topicsReducer(state = defaultState, action) {
-  switch (action.dispatch) {
+  switch (action.dispatch || action.type) {
     case "UPDATE_TOPICS":
       if (JSON.stringify(state) === JSON.stringify(action.data)) {
         return state;
@@ -13,6 +13,19 @@ function topicsReducer(state = defaultState, action) {
         ...action.data,
         data: [...state.data, ...action.data.data],
         object: { ...state.object, ...action.data.object },
+      };
+    case "UPDATE_TOPIC_COMMENTS_PAGE":
+      return {
+        ...state,
+        object: {
+          [action.data.slug]: {
+            ...action.data,
+            comments: [
+              ...action.data.comments.reverse(),
+              ...state.object[action.data.slug].comments,
+            ],
+          },
+        },
       };
     case "ADD_TOPIC":
       const sliced = state.data.slice(0, state.data.length - 1);
@@ -27,13 +40,30 @@ function topicsReducer(state = defaultState, action) {
     case "ADD_COMMENT_TO_TOPIC":
       const slug = action.data.topic.slug;
 
+      const { comments } = state.object[slug];
+
+      let sl;
+
+      if (comments.length == 12) {
+        sl = comments.slice(1, 12);
+      }
+
+      if (comments.length > 12) {
+        sl = comments.reverse().slice(0, 11).reverse();
+      }
+
+      if (comments.length < 12) {
+        sl = comments;
+      }
+
       return {
         ...state,
         object: {
           ...state.object,
           [slug]: {
             ...state.object[slug],
-            comments: [...state.object[slug].comments, action.data],
+            next_page_url: action.data.topic.next_page_url,
+            comments: [...sl, action.data],
           },
         },
       };
@@ -42,21 +72,12 @@ function topicsReducer(state = defaultState, action) {
         ...state,
         object: {
           ...state.object,
-          [action.data.slug]: action.data,
+          [action.data.slug]: {
+            ...action.data,
+            comments: action.data.comments.reverse(),
+          },
         },
       };
-    // case "ADD_COMMENT_TO_TOPIC":
-    //   const { slug, comment } = action.data;
-    //   return {
-    //     ...state,
-    //     object: {
-    //       ...state.object,
-    //       [slug]: {
-    //         ...state.object[slug],
-    //         comments: [...state.object[slug].comments, comment],
-    //       },
-    //     },
-    //   };
     default:
       return state;
   }

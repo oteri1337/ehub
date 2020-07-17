@@ -6,9 +6,12 @@ import chatsReducer from "./chatsReducer";
 import topicsReducer from "./topicsReducer";
 import eventsReducer from "./eventsReducer";
 import searchReducer from "./searchReducer";
+import fetchingReducer from "./fetchingReducer";
 import pdfgroupsReducer from "./pdfgroupsReducer";
 
 function rootReducer(state = {}, action) {
+  console.log("action", action);
+
   if (action.dispatch == "UPDATE_STATE") {
     if (action.data) {
       return action.data;
@@ -24,6 +27,7 @@ function rootReducer(state = {}, action) {
     topics: topicsReducer(state.topics, action),
     events: eventsReducer(state.events, action),
     search: searchReducer(state.search, action),
+    fetching: fetchingReducer(state.fetching, action),
     pdfgroups: pdfgroupsReducer(state.pdfgroups, action),
   };
 }

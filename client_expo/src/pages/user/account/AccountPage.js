@@ -1,7 +1,7 @@
 import React from "react";
 import { BACKEND_URL } from "../../../../env";
 import { useNavigation } from "@react-navigation/native";
-import { AppContext } from "../../../providers/AppProvider";
+import { Store } from "../../../providers/AppProvider";
 import {
   Container,
   Content,
@@ -47,7 +47,7 @@ function Li({ text = "", icon = "ios-today", color, to, param = {} }) {
 function AccountPage({ navigation }) {
   navigation.setOptions({ title: "My Account" });
 
-  const { state, signOut } = React.useContext(AppContext);
+  const { state, signOut } = React.useContext(Store);
 
   const { first_name, last_name, photo_profile, department } = state.user;
 

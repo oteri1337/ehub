@@ -1,13 +1,15 @@
 import React from "react";
-import { Keyboard } from "react-native";
+import { BACKEND_URL } from "../../../env";
+import { Keyboard, Image } from "react-native";
 import { sendRequestThenDispatch } from "../../providers/AppProvider";
 import { Container, Textarea, Button, Text, Spinner, Icon } from "native-base";
 
 function CommentReadPage({ route, navigation }) {
   //  console.log(route.params);
-  const { tag, update, message } = route.params;
-  let { endpoint, dispatch, body = {} } = update;
-  const { id } = message;
+  const { tag, message, update, deleteData } = route.params;
+  const { id, type } = message;
+
+  console.log(tag);
 
   navigation.setOptions({
     title: `Update ${tag}`,
@@ -21,16 +23,43 @@ function CommentReadPage({ route, navigation }) {
         <Icon name="arrow-back" style={{ color: "black" }} />
       </Button>
     ),
-    headerRight: () => (
-      <Button transparent>
-        <Icon name="trash" type="Feather" style={{ color: "black" }} />
-      </Button>
-    ),
+    headerRight: () => {
+      if (tag == "Topic") {
+        return <React.Fragment />;
+      }
+      return (
+        <Button
+          transparent
+          onPress={async () => {
+            let { endpoint, dispatch, body } = deleteData;
+            const response = await send(endpoint, dispatch, body, "DELETE");
+            if (response.errors.length === 0) {
+              navigation.pop();
+            }
+          }}
+        >
+          <Icon name="trash" type="Feather" style={{ color: "black" }} />
+        </Button>
+      );
+    },
   });
 
   const [data, setdata] = React.useState(message.data);
 
   const { refreshing, send } = sendRequestThenDispatch();
+
+  if (type == 1) {
+    return (
+      <Container>
+        <Image
+          source={{
+            uri: `${BACKEND_URL}/uploads/images/${message.data}`,
+          }}
+          style={{ height: 400 }}
+        />
+      </Container>
+    );
+  }
 
   return (
     <Container style={{ padding: 5 }}>
@@ -50,13 +79,18 @@ function CommentReadPage({ route, navigation }) {
           bordered
           dark
           style={{ marginTop: 5 }}
-          onPress={() => {
+          onPress={async () => {
+            let { endpoint, dispatch, body = {} } = update;
+
             body = {
               id,
               data,
               ...body,
             };
-            send(endpoint, dispatch, body, "PATCH");
+            const response = await send(endpoint, dispatch, body, "PATCH");
+            if (response.errors.length === 0) {
+              navigation.pop();
+            }
           }}
         >
           <Text>Update</Text>

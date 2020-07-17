@@ -1,9 +1,6 @@
 import React from "react";
 import { Keyboard } from "react-native";
-import {
-  AppContext,
-  sendRequestThenDispatch,
-} from "../../providers/AppProvider";
+import { Store, sendRequestThenDispatch } from "../../providers/AppProvider";
 import {
   Container,
   Content,
@@ -27,7 +24,7 @@ function TopicsCreatePage({ navigation }) {
   const [data, setContent] = React.useState("");
   const [color, setColor] = React.useState("#fe653b");
 
-  const { state, refreshing, send } = sendRequestThenDispatch(AppContext);
+  const { state, refreshing, send } = sendRequestThenDispatch(Store);
 
   const onPress = async () => {
     if (title.length && data.length) {

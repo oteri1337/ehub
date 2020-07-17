@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Text } from "native-base";
 import PdfsList from "../../components/PdfsListComponent";
-import { AppContext } from "../../../providers/AppProvider";
+import { Store } from "../../../providers/AppProvider";
 
 function PdfsSavedPage({ navigation }) {
   navigation.setOptions({ title: "Saved Books" });
 
-  const { state } = React.useContext(AppContext);
+  const { state } = React.useContext(Store);
 
   const list = state.saved;
 

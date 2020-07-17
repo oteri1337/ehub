@@ -67,14 +67,15 @@ function MessageFormComponent({ onSubmit, onImage, onDocument }) {
               {
                 options: BUTTONS,
                 cancelButtonIndex: CANCEL_INDEX,
-                destructiveButtonIndex: DESTRUCTIVE_INDEX,
                 title: "Share",
               },
               (buttonIndex) => {
-                console.log(buttonIndex);
-
                 if (buttonIndex === 0) {
                   uploadPhoto();
+                }
+
+                if (buttonIndex === 1) {
+                  alert("upload document");
                 }
               }
             );

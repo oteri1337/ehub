@@ -1,10 +1,10 @@
 import React from "react";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, View, Text } from "react-native";
 import reducer from "./reducers/rootReducer";
 import NetInfo from "@react-native-community/netinfo";
 import { getRequest, sendRequest } from "./functions";
 
-export const AppContext = React.createContext({});
+export const Store = React.createContext({});
 
 export default function AppProvider({ children, initialState }) {
   const [state, callReducer] = React.useReducer(reducer, initialState || {});
@@ -41,12 +41,36 @@ export default function AppProvider({ children, initialState }) {
     getRequest("/api/users/auth/signout");
   };
 
+  const dispatch = (action) => {
+    if (typeof action == "function") {
+      return action(callReducer, state);
+    }
+
+    // callReducer(action);
+  };
+
   return (
-    <AppContext.Provider value={{ state, callReducer, signOut }}>
+    <Store.Provider value={{ state, dispatch, callReducer, signOut }}>
       {children}
-    </AppContext.Provider>
+    </Store.Provider>
   );
 }
+
+export const connect = (mapStateToProps, mapDispatchToProps, Component) => {
+  return class extends React.Component {
+    static contextType = Store;
+
+    render() {
+      const { state, dispatch } = this.context;
+
+      let props = {};
+
+      props = { ...mapStateToProps(state), ...mapDispatchToProps(dispatch) };
+
+      return <Component {...this.props} {...props} />;
+    }
+  };
+};
 
 export const getRequestThenDispatch = (starturl = "", startdispatch = "") => {
   let initialState = false;
@@ -55,7 +79,7 @@ export const getRequestThenDispatch = (starturl = "", startdispatch = "") => {
     initialState = true;
   }
 
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
 
   const [refreshing, setRefreshing] = React.useState(initialState);
 
@@ -94,7 +118,7 @@ export const getRequestThenDispatch = (starturl = "", startdispatch = "") => {
 };
 
 export const sendRequestThenDispatch = () => {
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const send = async (url, dispatch, body, method, onSuccess) => {

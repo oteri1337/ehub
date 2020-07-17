@@ -34,7 +34,7 @@ class SingleTopicComponent extends React.PureComponent {
               <Body>
                 <Text>{item.title}</Text>
                 <Text note>
-                  {item.content?.replace(/\s/g, " ").substring(0, 35)}
+                  {item.data?.replace(/\s/g, " ").substring(0, 35)}
                 </Text>
               </Body>
             </Left>
@@ -57,12 +57,7 @@ class SingleTopicComponent extends React.PureComponent {
                 <Text style={{ color: "black" }}>2 Days Left</Text>
               </Button>
             </Left>
-            {/* <Body>
-            <Button transparent>
-              <Icon active name="chatbubbles" />
-              <Text>4 Comments</Text>
-            </Button>
-          </Body> */}
+
             <Right>
               <Button transparent>
                 <Icon
@@ -72,7 +67,7 @@ class SingleTopicComponent extends React.PureComponent {
                   style={{ color: "black" }}
                 />
                 <Text style={{ color: "black" }}>
-                  {item.comments.length} Comments
+                  {item.comments_count} Comments
                 </Text>
               </Button>
             </Right>

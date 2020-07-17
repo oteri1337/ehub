@@ -1,26 +1,18 @@
 import React from "react";
 import { List, Container } from "native-base";
+import { connect } from "../../providers/AppProvider";
 import TopicsList from "../components/TopicsListComponent";
-import { getRequestThenDispatch } from "../../providers/AppProvider";
+import {
+  fetchTopics,
+  fetchTopicsPage,
+} from "../../providers/actions/topicsActions";
 
-function TopicsListPage() {
-  const url = "/api/topics";
-  const dispatch = "UPDATE_TOPICS";
-  const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
-  const list = state.topics;
+function TopicsListPage(props) {
+  const { list, refreshing, onRefresh, onEndReached } = props;
 
-  const onRefresh = async () => {
-    send("/api/topics", dispatch);
-  };
-
-  const onEndReached = async () => {
-    if (!refreshing) {
-      const { next_page_url } = list;
-      if (next_page_url) {
-        send(next_page_url, `${dispatch}_PAGE`);
-      }
-    }
-  };
+  React.useEffect(() => {
+    onRefresh();
+  }, []);
 
   return (
     <Container>
@@ -31,4 +23,18 @@ function TopicsListPage() {
   );
 }
 
-export default TopicsListPage;
+const mapStateToProps = (state) => ({
+  list: state.topics,
+  refreshing: state.fetching.topics,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onRefresh: () => {
+    dispatch(fetchTopics());
+  },
+  onEndReached: () => {
+    dispatch(fetchTopicsPage());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, TopicsListPage);

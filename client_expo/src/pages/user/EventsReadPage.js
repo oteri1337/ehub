@@ -1,6 +1,6 @@
 import React from "react";
 import * as Calendar from "expo-calendar";
-import { Button, Icon } from "native-base";
+import { Button, Icon, Container, Text } from "native-base";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { sendRequestThenDispatch } from "../../providers/AppProvider";
 import MessageListComponent from "../components/MessageListComponent";
@@ -9,7 +9,19 @@ import MessageFormComponent from "../components/MessageFormComponent";
 function EventsReadPage({ navigation, route }) {
   const { slug } = route.params;
   const { state, send } = sendRequestThenDispatch();
-  const { id, title, content, image, comments } = state.events.object[slug];
+  const event = state.events.object[slug];
+
+  if (!event) {
+    navigation.navigate("EventsListPage");
+
+    return (
+      <Container style={{ alignItems: "center", justifyContent: "center" }}>
+        <Text>Topic Not Found</Text>
+      </Container>
+    );
+  }
+
+  const { id, title, content, image, comments } = event;
 
   async function getDefaultCalendarSource() {
     const calendars = await Calendar.getCalendarsAsync();
@@ -108,9 +120,14 @@ function EventsReadPage({ navigation, route }) {
     });
   }
 
-  const onSubmit = (message) => {
-    const body = { event_id: id, message };
-    send("/api/events/comment", "UPDATE_EVENT", body);
+  const onSubmit = (data) => {
+    const body = { event_id: id, data };
+    send("/api/events/comment", "ADD_COMMENT_TO_EVENT", body);
+  };
+
+  const onImage = (formData) => {
+    formData.append("event_id", id);
+    send("/api/events/comment/image", "ADD_COMMENT_TO_EVENT", formData);
   };
 
   let avoid = false;
@@ -126,8 +143,13 @@ function EventsReadPage({ navigation, route }) {
       style={{ flex: 1 }}
       keyboardVerticalOffset={60}
     >
-      <MessageListComponent data={comments} header={content} image={image} />
-      <MessageFormComponent onSubmit={onSubmit} />
+      <MessageListComponent
+        data={comments}
+        list={event}
+        image={image}
+        next_dispatch="UPDATE_EVENT_COMMENTS_PAGE"
+      />
+      <MessageFormComponent onSubmit={onSubmit} onImage={onImage} />
     </KeyboardAvoidingView>
   );
 }

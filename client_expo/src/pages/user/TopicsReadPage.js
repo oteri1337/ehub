@@ -83,14 +83,6 @@ function TopicsReadPage({ navigation, route }) {
     avoid = true;
   }
 
-  const renderItem = ({ item }) => {
-    return <Text key={item.id}>{item.message}</Text>;
-  };
-
-  const keyExtractor = (item) => {
-    return item.id.toString();
-  };
-
   return (
     <KeyboardAvoidingView
       enabled={avoid}
@@ -98,7 +90,11 @@ function TopicsReadPage({ navigation, route }) {
       style={{ flex: 1 }}
       keyboardVerticalOffset={60}
     >
-      <MessageListComponent data={comments} list={topic} />
+      <MessageListComponent
+        data={comments}
+        list={topic}
+        next_dispatch="UPDATE_TOPIC_COMMENTS_PAGE"
+      />
       <MessageFormComponent onSubmit={onSubmit} onImage={onImage} />
     </KeyboardAvoidingView>
   );

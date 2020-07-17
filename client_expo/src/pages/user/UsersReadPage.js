@@ -2,11 +2,11 @@ import React from "react";
 import * as Linking from "expo-linking";
 import { BACKEND_URL } from "../../../env";
 import { ImageBackground } from "react-native";
-import { AppContext } from "../../providers/AppProvider";
+import { Store } from "../../providers/AppProvider";
 import { Container, Content, Button, View, Text, Icon } from "native-base";
 
 function UsersReadPage({ navigation, route }) {
-  const { state } = React.useContext(AppContext);
+  const { state } = React.useContext(Store);
 
   const { params } = route;
   const {

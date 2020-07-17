@@ -2,14 +2,14 @@ import React from "react";
 import PDFReader from "rn-pdf-reader-js";
 import { BACKEND_URL } from "../../../../env";
 import * as FileSystem from "expo-file-system";
-import { AppContext } from "../../../providers/AppProvider";
+import { Store } from "../../../providers/AppProvider";
 import { Spinner, Button, Icon, View, Text } from "native-base";
 
 function PdfsReadPage({ navigation, route }) {
   const { params } = route;
   const [base64, setBase] = React.useState("");
   const [saving, setSaving] = React.useState(false);
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
   const { id, title, file_name } = params;
 
   navigation.setOptions({

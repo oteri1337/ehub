@@ -5,7 +5,7 @@ import Link from "./Link";
 
 function CustomDrawerComponent(props) {
   const navigation = props.navigation;
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
   const { first_name, last_name, department } = state.user;
 
   const signOut = async () => {

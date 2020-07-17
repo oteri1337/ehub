@@ -2,7 +2,7 @@ import React from "react";
 import { Image } from "react-native";
 import { BACKEND_URL } from "../../../../env";
 import * as FileSystem from "expo-file-system";
-import { AppContext } from "../../../providers/AppProvider";
+import { Store } from "../../../providers/AppProvider";
 import {
   Container,
   Content,
@@ -16,7 +16,7 @@ import {
 function PdfsPreviewPage({ navigation, route }) {
   const { params } = route;
   const [saving, setSaving] = React.useState(false);
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
   const { id, title, description, image_name, file_size, file_name } = params;
 
   let saved = false;
