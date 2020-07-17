@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { adminSignOut } from "functions";
-import { AppContext } from "providers/AppProvider";
+import { Store } from "providers/AppProvider";
 
 function NavComponent() {
-  const { callReducer } = React.useContext(AppContext);
+  const { callReducer } = React.useContext(Store);
 
   return (
     <nav className="pushpin">

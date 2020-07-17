@@ -1,15 +1,15 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { AppContext } from "providers/AppProvider";
+import { Store } from "providers/AppProvider";
 
 function GuestAdminRoute(props) {
-	const { state } = React.useContext(AppContext);
+  const { state } = React.useContext(Store);
 
-	if (state.admin) {
-		return <Redirect to="/control/index.html" />;
-	}
+  if (state.admin) {
+    return <Redirect to="/control/index.html" />;
+  }
 
-	return <Route {...props} />;
+  return <Route {...props} />;
 }
 
 export default GuestAdminRoute;

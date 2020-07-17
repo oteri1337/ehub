@@ -26,11 +26,6 @@ class Topic extends Model
         return $this->hasMany(Topiccomment::class)->orderBy('created_at', 'DESC');
     }
 
-    // public function getCommentsCountAttribute($data)
-    // {
-    //     return $this->comments->count();
-    // }
-
     public function getNextPageUrlAttribute($data)
     {
 

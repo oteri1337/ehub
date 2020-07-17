@@ -31,6 +31,14 @@ class TopicsController extends NewApiController
         ];
     }
 
+    public function beforeCreate($body)
+    {
+
+        $body["slug"] = $this->slugify($body["title"]);
+
+        return $this->filter($body, ['title', 'data', 'slug', 'user_id', 'color', 'icon']);
+    }
+
     public function updateRules($body)
     {
         $id = $body['id'] ?? '';
@@ -42,35 +50,10 @@ class TopicsController extends NewApiController
         ];
     }
 
-    public function beforeCreate($body)
-    {
-
-        $body["slug"] = $this->slugify($body["title"]);
-
-        return $this->filter($body, ['title', 'data', 'slug', 'user_id', 'color', 'icon']);
-    }
-
     public function beforeUpdate($body)
     {
 
         return $this->filter($body, ['data']);
-    }
-
-    public function lazyLoadRelationships($row)
-    {
-
-        $row->user = $row->user;
-
-        $paginator = $row->comments()->with('user')->paginate(12);
-
-        $row->comments = $paginator->items();
-
-        $row->comments_count = $paginator->total();
-
-        $row->next_page_url = $paginator->nextPageUrl();
-
-
-        return $row;
     }
 
     public function modifyList($list)
@@ -88,6 +71,23 @@ class TopicsController extends NewApiController
         }
 
         return $list;
+    }
+
+    public function lazyLoadRelationships($row)
+    {
+
+        $row->user = $row->user;
+
+        $paginator = $row->comments()->with('user')->paginate(12);
+
+        $row->comments = $paginator->items();
+
+        $row->comments_count = $paginator->total();
+
+        $row->next_page_url = $paginator->nextPageUrl();
+
+
+        return $row;
     }
 
     public function comment($request, $response)
@@ -129,10 +129,6 @@ class TopicsController extends NewApiController
 
         $data = Topiccomment::where('id', $data->id)->with(['user', 'topic'])->first();
 
-        // var_dump($data);
-        // $row =  $this->model->where("id", $topic_id)->with($this->eagerRead)->first();
-
-        // $this->data['errors'] = ['testing'];
         $this->data['data'] = $data;
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
@@ -184,13 +180,59 @@ class TopicsController extends NewApiController
 
         $this->data['data'] = $topic;
 
-        $this->data['message'] = "Comment Updated";
-
         $response->getBody()->write(json_encode($this->data));
 
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+    public function deleteComment($request, $response)
+    {
+        $body = $request->getParsedBody();
+
+        $comment_id = $body['id'] ?? '';
+        $topic_id = $body['topic_id'] ?? '';
+
+        $rules = [
+            'topic id' => [$topic_id, 'required'],
+            'comment id' => [$comment_id, 'required'],
+        ];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $comment = Topiccomment::where('id', $comment_id)->first();
+
+        if (!$comment) {
+            $this->data['errors'] = ['comment not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $comment->delete();
+
+        $topic = $this->model->where('id', $topic_id)->first();
+
+        if (!$topic) {
+            $this->data['errors'] = ['topic not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $topic = $this->lazyLoadRelationships($topic);
+
+        $this->data['data'] = $topic;
+
+        $response->getBody()->write(json_encode($this->data));
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 
     public function imageComment($request, $response)
     {

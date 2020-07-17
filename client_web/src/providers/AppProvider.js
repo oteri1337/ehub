@@ -2,7 +2,7 @@ import React from "react";
 import reducer from "./reducers/rootReducer";
 import { getRequest, sendRequest, sendFormRequest } from "../functions";
 
-export const AppContext = React.createContext({});
+export const Store = React.createContext({});
 
 function AppProvider({ children, initialState }) {
   const [fetching, setFetching] = React.useState(false);
@@ -59,11 +59,11 @@ function AppProvider({ children, initialState }) {
     sendRequestThenDispatch,
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return <Store.Provider value={value}>{children}</Store.Provider>;
 }
 
 export function sendFormRequestThenDispatch() {
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
   const [request, setRequest] = React.useState({
     fetching: false,
     errors: [],
@@ -101,7 +101,7 @@ export function sendFormRequestThenDispatch() {
 }
 
 export function sendRequestThenDispatch() {
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
   const [request, setRequest] = React.useState({
     fetching: false,
     errors: [],
@@ -140,7 +140,7 @@ export function sendRequestThenDispatch() {
 }
 
 export function getRequestThenDispatch(url, dispatch, prop) {
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
   const [fetching, setFetching] = React.useState(true);
   const [response, setResponse] = React.useState({
     errors: [],

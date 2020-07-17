@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { AppContext } from "providers/AppProvider";
+import { Store } from "providers/AppProvider";
 
 function UserRoute(props) {
-  const { state } = React.useContext(AppContext);
+  const { state } = React.useContext(Store);
   const { user } = state;
   let path = "";
 

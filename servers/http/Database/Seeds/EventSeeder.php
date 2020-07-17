@@ -22,7 +22,7 @@ class EventSeeder extends AbstractSeed
             $data[] = [
                 'slug' => $faker->slug,
                 'title' => $faker->name,
-                'content' => $faker->text(1000),
+                'data' => $faker->text(1000),
                 'image' => 'event' . $i . '.jpg',
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),

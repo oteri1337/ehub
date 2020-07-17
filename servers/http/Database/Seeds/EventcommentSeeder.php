@@ -17,7 +17,7 @@ class EventcommentSeeder extends AbstractSeed
     {
         $faker = Faker\Factory::create();
         $data = [];
-        for ($i = 1; $i < 20; $i++) {
+        for ($i = 1; $i < 11; $i++) {
             $data[] = [
                 'event_id' => 1,
                 'user_id' => rand(1, 20),

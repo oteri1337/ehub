@@ -18,6 +18,11 @@ class Eventcomment extends Model
         return $this->belongsTo(LightUser::class);
     }
 
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+
     public function getCreatedAtAttribute($row)
     {
         $dateTimeInstance = new \DateTime($row);

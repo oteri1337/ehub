@@ -1,10 +1,10 @@
 import React from "react";
 import { signOut } from "functions";
 import { Link } from "react-router-dom";
-import { AppContext } from "providers/AppProvider";
+import { Store } from "providers/AppProvider";
 
 function NavShellComponent({ active }) {
-  const { callReducer } = React.useContext(AppContext);
+  const { callReducer } = React.useContext(Store);
 
   const one = React.useRef();
   const two = React.useRef();

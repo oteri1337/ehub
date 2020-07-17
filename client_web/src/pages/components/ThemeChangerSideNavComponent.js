@@ -1,8 +1,8 @@
 import React from "react";
-import { AppContext } from "providers/AppProvider";
+import { Store } from "providers/AppProvider";
 
 function ThemeChangerSideNavComponent() {
-  const { callReducer } = React.useContext(AppContext);
+  const { callReducer } = React.useContext(Store);
 
   return (
     <li className="no-padding">

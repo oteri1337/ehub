@@ -2,11 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { adminSignOut } from "functions";
 import Office from "images/app/Office.jpg";
-import { AppContext } from "providers/AppProvider";
+import { Store } from "providers/AppProvider";
 import ThemeChangerSideNavComponent from "../ThemeChangerSideNavComponent";
 
 function SideNavComponent() {
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
   const { admin } = state;
 
   React.useLayoutEffect(() => {

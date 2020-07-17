@@ -16,7 +16,7 @@ class CreateEventsTable extends ParentMigration
 
             $table->string("slug");
 
-            $table->text("content");
+            $table->text("data");
 
             $table->string("image")->default("event.jpg");
 

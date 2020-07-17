@@ -1,5 +1,5 @@
 import React from "react";
-import { AppContext } from "./providers/AppProvider";
+import { Store } from "./providers/AppProvider";
 import { getRequest, sendRequest, sendFormRequest } from "./functions";
 
 export const getNavClassName = () => {
@@ -25,7 +25,7 @@ export const getNavClassName = () => {
 
 export function useRequestAndDispatch() {
   const [fetching, setFetching] = React.useState(false);
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
 
   const getRequestThenDispatch = async (url, dispatch) => {
     setFetching(true);
@@ -39,17 +39,17 @@ export function useRequestAndDispatch() {
   return {
     fetching,
     getRequestThenDispatch,
-    state
+    state,
   };
 }
 
 export function getRequestThenDispatch(url, dispatch, prop) {
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
   const [fetching, setFetching] = React.useState(true);
   const [response, setResponse] = React.useState({
     errors: [],
     message: "",
-    data: {}
+    data: {},
   });
 
   React.useEffect(() => {
@@ -68,26 +68,26 @@ export function getRequestThenDispatch(url, dispatch, prop) {
 }
 
 export function sendRequestThenDispatch() {
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
   const [request, setRequest] = React.useState({
     fetching: false,
     errors: [],
-    message: ""
+    message: "",
   });
 
   const callBack = async (url, dispatch, body, onSuccess, type = "POST") => {
-    onSuccess = onSuccess || function() {};
+    onSuccess = onSuccess || function () {};
     setRequest({
       fetching: true,
       errors: [],
-      message: ""
+      message: "",
     });
     try {
       const { errors, data, message } = await sendRequest(url, body, type);
       setRequest({
         fetching: false,
         errors,
-        message
+        message,
       });
       if (errors.length === 0) {
         callReducer({ dispatch, data });
@@ -102,24 +102,24 @@ export function sendRequestThenDispatch() {
     state,
     request,
     callBack,
-    callReducer
+    callReducer,
   };
 }
 
 export function sendFormRequestThenDispatch() {
-  const { state, callReducer } = React.useContext(AppContext);
+  const { state, callReducer } = React.useContext(Store);
   const [request, setRequest] = React.useState({
     fetching: false,
     errors: [],
-    message: ""
+    message: "",
   });
 
   const callBack = async (url, dispatch, body, onSuccess, type = "POST") => {
-    onSuccess = onSuccess || function() {};
+    onSuccess = onSuccess || function () {};
     setRequest({
       fetching: true,
       errors: [],
-      message: ""
+      message: "",
     });
     const { errors, data, message, jsError } = await sendFormRequest(
       url,
@@ -129,7 +129,7 @@ export function sendFormRequestThenDispatch() {
     setRequest({
       fetching: false,
       errors,
-      message
+      message,
     });
     if (errors.length === 0) {
       callReducer({ dispatch, data });
@@ -140,7 +140,7 @@ export function sendFormRequestThenDispatch() {
   return {
     state,
     request,
-    callBack
+    callBack,
   };
 }
 
@@ -148,13 +148,13 @@ export function useFetch() {
   const blank = {
     fetching: false,
     errors: [],
-    message: ""
+    message: "",
   };
   const [request, setResponse] = React.useState(blank);
 
   return {
     request,
     setResponse,
-    blank
+    blank,
   };
 }
