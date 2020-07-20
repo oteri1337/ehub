@@ -16,7 +16,7 @@ class CreatePdfgroupsTable extends ParentMigration
 
             $table->string('slug')->unique();
 
-            $table->integer('books_count')->nullable();
+            $table->integer('pdfs_count')->nullable();
 
             $table->string("next_page_url")->default("");
 

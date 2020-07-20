@@ -12,7 +12,7 @@ function eventsReducer(state = defaultState, action) {
       return {
         ...state,
         object: {
-          [action.data.slug]: {
+          [action.data.id]: {
             ...action.data,
             comments: action.data.comments.reverse(),
           },
@@ -27,17 +27,18 @@ function eventsReducer(state = defaultState, action) {
       return {
         ...state,
         object: {
-          [action.data.slug]: {
+          ...state.object,
+          [action.data.id]: {
             ...action.data,
             comments: [
               ...action.data.comments.reverse(),
-              ...state.object[action.data.slug].comments,
+              ...state.object[action.data.id].comments,
             ],
           },
         },
       };
     case "ADD_COMMENT_TO_EVENT":
-      const slug = action.data.event.slug;
+      const slug = action.data.event_id;
 
       const { comments } = state.object[slug];
 
@@ -61,7 +62,7 @@ function eventsReducer(state = defaultState, action) {
           ...state.object,
           [slug]: {
             ...state.object[slug],
-            next_page_url: action.data.event.next_page_url,
+            next_page_url: `/api/events/${slug}?page=2`,
             comments: [...sl, action.data],
           },
         },

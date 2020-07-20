@@ -8,7 +8,7 @@ class CreateChatmessagesTable extends ParentMigration
 
     public function up()
     {
-        $this->schema->create('messages', function (Blueprint $table) {
+        $this->schema->create('chatmessages', function (Blueprint $table) {
 
             $table->increments('id');
 
@@ -26,6 +26,6 @@ class CreateChatmessagesTable extends ParentMigration
 
     public function down()
     {
-        $this->schema->drop('messages');
+        $this->schema->drop('chatmessages');
     }
 }

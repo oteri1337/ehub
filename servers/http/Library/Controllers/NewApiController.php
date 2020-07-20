@@ -114,10 +114,28 @@ class NewApiController extends ServicesController
     {
     }
 
+    public function getList($request)
+    {
+        return $this->model->with($this->eagerList)->orderBy($this->orderBy, $this->order)->paginate($this->perPage);
+    }
+
+    public function listBody($list)
+    {
+        $list = $this->modifyList($list);
+
+        $list = $list->toArray();
+
+        $object = Collection::make($list['data'])->keyBy($this->readBy);
+
+        $list['object'] = $object;
+
+        return $list;
+    }
+
     public function list($request, $response)
     {
 
-        $list = $this->model->with($this->eagerList)->orderBy($this->orderBy, $this->order)->paginate($this->perPage);
+        $list = $this->getList($request);
 
         $list = $this->modifyList($list);
 
@@ -215,7 +233,7 @@ class NewApiController extends ServicesController
         $row = $this->lazyLoadRelationships($row);
 
         $this->data['data'] = $row;
-        $this->data['message'] = 'Update Successful';
+        // $this->data['message'] = 'Update Successful';
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }

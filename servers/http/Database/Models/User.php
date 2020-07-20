@@ -27,8 +27,28 @@ class User extends Model
         'password'
     ];
 
-    public function chats()
+    public function topics()
     {
-        return $this->belongsToMany(Chat::class)->withPivot('recvr_id');
+        return $this->hasMany(Topic::class)->orderBy('created_at', 'DESC');
+    }
+
+    public function getNextPageUrlAttribute($data)
+    {
+
+        if ($data) {
+            return $data;
+        }
+
+        $count = count($this->topics);
+
+        if ($count === 0 || $count < 12) {
+            return null;
+        }
+
+        $page = $_GET['page'] ?? 1;
+
+        $next_page_url = $page + 1;
+
+        return "/api/users/" . $this->id .  "?page=" . $next_page_url;
     }
 }

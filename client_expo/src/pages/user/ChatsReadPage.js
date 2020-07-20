@@ -10,7 +10,7 @@ function ChatsReadPage({ navigation, route }) {
 
   const { state, send } = sendRequestThenDispatch();
 
-  const chat = state.chats.object[params.recvr_id];
+  const chat = state.chats.object[params.chat_id];
 
   navigation.setOptions({
     title: `${params.recvr.first_name} ${params.recvr.last_name}`,
@@ -54,8 +54,13 @@ function ChatsReadPage({ navigation, route }) {
   const { chat_id, title, messages } = chat;
 
   const onSubmit = (data) => {
-    const body = { chat_id: chat_id, data };
-    send("/api/chats/message", "UPDATE_CHATS", body);
+    const body = { id: chat_id, data };
+    send("/api/chats/messages", "UPDATE_CHATS", body);
+  };
+
+  const onImage = (formData) => {
+    formData.append("id", chat_id);
+    send("/api/chats/messages", "UPDATE_CHATS", formData);
   };
 
   return (
@@ -65,8 +70,12 @@ function ChatsReadPage({ navigation, route }) {
       style={{ flex: 1 }}
       keyboardVerticalOffset={60}
     >
-      <MessageListComponent data={messages} />
-      <MessageFormComponent onSubmit={onSubmit} />
+      <MessageListComponent
+        data={messages}
+        list={chat}
+        next_dispatch="UPDATE_CHAT_MESSAGES_PAGE"
+      />
+      <MessageFormComponent onSubmit={onSubmit} onImage={onImage} />
     </KeyboardAvoidingView>
   );
 }

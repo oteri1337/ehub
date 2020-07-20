@@ -18,7 +18,7 @@ class Topic extends Model
 
     public function user()
     {
-        return $this->belongsTo(LightUser::class);
+        return $this->belongsTo(UserLight::class);
     }
 
     public function comments()
@@ -43,7 +43,7 @@ class Topic extends Model
 
         $next_page_url = $page + 1;
 
-        return "/api/topics/" . $this->slug .  "?page=" . $next_page_url;
+        return "/api/topics/" . $this->id .  "?page=" . $next_page_url;
     }
 
     public function getCreatedAtAttribute($row)

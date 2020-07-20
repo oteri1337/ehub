@@ -41,6 +41,6 @@ class Event extends Model
 
         $next_page_url = $page + 1;
 
-        return "/api/events/" . $this->slug .  "?page=" . $next_page_url;
+        return "/api/events/" . $this->id .  "?page=" . $next_page_url;
     }
 }

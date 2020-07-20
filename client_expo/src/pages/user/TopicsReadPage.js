@@ -1,27 +1,32 @@
 import React from "react";
-import { Button, Icon, Container, Text, Textarea } from "native-base";
-import { KeyboardAvoidingView, Platform, Alert, FlatList } from "react-native";
+import { Button, Icon, Container, Spinner } from "native-base";
+import { KeyboardAvoidingView, Platform, Alert } from "react-native";
 import { sendRequestThenDispatch } from "../../providers/AppProvider";
 import MessageListComponent from "../components/MessageListComponent";
 import MessageFormComponent from "../components/MessageFormComponent";
 
 function TopicsReadPage({ navigation, route }) {
-  const { slug } = route.params;
-  const { state, send } = sendRequestThenDispatch();
+  const { id } = route.params;
 
-  const topic = state.topics.object[slug];
+  const { state, send, callReducer } = sendRequestThenDispatch();
+
+  const topic = state.topics.object[id];
 
   if (!topic) {
-    navigation.navigate("TopicsListPage");
+    callReducer({ dispatch: "UPDATE_TOPIC", data: route.params });
+    // getRequestThenDispatch();
+
+    // navigation.setOptions({ title: "Fetching Post" });
+    // navigation.navigate("TopicsListPage");
 
     return (
       <Container style={{ alignItems: "center", justifyContent: "center" }}>
-        <Text>Topic Not Found</Text>
+        <Spinner />
       </Container>
     );
   }
 
-  const { id, title, comments } = topic;
+  const { title, comments } = topic;
 
   navigation.setOptions({
     title,
@@ -29,7 +34,8 @@ function TopicsReadPage({ navigation, route }) {
       <Button
         transparent
         onPress={() => {
-          navigation.navigate("TopicsListPage");
+          navigation.pop();
+          //navigation.navigate("TopicsListPage");
         }}
       >
         <Icon name="arrow-back" style={{ color: "black" }} />
@@ -68,13 +74,13 @@ function TopicsReadPage({ navigation, route }) {
   }
 
   const onSubmit = (data) => {
-    const body = { topic_id: id, data };
-    send("/api/topics/comment", "ADD_COMMENT_TO_TOPIC", body);
+    const body = { id, data };
+    send("/api/topics/comments", "ADD_COMMENT_TO_TOPIC", body);
   };
 
   const onImage = (formData) => {
-    formData.append("topic_id", id);
-    send("/api/topics/comment/image", "ADD_COMMENT_TO_TOPIC", formData);
+    formData.append("id", id);
+    send("/api/topics/comments", "ADD_COMMENT_TO_TOPIC", formData);
   };
 
   let avoid = false;

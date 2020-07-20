@@ -4,25 +4,16 @@ namespace Server\Database\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Topiccomment extends Model
+class Chatmessage extends Model
 {
 
     protected $fillable = [
-        'type',
         'data',
+        'type',
+        'chat_id',
         'user_id',
-        'topic_id'
+        'sender_id',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(UserLight::class);
-    }
-
-    public function topic()
-    {
-        return $this->belongsTo(Topic::class);
-    }
 
     public function getCreatedAtAttribute($row)
     {

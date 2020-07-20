@@ -20,6 +20,8 @@ class CreateUsersTable extends ParentMigration
 
             $table->boolean('verified')->default(0);
 
+            $table->string('photo_profile')->default("human.png");
+
             $table->string('first_name');
 
             $table->string('last_name');
@@ -28,13 +30,17 @@ class CreateUsersTable extends ParentMigration
 
             $table->string('phone_number')->default("");
 
-            $table->string('link')->default("");
+            $table->string('nse_number')->default("");
 
-            $table->string('photo_profile')->default("human.png");
+            $table->string('link')->default("");
 
             $table->string('bio')->default("");
 
-            $table->text('push_subscription')->nullable();
+            $table->string('topics_count')->default(0);
+
+            $table->string('next_page_url')->default("");
+
+            // $table->text('push_subscription')->nullable();
 
             $table->timestamps();
         });

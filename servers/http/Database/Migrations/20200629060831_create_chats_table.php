@@ -12,11 +12,15 @@ class CreateChatsTable extends ParentMigration
 
             $table->increments('id');
 
+            $table->integer('chat_id');
+
             $table->integer('user_id');
 
             $table->integer('recvr_id');
 
-            $table->string('title')->nullable();
+            $table->integer('comments_count')->default(0);
+
+            $table->string('next_page_url')->default("");
 
             $table->timestamps();
         });

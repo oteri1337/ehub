@@ -7,9 +7,9 @@ import MessageListComponent from "../components/MessageListComponent";
 import MessageFormComponent from "../components/MessageFormComponent";
 
 function EventsReadPage({ navigation, route }) {
-  const { slug } = route.params;
+  const { id } = route.params;
   const { state, send } = sendRequestThenDispatch();
-  const event = state.events.object[slug];
+  const event = state.events.object[id];
 
   if (!event) {
     navigation.navigate("EventsListPage");
@@ -21,7 +21,7 @@ function EventsReadPage({ navigation, route }) {
     );
   }
 
-  const { id, title, content, image, comments } = event;
+  const { title, image, comments } = event;
 
   async function getDefaultCalendarSource() {
     const calendars = await Calendar.getCalendarsAsync();
@@ -94,40 +94,41 @@ function EventsReadPage({ navigation, route }) {
         <Icon name="arrow-back" style={{ color: "black" }} />
       </Button>
     ),
-    headerRight: () => (
-      <Button
-        transparent
-        onPress={() => {
-          navigation.navigate("EventsListPage");
-        }}
-      >
-        <Icon name="calendar" style={{ color: "black" }} />
-      </Button>
-    ),
+    // headerRight: () => (
+    //   <Button
+    //     transparent
+    //     onPress={() => {
+    //       navigation.navigate("EventsListPage");
+    //     }}
+    //   >
+    //     <Icon name="calendar" style={{ color: "black" }} />
+    //   </Button>
+    // ),
   });
 
   const deleteTopic = () => {
     alert("are you sure tou want to delete this topic?");
   };
 
-  if (route.params.user_id === state.user.id) {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button transparent onPress={deleteTopic}>
-          <Icon name="trash" type="Feather" style={{ color: "black" }} />
-        </Button>
-      ),
-    });
-  }
+  // if (route.params.user_id === state.user.id) {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <Button transparent onPress={deleteTopic}>
+  //         <Icon name="trash" type="Feather" style={{ color: "black" }} />
+  //       </Button>
+  //     ),
+  //   });
+  // }
 
   const onSubmit = (data) => {
-    const body = { event_id: id, data };
-    send("/api/events/comment", "ADD_COMMENT_TO_EVENT", body);
+    const body = { id, data };
+    send("/api/events/comments", "ADD_COMMENT_TO_EVENT", body);
   };
 
   const onImage = (formData) => {
-    formData.append("event_id", id);
-    send("/api/events/comment/image", "ADD_COMMENT_TO_EVENT", formData);
+    formData.append("id", id);
+    send("/api/events/comments", "ADD_COMMENT_TO_EVENT", formData);
+    // send("/api/events/comment/image", "ADD_COMMENT_TO_EVENT", formData);
   };
 
   let avoid = false;

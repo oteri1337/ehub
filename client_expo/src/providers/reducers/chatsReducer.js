@@ -14,6 +14,20 @@ function chatsReducer(state = defaultState, action) {
         data: [...state.data, ...action.data.data],
         object: { ...state.object, ...action.data.object },
       };
+    case "UPDATE_CHAT_MESSAGES_PAGE":
+      return {
+        ...state,
+        object: {
+          ...state.object,
+          [action.data.chat_id]: {
+            ...action.data,
+            messages: [
+              ...action.data.messages.reverse(),
+              ...state.object[action.data.chat_id].messages,
+            ],
+          },
+        },
+      };
     case "UPDATE_CHAT":
       return {
         ...state,

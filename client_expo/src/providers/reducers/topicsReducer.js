@@ -8,24 +8,22 @@ function topicsReducer(state = defaultState, action) {
       } else {
         return action.data;
       }
+    case "UPDATE_TOPIC":
+      return {
+        ...state,
+        object: {
+          ...state.object,
+          [action.data.id]: {
+            ...action.data,
+            comments: action.data.comments.reverse(),
+          },
+        },
+      };
     case "UPDATE_TOPICS_PAGE":
       return {
         ...action.data,
         data: [...state.data, ...action.data.data],
         object: { ...state.object, ...action.data.object },
-      };
-    case "UPDATE_TOPIC_COMMENTS_PAGE":
-      return {
-        ...state,
-        object: {
-          [action.data.slug]: {
-            ...action.data,
-            comments: [
-              ...action.data.comments.reverse(),
-              ...state.object[action.data.slug].comments,
-            ],
-          },
-        },
       };
     case "ADD_TOPIC":
       const sliced = state.data.slice(0, state.data.length - 1);
@@ -34,15 +32,30 @@ function topicsReducer(state = defaultState, action) {
         data: [action.data, ...sliced],
         object: {
           ...state.object,
-          [action.data.slug]: action.data,
+          [action.data.id]: action.data,
         },
       };
+    case "UPDATE_TOPIC_COMMENTS_PAGE":
+      return {
+        ...state,
+        object: {
+          ...state.object,
+          [action.data.id]: {
+            ...action.data,
+            comments: [
+              ...action.data.comments.reverse(),
+              ...state.object[action.data.id].comments,
+            ],
+          },
+        },
+      };
+
     case "ADD_COMMENT_TO_TOPIC":
-      const slug = action.data.topic.slug;
+      const slug = action.data.topic_id;
+
+      let sl = [];
 
       const { comments } = state.object[slug];
-
-      let sl;
 
       if (comments.length == 12) {
         sl = comments.slice(1, 12);
@@ -62,22 +75,12 @@ function topicsReducer(state = defaultState, action) {
           ...state.object,
           [slug]: {
             ...state.object[slug],
-            next_page_url: action.data.topic.next_page_url,
+            next_page_url: `/api/topics/${slug}?page=2`,
             comments: [...sl, action.data],
           },
         },
       };
-    case "UPDATE_TOPIC":
-      return {
-        ...state,
-        object: {
-          ...state.object,
-          [action.data.slug]: {
-            ...action.data,
-            comments: action.data.comments.reverse(),
-          },
-        },
-      };
+
     default:
       return state;
   }

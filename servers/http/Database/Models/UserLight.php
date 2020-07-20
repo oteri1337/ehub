@@ -4,7 +4,7 @@ namespace Server\Database\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class LightUser extends Model
+class UserLight extends Model
 {
 
     protected $table = 'users';
@@ -21,6 +21,9 @@ class LightUser extends Model
         'updated_at',
         'pin',
         'verified',
-        'id'
+        'id',
+        'topics_count',
+        'nse_number',
+        'next_page_url'
     ];
 }

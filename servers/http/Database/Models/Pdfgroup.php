@@ -20,7 +20,7 @@ class Pdfgroup extends Model
     public function getNextPageUrlAttribute()
     {
 
-        $count = $this->pdfs->count();
+        $count = count($this->pdfs);
 
         if ($count === 0 || $count < 12) {
             return null;

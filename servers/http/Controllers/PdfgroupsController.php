@@ -2,7 +2,6 @@
 
 namespace Server\Controllers;
 
-use Illuminate\Database\Eloquent\Collection;
 use Server\Database\Models\Pdfgroup;
 use Server\Library\Controllers\NewApiController;
 
@@ -15,24 +14,7 @@ class PdfgroupsController extends NewApiController
         $this->readBy = 'slug';
         $this->searchBy = 'title';
         $this->model = new Pdfgroup;
-        $this->eagerRead = ['pdfs' => function ($pdfs) {
-            $pdfs->paginate(12);
-        }];
         $this->eagerList = ['pdfs'];
-    }
-
-    public function modifyList($list)
-    {
-
-        foreach ($list as $li) {
-            $pdfs = $li->pdfs->slice(0, 12);
-
-            unset($li->pdfs);
-
-            $li->pdfs = $pdfs;
-        }
-
-        return $list;
     }
 
     public function createRules($body)
@@ -51,33 +33,34 @@ class PdfgroupsController extends NewApiController
         return $this->filter($body, ['title', 'slug']);
     }
 
-    // public function afterCreate($row)
-    // {
-    //     $pdfs = $row->pdfs()->paginate(12);
-    //     $row->pdfs = $pdfs;
-    //     return $row;
-    // }
+    public function modifyList($list)
+    {
 
-    // public function list($request, $response)
-    // {
-    //     // $builder = $this->model->with(['pdfs']);
+        foreach ($list as $li) {
 
-    //     $data = $this->model->paginate(12);
+            $li->pdfs_count = $li->pdfs->count();
 
-    //     // $data->pdfs()->paginate(12)
+            $pdfs = $li->pdfs->slice(0, 12);
 
-    //     // $this->model->pdfs()->paginate(12);
+            unset($li->pdfs);
 
-    //     // $paginated = $builder->paginate(12);
+            $li->pdfs = $pdfs;
+        }
 
-    //     $this->data['data'] = $data;
+        return $list;
+    }
 
-    //     // // $collection = $collection->keyBy($this->readBy);
+    public function lazyLoadRelationships($row)
+    {
 
-    //     // // $paginated['object'] = $collection;
-    //     // $this->data['object'] = $collection;
+        $paginator = $row->pdfs()->paginate(12);
 
-    //     $response->getBody()->write(json_encode($this->data));
-    //     return $response->withHeader('Content-Type', 'application/json');
-    // }
+        $row->pdfs = $paginator->items();
+
+        $row->pdfs_count = $paginator->total();
+
+        $row->next_page_url = $paginator->nextPageUrl();
+
+        return $row;
+    }
 }

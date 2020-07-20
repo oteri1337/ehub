@@ -39,11 +39,13 @@ function MessageFormComponent({ onSubmit, onImage, onDocument }) {
     if (!result.cancelled) {
       const formData = new FormData();
 
-      formData.append("image", {
+      formData.append("data", {
         uri: result.uri,
         type: "image/jpeg",
         name: `${name}.jpg`,
       });
+
+      formData.append("type", 1);
 
       onImage(formData);
 

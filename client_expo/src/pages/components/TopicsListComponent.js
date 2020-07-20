@@ -5,13 +5,23 @@ import { Text, ListItem, Left, View, Body, Icon, Spinner } from "native-base";
 
 class SingleTopicComponent extends React.PureComponent {
   render() {
-    const { item, navigation } = this.props;
+    const { item, navigation, lookup } = this.props;
 
     console.log("rendering topic ", item.id);
 
     const onPress = () => {
       navigation.navigate("TopicsReadPage", item);
     };
+
+    let comments = item.comments_count;
+
+    if (item.comments.length > comments) {
+      comments = item.comments.length;
+    }
+
+    // if (lookup.comments.length > comments) {
+    //   comments = lookup.comments.length;
+    // }
 
     return (
       <ListItem thumbnail onPress={onPress}>
@@ -41,7 +51,7 @@ class SingleTopicComponent extends React.PureComponent {
             {item.data?.replace(/\s/g, " ").substring(0, 70)}
           </Text>
           <Text note style={{ marginTop: 3 }}>
-            {item.comments_count} Comments
+            {comments} Comments
           </Text>
         </Body>
       </ListItem>
@@ -53,7 +63,13 @@ const keyExtractor = (item) => {
   return item.id.toString();
 };
 
-function TopicsListComponent({ list, refreshing, onRefresh, onEndReached }) {
+function TopicsListComponent({
+  list,
+  refreshing,
+  onRefresh,
+  onEndReached,
+  ListHeaderComponent = <React.Fragment />,
+}) {
   const navigation = useNavigation();
   const { data } = list;
 
@@ -69,7 +85,15 @@ function TopicsListComponent({ list, refreshing, onRefresh, onEndReached }) {
   };
 
   const renderItem = ({ item }) => {
-    return <SingleTopicComponent item={item} navigation={navigation} />;
+    // const lookup = list.object[item.id];
+
+    return (
+      <SingleTopicComponent
+        item={item}
+        // lookup={lookup}
+        navigation={navigation}
+      />
+    );
   };
 
   const onEndReachedThreshold = 0.1;
@@ -83,6 +107,7 @@ function TopicsListComponent({ list, refreshing, onRefresh, onEndReached }) {
         renderItem,
         keyExtractor,
         onEndReached,
+        ListHeaderComponent,
         ListFooterComponent,
         onEndReachedThreshold,
       }}

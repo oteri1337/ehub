@@ -13,7 +13,6 @@ class TopicsController extends NewApiController
     {
         parent::__construct();
         $this->model = new Topic;
-        $this->readBy = 'slug';
         $this->searchBy = 'title';
         $this->eagerList = ['user', 'comments.user'];
     }
@@ -94,14 +93,13 @@ class TopicsController extends NewApiController
     {
         $body = $request->getParsedBody();
         $user = $request->getAttribute('user');
-        $user_id = $user->id;
 
-        $topic_id = $body['topic_id'] ?? '';
-        $data = $body['data'] ?? '';
+        $id = $body['id'] ?? '';
+        $type = $body['type'] ?? 0;
+        $data = $body['data'] ??  $_FILES['data']['name'] ?? '';
 
         $rules = [
-            'user id'  => [$user_id, 'required'],
-            'topic id' => [$topic_id, 'required'],
+            'id' => [$id, 'required'],
             'data' => [$data, 'required'],
         ];
 
@@ -115,19 +113,42 @@ class TopicsController extends NewApiController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $topic = $this->model->where('id', $topic_id)->first();
+        $parent = $this->model->where('id', $id)->first();
 
-        if (!$topic) {
-            $this->data['errors'] = ['topic not found'];
+        if (!$parent) {
+            $this->data['errors'] = ['Not found'];
             $response->getBody()->write(json_encode($this->data));
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $comment = new Topiccomment(['user_id' => $user_id, 'data' => $data]);
+        // image validation
+        if ($type == 1) {
+            if ($_FILES['data']['size'] === 0) {
+                $this->data['errors'] = ['Image Rejected'];
+                $response->getBody()->write(json_encode($this->data));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
 
-        $data = $topic->comments()->save($comment);
+            $rules = ['image' => [$data, 'required|imageformat']];
 
-        $data = Topiccomment::where('id', $data->id)->with(['user', 'topic'])->first();
+            $this->validator->validate($rules);
+
+            $errors = $this->validator->errors()->all();
+
+            if ($errors) {
+                $this->data['errors'] = $errors;
+                $response->getBody()->write(json_encode($this->data));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            $data = $this->uploadImage($_FILES['data']);
+        }
+
+        $comment = new Topiccomment(['user_id' => $user->id, 'data' => $data, 'type' => $type]);
+
+        $data = $parent->comments()->save($comment);
+
+        // $data = Topiccomment::where('id', $data->id)->with(['user', 'event'])->first();
 
         $this->data['data'] = $data;
         $response->getBody()->write(json_encode($this->data));
@@ -232,75 +253,5 @@ class TopicsController extends NewApiController
         $response->getBody()->write(json_encode($this->data));
 
         return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function imageComment($request, $response)
-    {
-        $body = $request->getParsedBody();
-        $user = $request->getAttribute('user');
-        $user_id = $user->id;
-
-        $topic_id = $body['topic_id'] ?? '';
-
-        $rules = [
-            'user id'  => [$user_id, 'required'],
-            'topic id' => [$topic_id, 'required'],
-        ];
-
-        $this->validator->validate($rules);
-
-        $errors = $this->validator->errors()->all();
-
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $topic = $this->model->where('id', $topic_id)->first();
-
-        if (!$topic) {
-            $this->data['errors'] = ['topic not found'];
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $image = $_FILES['image']['name'] ?? '';
-
-        if ($_FILES['image']['size'] === 0) {
-            $this->data['errors'] = ['Image Rejected'];
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $rules = ['image' => [$image, 'required|imageformat']];
-
-        $this->validator->validate($rules);
-
-        $errors = $this->validator->errors()->all();
-
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $image = $this->uploadImage($_FILES['image']);
-
-        $comment = new Topiccomment(['user_id' => $user_id, 'type' => 1, 'data' => $image]);
-
-        $data =  $topic->comments()->save($comment);
-
-        $data = Topiccomment::where('id', $data->id)->with(['user', 'topic'])->first();
-
-        // $row =  $this->model->where("id", $topic_id)->with($this->eagerRead)->first();
-
-        $this->data['data'] = $data;
-        $response->getBody()->write(json_encode($this->data));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function documentComment($request, $response)
-    {
     }
 }

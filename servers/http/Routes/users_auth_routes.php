@@ -27,5 +27,3 @@ $app->patch('/api/users/auth/password', UsersController::class . ':updatePasswor
 $app->get('/api/users/auth/token/email', UsersController::class . ':tokenForNewEmail')->add($user_logged_in);
 
 $app->post('/api/users/auth/token/password/update', UsersController::class . ':tokenForPasswordUpdate');
-
-// $app->post('/api/users/auth/token/device/verify', UsersController::class . ':tokenForDeviceVerify')->add($user_logged_in);

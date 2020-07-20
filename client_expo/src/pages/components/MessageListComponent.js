@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "native-base";
+import { View, Text, Icon } from "native-base";
 import { BACKEND_URL } from "../../../env";
 import { useNavigation } from "@react-navigation/native";
 import { Image, FlatList, TouchableWithoutFeedback } from "react-native";
@@ -14,43 +14,16 @@ const s = {
   backgroundColor: "white",
 };
 
-function ItemPureFunctional({ message, list }) {
+function ItemPureFunctional({ message }) {
   const navigation = useNavigation();
   const { state } = React.useContext(Store);
-  const tag = "Comment";
 
-  let comment = {};
+  let marginLeft = 0;
+  let marginRight = 25;
 
-  if (list?.image) {
-    comment = {
-      tag,
-      message,
-      update: {
-        dispatch: "UPDATE_EVENT",
-        body: { event_id: list?.id, id: message.id },
-        endpoint: `/api/events/${list?.slug}/comment`,
-      },
-      deleteData: {
-        dispatch: "UPDATE_EVENT",
-        body: { event_id: list?.id, id: message.id },
-        endpoint: `/api/events/${list?.slug}/comment`,
-      },
-    };
-  } else {
-    comment = {
-      tag,
-      message,
-      update: {
-        dispatch: "UPDATE_TOPIC",
-        body: { topic_id: list?.id, id: message.id },
-        endpoint: `/api/topics/${list?.slug}/comment`,
-      },
-      deleteData: {
-        dispatch: "UPDATE_TOPIC",
-        body: { topic_id: list?.id, id: message.id },
-        endpoint: `/api/topics/${list?.slug}/comment`,
-      },
-    };
+  if (message.user_id === state.user.id) {
+    marginLeft = 25;
+    marginRight = 0;
   }
 
   return React.useMemo(() => {
@@ -61,28 +34,32 @@ function ItemPureFunctional({ message, list }) {
       return (
         <TouchableWithoutFeedback
           onPress={() => {
-            navigation.navigate("CommentsReadPage", comment);
+            if (!message.chat_id) {
+              navigation.navigate("CommentsReadPage", message);
+            }
           }}
         >
           <View style={{ ...s, marginLeft: 25 }}>
             <Text>{message.data}</Text>
             <Text note style={{ marginTop: 5 }}>
-              {message.id} {message.created_at}
+              {message.created_at}
             </Text>
           </View>
         </TouchableWithoutFeedback>
       );
     }
 
-    // user image message
-    if (message.user_id === state.user.id && message.type === 1) {
+    // image message
+    if (message.type == 1) {
       return (
         <TouchableWithoutFeedback
           onPress={() => {
-            navigation.navigate("CommentsReadPage", comment);
+            if (!message.chat_id) {
+              navigation.navigate("CommentsReadPage", message);
+            }
           }}
         >
-          <View style={{ ...s, marginLeft: 25 }}>
+          <View style={{ ...s, marginLeft, marginRight }}>
             <Image
               source={{
                 uri: `${BACKEND_URL}/uploads/images/${message.data}`,
@@ -97,12 +74,32 @@ function ItemPureFunctional({ message, list }) {
       );
     }
 
-    // normal message
+    //  pdf message
+    if (message.type === 2) {
+      return (
+        <TouchableWithoutFeedback
+          onPress={() => {
+            navigation.navigate("CommentsReadPage", message);
+          }}
+        >
+          <View style={{ ...s, marginRight, marginLeft }}>
+            <Text>
+              <Icon name="book" type="Feather" /> {message.data}
+            </Text>
+            <Text note style={{ marginTop: 5 }}>
+              {message.created_at}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      );
+    }
+
+    // others message
     return (
       <View style={{ ...s, marginRight: 25 }}>
         {message.user ? (
           <Text note style={{ marginBottom: 5 }}>
-            {message.id} {message.user.first_name} {message.user.last_name}
+            {message.user.first_name} {message.user.last_name}
           </Text>
         ) : (
           <React.Fragment />
@@ -113,7 +110,7 @@ function ItemPureFunctional({ message, list }) {
         </Text>
       </View>
     );
-  }, [list]);
+  }, [message]);
 }
 
 function MessageListComponent({
@@ -128,15 +125,15 @@ function MessageListComponent({
 
   const renderLoadMore = () => {
     if (!refreshing) {
-      if (list.next_page_url) {
+      if (list.next_page_url && list.comments_count > 12) {
         return (
           <Text
-            style={{ padding: 10 }}
+            style={{ padding: 10, textAlign: "center" }}
             onPress={() => {
               send(list.next_page_url, next_dispatch);
             }}
           >
-            Load More Comments
+            Load Older
           </Text>
         );
       }
@@ -147,25 +144,13 @@ function MessageListComponent({
   };
 
   const ListHeaderComponent = () => {
-    if (list?.data.length) {
-      const tag = "Topic";
-
-      const comment = {
-        tag,
-        message: { data: list.data, id: list.id },
-        update: {
-          method: "PATCH",
-          dispatch: "UPDATE_TOPIC",
-          endpoint: `/api/topics/${list.slug}`,
-        },
-      };
-
+    if (list?.data?.length) {
       return (
         <View>
           <TouchableWithoutFeedback
             onPress={() => {
               if (state.user.id == list.user_id) {
-                navigation.navigate("CommentsReadPage", comment);
+                navigation.navigate("CommentsReadPage", list);
               }
             }}
           >
@@ -188,20 +173,11 @@ function MessageListComponent({
             </View>
           </TouchableWithoutFeedback>
           {renderLoadMore()}
-          {/* {data.length > 11 && (
-            <Text
-              style={{ padding: 10 }}
-              onPress={() => {
-                alert("party scatter");
-              }}
-            >
-              Load Older Comments
-            </Text>
-          )} */}
         </View>
       );
     }
-    return <React.Fragment />;
+    console.log("afa");
+    return renderLoadMore();
   };
 
   return (

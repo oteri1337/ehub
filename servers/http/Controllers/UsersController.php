@@ -3,7 +3,6 @@
 namespace Server\Controllers;
 
 use Server\Library\Controllers\AuthController;
-use Server\Database\Models\LightUser;
 use Server\Database\Models\User;
 
 class UsersController extends AuthController
@@ -16,7 +15,7 @@ class UsersController extends AuthController
         $this->model = new User;
         $this->authKey = 'user';
         $this->searchBy = 'first_name';
-        // $this->eagerRead = ['chats.messages'];
+        $this->eagerList = ['topics.comments'];
     }
 
     public function createRules($body)
@@ -44,7 +43,6 @@ class UsersController extends AuthController
         $body['email'] = strtolower($body['email']);
         $body['password'] = sha1($body['password']);
 
-        // $this->data['message'] = "Successful, please check your email for verification link.";
         return $this->filter($body, ['email', 'password', 'push_subscription', 'first_name', 'last_name', 'department']);
     }
 
@@ -55,7 +53,6 @@ class UsersController extends AuthController
         $dob = $body['dob'] ?? '';
         $country = $body['country'] ?? '';
         $street_address = $body['street_address'] ?? '';
-        $currency = $body['currency'] ?? '';
 
 
         return [
@@ -64,19 +61,43 @@ class UsersController extends AuthController
             'date of birth' => [$dob, 'required'],
             'country' => [$country, 'required'],
             'address' => [$street_address, 'required'],
-            'currency' => [$currency, 'required'],
         ];
     }
 
     public function updateBody($body, $row)
     {
-        return $this->filter($body, ['first_name', 'last_name', 'dob', 'country', 'street_address', 'currency', 'mobile_number']);
+        return $this->filter($body, ['first_name', 'last_name', 'dob', 'country', 'street_address',  'mobile_number']);
     }
 
-    // public function loadPivots($row)
-    // {
-    //     foreach ($row->chats as $chat) {
-    //         $chat->recvr = LightUser::where('id', $chat->pivot->recvr_id)->first();
-    //     }
-    // }
+    public function modifyList($list)
+    {
+
+        foreach ($list as $li) {
+
+            $li->topics_count = $li->topics->count();
+
+            $topics = array_reverse($li->topics->slice(0, 12)->toArray());
+
+            unset($li->topics);
+
+            $li->topics = $topics;
+        }
+
+        return $list;
+    }
+
+    public function lazyLoadRelationships($row)
+    {
+
+        $paginator = $row->topics()->with('comments')->paginate(12);
+
+        $row->topics = $paginator->items();
+
+        $row->topics_count = $paginator->total();
+
+        $row->next_page_url = $paginator->nextPageUrl();
+
+
+        return $row;
+    }
 }

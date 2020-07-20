@@ -3,7 +3,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class TopicSeeder extends AbstractSeed
+class ChatmessageSeeder extends AbstractSeed
 {
     /**
      * Run Method.
@@ -15,26 +15,18 @@ class TopicSeeder extends AbstractSeed
      */
     public function run()
     {
-
-        $color = ['#2588ed', '#fe653b', '#8299cd', '#00adef'];
-
-        $icon = ["rocket1", "bulb1", "wallet", "team", "car"];
-
         $faker = Faker\Factory::create();
         $data = [];
-        for ($i = 0; $i < 24; $i++) {
+        for ($i = 0; $i < 35; $i++) {
             $data[] = [
-                'slug' => $faker->slug,
-                'title' => $faker->name,
-                'data' => $faker->text(1000),
-                'color' => $color[rand(0, 3)],
-                'icon' => $icon[rand(0, 4)],
-                'user_id' => 1,
+                'chat_id' => rand(1, 2),
+                'user_id' => rand(1, 2),
+                'data' => $faker->text,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ];
         }
 
-        $this->table('topics')->insert($data)->save();
+        $this->table('chatmessages')->insert($data)->save();
     }
 }

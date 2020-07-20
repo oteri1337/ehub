@@ -27,6 +27,7 @@ import PdfsListPage from "../pages/user/pdfs/PdfsListPage";
 import PdfsReadPage from "../pages/user/pdfs/PdfsReadPage";
 import PdfsSavedPage from "../pages/user/pdfs/PdfsSavedPage";
 import PdfsPreviewPage from "../pages/user/pdfs/PdfsPreviewPage";
+import PdfsCommentPage from "../pages/user/pdfs/PdfsCommentPage";
 
 import TopicsReadPage from "../pages/user/TopicsReadPage";
 import TopicsCreatePage from "../pages/user/TopicsCreatePage";
@@ -42,10 +43,6 @@ function Routes() {
 
   let modalNav = {
     cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-  };
-
-  const onPress = () => {
-    navigation.navigate("AccountPage");
   };
 
   if (Platform.OS == "ios") {
@@ -72,6 +69,7 @@ function Routes() {
         <Screen name="PdfsReadPage" component={PdfsReadPage}/>
         <Screen name="PdfsSavedPage" component={PdfsSavedPage}/>
         <Screen name="PdfsPreviewPage" component={PdfsPreviewPage} />
+        <Screen name="PdfsCommentPage" component={PdfsCommentPage} />
 
         <Screen name="TopicsReadPage" component={TopicsReadPage}  />
         <Screen name="TopicsCreatePage" component={TopicsCreatePage} />

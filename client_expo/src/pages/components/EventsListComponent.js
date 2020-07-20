@@ -16,7 +16,7 @@ import {
 
 class SingleTopicComponent extends React.PureComponent {
   render() {
-    const { item, navigation } = this.props;
+    const { item, navigation, lookup } = this.props;
 
     console.log("rendering event ", item.id);
 
@@ -25,6 +25,12 @@ class SingleTopicComponent extends React.PureComponent {
     };
 
     const uri = `${BACKEND_URL}/uploads/images/${item.image}`;
+
+    let comments = item.comments_count;
+
+    if (lookup.comments.length > comments) {
+      comments = lookup.comments.length;
+    }
 
     return (
       <TouchableWithoutFeedback onPress={onPress}>
@@ -66,9 +72,7 @@ class SingleTopicComponent extends React.PureComponent {
                   type="Feather"
                   style={{ color: "black" }}
                 />
-                <Text style={{ color: "black" }}>
-                  {item.comments_count} Comments
-                </Text>
+                <Text style={{ color: "black" }}>{comments} Comments</Text>
               </Button>
             </Right>
           </CardItem>
@@ -98,7 +102,15 @@ function EventsListComponent({ list, refreshing, onRefresh, onEndReached }) {
   };
 
   const renderItem = ({ item }) => {
-    return <SingleTopicComponent item={item} navigation={navigation} />;
+    const lookup = list.object[item.id];
+
+    return (
+      <SingleTopicComponent
+        item={item}
+        lookup={lookup}
+        navigation={navigation}
+      />
+    );
   };
 
   const onEndReachedThreshold = 0.1;

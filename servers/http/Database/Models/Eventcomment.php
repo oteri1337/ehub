@@ -9,13 +9,14 @@ class Eventcomment extends Model
 
     protected $fillable = [
         'data',
+        'type',
         'user_id',
         'event_id'
     ];
 
     public function user()
     {
-        return $this->belongsTo(LightUser::class);
+        return $this->belongsTo(UserLight::class);
     }
 
     public function event()
