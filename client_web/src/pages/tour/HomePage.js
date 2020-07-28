@@ -20,7 +20,7 @@ function HomePage() {
           <br />
           <a
             className="btn btn-large"
-            href="https://expo.io/@oteri2021/eHUB"
+            href="https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40oteri2021/eHUB-956471d948da423b9a164ca5c3afa0a9-signed.apk"
             target="_blank"
           >
             DOWNLOAD FOR ANDROID

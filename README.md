@@ -1,6 +1,6 @@
 # Links
 
-[APK Link](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40oteri2021/eHUB-54d67f3486b9416a99d61b3c984d1863-signed.apk)
+[APK Link](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40oteri2021/eHUB-956471d948da423b9a164ca5c3afa0a9-signed.apk)
 
 [Expo Link](https://expo.io/@oteri2021/eHUB)
 
