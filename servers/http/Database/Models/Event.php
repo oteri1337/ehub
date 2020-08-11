@@ -11,6 +11,7 @@ class Event extends Model
         'slug',
         'title',
         'data',
+        'image'
     ];
 
     public function comments()

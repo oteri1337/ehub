@@ -19,7 +19,7 @@ class AdminSeeder extends AbstractSeed
         $data = [];
         // for ($i = 0; $i < 1; $i++) {
         $data[] = [
-            'email'         => "admin@ehub.com",
+            'email'         => "admin@ehubcore.com",
             'password'      => sha1("password"),
             'first_name' => "Jennifer",
             'last_name' => "Ugwu",

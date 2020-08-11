@@ -13,23 +13,23 @@ function AdminHomePage() {
     <AdminContainerComponent bread={nav}>
       <ul className="collection">
         <li className="collection-item">
-          <Link to="/control/pdfs/index.html" className="app-list-link">
-            <span className="material-icons notranslate">book</span>
-            <b>Pdfs</b>
-          </Link>
-        </li>
-
-        <li className="collection-item">
-          <Link to="/control/news/list.html" className="app-list-link">
-            <span className="material-icons notranslate">notes</span>
-            <b>News</b>
+          <Link to="/control/events/list.html" className="app-list-link">
+            <span className="material-icons notranslate">home</span>
+            <b>Home</b>
           </Link>
         </li>
 
         <li className="collection-item">
           <Link to="/control/topics/list.html" className="app-list-link">
-            <span className="material-icons notranslate">forum</span>
-            <b>Topics</b>
+            <span className="material-icons notranslate">adjust</span>
+            <b>Forum</b>
+          </Link>
+        </li>
+
+        <li className="collection-item">
+          <Link to="/control/pdfs/index.html" className="app-list-link">
+            <span className="material-icons notranslate">archive</span>
+            <b>Library</b>
           </Link>
         </li>
 
@@ -38,7 +38,7 @@ function AdminHomePage() {
             <span className="material-icons notranslate">
               supervised_user_circle
             </span>
-            <b>Users</b>
+            <b>Community</b>
           </Link>
         </li>
       </ul>

@@ -1,6 +1,6 @@
 let appCache;
-const appCacheKey = "xpressmining.com-2020-04-17";
-const domain = "https://xpressmining.com/";
+const appCacheKey = "ehubcore.com-2020-07-29";
+const domain = "https://ehubcore.com/";
 
 self.addEventListener("push", (event) => {
   const { subject, body } = event.data.json();

@@ -89,11 +89,21 @@ function PdfsReadPage({ match }) {
               <div>
                 <br />
                 <Link to={`/control/pdfs/${data.slug}/update`} className="btn">
-                  Update Pdf
+                  Update Data
                 </Link>
                 <br />
                 <br />
                 <Link
+                  to={{
+                    pathname: `/control/pdfs/${data.slug}/update-groups`,
+                    data,
+                    nav,
+                  }}
+                  className="btn"
+                >
+                  Update Groups
+                </Link>
+                {/* <Link
                   to={{
                     pathname: `/control/pdfs/${data.slug}/updateimg`,
                     nav,
@@ -106,16 +116,7 @@ function PdfsReadPage({ match }) {
                 <br />
                 <br />
 
-                <Link
-                  to={{
-                    pathname: `/control/pdfs/${data.slug}/update-groups`,
-                    data,
-                    nav,
-                  }}
-                  className="btn"
-                >
-                  Update Groups
-                </Link>
+ */}
 
                 <br />
                 {renderCategories()}

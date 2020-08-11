@@ -54,21 +54,11 @@ function SideNavComponent() {
                 <ul>
                   <li>
                     <Link
-                      to="/control/pdfs/list.html"
+                      to="/control/events/list.html"
                       className="sidenav-close"
                     >
-                      <span className="material-icons notranslate">book</span>
-                      Pdfs
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link
-                      to="/control/news/list.html"
-                      className="sidenav-close"
-                    >
-                      <span className="material-icons notranslate">notes</span>
-                      News
+                      <span className="material-icons notranslate">home</span>
+                      Home
                     </Link>
                   </li>
 
@@ -77,8 +67,20 @@ function SideNavComponent() {
                       to="/control/topics/list.html"
                       className="sidenav-close"
                     >
-                      <span className="material-icons notranslate">forum</span>
-                      Topics
+                      <span className="material-icons notranslate">adjust</span>
+                      Forum
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link
+                      to="/control/pdfs/index.html"
+                      className="sidenav-close"
+                    >
+                      <span className="material-icons notranslate">
+                        archive
+                      </span>
+                      Library
                     </Link>
                   </li>
 
@@ -90,7 +92,7 @@ function SideNavComponent() {
                       <span className="material-icons notranslate">
                         supervised_user_circle
                       </span>
-                      Users
+                      Community
                     </Link>
                   </li>
                 </ul>

@@ -7,20 +7,20 @@ import FloatingButtonComponent from "components/FloatingButtonComponent";
 import SecondaryButtonComponent from "components/SecondaryButtonComponent";
 import AdminContainerComponent from "components/container/AdminContainerComponent";
 
-function NewsListPage() {
-  const url = "/api/news";
+function EventsListPage() {
+  const url = "/api/events";
 
-  const dispatch = "UPDATE_NEWS";
+  const dispatch = "UPDATE_EVENTS";
 
   const { state } = getRequestThenDispatch(url, dispatch);
 
-  const list = state.news;
+  const list = state.events;
 
   const { search_keys } = list;
 
-  const title = "Add News";
+  const title = "Add Event";
 
-  const to = "/control/news/create.html";
+  const to = "/control/events/create.html";
 
   const nav = [
     {
@@ -28,11 +28,7 @@ function NewsListPage() {
       link: "/control/index.html",
     },
     {
-      label: "News",
-      link: "/control/news/list.html",
-    },
-    {
-      label: "List",
+      label: "Events",
     },
   ];
 
@@ -46,11 +42,12 @@ function NewsListPage() {
     };
 
     return (
-      <li key={props.id} className="collection-item app-item avatar">
+      <li key={props.id} className="collection-item avatar">
         <img src={`/uploads/images/${props.image}`} className="circle" />
-        <Link to={`/control/news/${props.slug}`} className="props-title">
+        <Link to={`/control/events/${props.id}`} className="props-title">
           {props.title}
         </Link>
+        <p className="grey-text">{props.comments_count} Comments</p>
         <div className="secondary-content">
           <SecondaryButtonComponent
             {...{ type, url, dispatch, body, title, beforeSubmit }}
@@ -69,4 +66,4 @@ function NewsListPage() {
   );
 }
 
-export default NewsListPage;
+export default EventsListPage;

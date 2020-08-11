@@ -1,10 +1,9 @@
 import React from "react";
-import Form from "components/RichFormComponent";
-import FileUploadComponent from "components/FileUploadComponent";
+import Form from "components/FormComponent";
 import { sendFormRequestThenDispatch } from "providers/AppProvider";
 import AdminContainerComponent from "components/container/AdminContainerComponent";
 
-function NewsCreatePage({ history }) {
+function EventsCreatePage({ history }) {
   const { request, callBack } = sendFormRequestThenDispatch();
 
   const nav = [
@@ -13,49 +12,45 @@ function NewsCreatePage({ history }) {
       link: "/control/index.html",
     },
     {
-      label: "News",
-      link: "/control/news/list.html",
+      label: "Events",
+      link: "/control/events/list.html",
     },
     {
       label: "Create",
     },
   ];
 
-  const formObjects = [
+  const formArray = [
     {
       id: "title",
     },
     {
-      id: "content",
-      type: "richeditor",
+      id: "data",
+      type: "textarea",
     },
   ];
 
   const onSuccess = () => {
-    history.push(`/control/news/list.html`);
+    history.push(`/control/events/list.html`);
   };
 
-  const submitCallback = async (body) => {
+  const onSubmit = async (body) => {
     let formData = new FormData();
 
     for (let key in body) {
       formData.append(key, body[key]);
     }
 
-    callBack("/api/news", "UPDATE_NEW", formData, onSuccess);
+    callBack("/api/events", "UPDATE_EVENT", formData, onSuccess);
   };
-
-  const text = "Post";
 
   return (
     <AdminContainerComponent bread={nav}>
       <div className="card-panel">
-        <FileUploadComponent type="image" />
-        <FileUploadComponent type="video" />
-        <Form {...{ formObjects, request, submitCallback, text }} />
+        <Form {...{ formArray, request, onSubmit }} />
       </div>
     </AdminContainerComponent>
   );
 }
 
-export default NewsCreatePage;
+export default EventsCreatePage;

@@ -23,24 +23,19 @@ class EventsController extends NewApiController
 
         $title = $body['title'] ?? '';
         $content = $body['data'] ?? '';
-        $user_id = $body['user_id'] ?? '';
 
         return [
             'title' => [$title, 'required'],
             'data' => [$content, 'required'],
-            'user id' => [$user_id, 'required']
         ];
     }
 
     public function beforeCreate($body)
     {
-        $color = ['#2588ed', '#fe653b', '#8299cd', '#00adef'];
-
-        $body['color'] = $color[rand(0, 3)];
 
         $body["slug"] = $this->slugify($body["title"]);
 
-        return $this->filter($body, ['title', 'data', 'slug', 'user_id', 'color']);
+        return $this->filter($body, ['title', 'data', 'slug', 'user_id']);
     }
 
     public function lazyLoadRelationships($row)
@@ -240,69 +235,44 @@ class EventsController extends NewApiController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    // public function imageComment($request, $response)
-    // {
-    //     $body = $request->getParsedBody();
-    //     $user = $request->getAttribute('user');
-    //     $user_id = $user->id;
+    public function updateImage($request, $response)
+    {
+        $body = $request->getParsedBody();
+        $id = $body['id'] ?? '';
+        $image = $_FILES['image']['name'] ?? '';
+        $image_size = $_FILES['image']['size'] ?? 0;
 
-    //     $event_id = $body['event_id'] ?? '';
+        $rules = [
+            'id' => [$id, 'required'],
+            'image' => [$image, 'required|imageformat'],
+            'image size' => [$image_size, 'imagesize'],
+        ];
 
-    //     $rules = [
-    //         'user id'  => [$user_id, 'required'],
-    //         'topic id' => [$event_id, 'required'],
-    //     ];
+        $this->validator->validate($rules);
+        $errors = $this->validator->errors()->all();
 
-    //     $this->validator->validate($rules);
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
 
-    //     $errors = $this->validator->errors()->all();
+        $row = $this->model->where('id', $id)->first();
 
-    //     if ($errors) {
-    //         $this->data['errors'] = $errors;
-    //         $response->getBody()->write(json_encode($this->data));
-    //         return $response->withHeader('Content-Type', 'application/json');
-    //     }
+        if (!$row) {
+            $this->data['errors'] = ["not found"];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
 
-    //     $event = $this->model->where('id', $event_id)->first();
+        $this->removeImage($row->image);
+        $image = $this->uploadImage($_FILES['image']);
 
-    //     if (!$event) {
-    //         $this->data['errors'] = ['event not found'];
-    //         $response->getBody()->write(json_encode($this->data));
-    //         return $response->withHeader('Content-Type', 'application/json');
-    //     }
+        $row->update(['image' => $image]);
 
-    //     $image = $_FILES['image']['name'] ?? '';
-
-    //     if ($_FILES['image']['size'] === 0) {
-    //         $this->data['errors'] = ['Image Rejected'];
-    //         $response->getBody()->write(json_encode($this->data));
-    //         return $response->withHeader('Content-Type', 'application/json');
-    //     }
-
-    //     $rules = ['image' => [$image, 'required|imageformat']];
-
-    //     $this->validator->validate($rules);
-
-    //     $errors = $this->validator->errors()->all();
-
-    //     if ($errors) {
-    //         $this->data['errors'] = $errors;
-    //         $response->getBody()->write(json_encode($this->data));
-    //         return $response->withHeader('Content-Type', 'application/json');
-    //     }
-
-    //     $image = $this->uploadImage($_FILES['image']);
-
-    //     $comment = new Eventcomment(['user_id' => $user_id, 'type' => 1, 'data' => $image]);
-
-    //     $data =  $event->comments()->save($comment);
-
-    //     $data = Eventcomment::where('id', $data->id)->with(['user', 'event'])->first();
-
-    //     // $row =  $this->model->where("id", $event_id)->with($this->eagerRead)->first();
-
-    //     $this->data['data'] = $data;
-    //     $response->getBody()->write(json_encode($this->data));
-    //     return $response->withHeader('Content-Type', 'application/json');
-    // }
+        $this->data['data'] = $row;
+        $this->data['message'] = "Update Successful";
+        $response->getBody()->write(json_encode($this->data));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 }

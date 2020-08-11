@@ -17,7 +17,11 @@ $app->get('/api/events', EventsController::class . ':list');
 
 $app->post('/api/events', EventsController::class . ':create')->add($admin_logged_in);
 
+$app->patch('/api/events', EventsController::class . ':update')->add($admin_logged_in);
+
 $app->delete('/api/events', EventsController::class . ':delete')->add($admin_logged_in);
+
+$app->post('/api/events/image', EventsController::class . ':updateImage')->add($admin_logged_in);
 
 $app->get('/api/events/search/{attr}', EventsController::class . ':search');
 
