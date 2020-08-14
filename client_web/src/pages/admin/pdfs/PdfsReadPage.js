@@ -73,11 +73,13 @@ function PdfsReadPage({ match }) {
     );
   };
 
+  const rootPath = `/control/pdfs/${data.slug}/`;
+
   return (
     <ContainerComponent bread={nav}>
       <div className="card-panel">
         <div className="row">
-          <div className="col l4 s12">
+          <div className="col l3 s12">
             <center>
               <img
                 src={`/uploads/images/${data.image_name}`}
@@ -86,45 +88,37 @@ function PdfsReadPage({ match }) {
                 height="140px"
               />
 
-              <div>
-                <br />
-                <Link to={`/control/pdfs/${data.slug}/update`} className="btn">
-                  Update Data
-                </Link>
-                <br />
-                <br />
-                <Link
-                  to={{
-                    pathname: `/control/pdfs/${data.slug}/update-groups`,
-                    data,
-                    nav,
-                  }}
-                  className="btn"
-                >
-                  Update Groups
-                </Link>
-                {/* <Link
-                  to={{
-                    pathname: `/control/pdfs/${data.slug}/updateimg`,
-                    nav,
-                    data,
-                  }}
-                  className="btn"
-                >
-                  Update Image
-                </Link>
-                <br />
-                <br />
-
- */}
-
-                <br />
-                {renderCategories()}
-              </div>
+              <div>{renderCategories()}</div>
             </center>
           </div>
-          <div className="col l8 s12">
-            <p dangerouslySetInnerHTML={{ __html: data.description }}></p>
+          <div className="col l9 s12">
+            <a
+              target="_blank"
+              href={`/uploads/pdfs/${data.file_name}`}
+              className="btn"
+            >
+              View Pdf
+            </a>
+            <Link to={`${rootPath}update-file`} className="btn">
+              Update Pdf
+            </Link>
+            <Link to={`${rootPath}update`} className="btn">
+              Update Data
+            </Link>
+            <Link to={`${rootPath}update-image`} className="btn">
+              Update Image
+            </Link>
+            <Link
+              to={{
+                pathname: `${rootPath}update-groups`,
+                data,
+              }}
+              className="btn"
+            >
+              Update Groups
+            </Link>
+
+            <pre>{data.description}</pre>
             <table className="striped">
               <tbody>{renderRow}</tbody>
             </table>

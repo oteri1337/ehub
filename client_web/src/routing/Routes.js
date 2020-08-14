@@ -19,6 +19,18 @@ import UsersReadPage from "../pages/admin/users/UsersReadPage";
 import UsersSendPushPage from "../pages/admin/users/message/SendPushPage";
 import UsersSendEmailPage from "../pages/admin/users/message/SendEmailPage";
 
+import PdfsHomePage from "../pages/admin/pdfs/PdfsHomePage";
+import PdfsListPage from "../pages/admin/pdfs/PdfsListPage";
+import PdfsReadPage from "../pages/admin/pdfs/PdfsReadPage";
+import PdfsCreatePage from "../pages/admin/pdfs/PdfsCreatePage";
+import PdfsUpdatePage from "../pages/admin/pdfs/PdfsUpdatePage";
+import PdfsUpdateFilePage from "../pages/admin/pdfs/PdfsUpdateFilePage";
+import PdfsUpdateImagePage from "../pages/admin/pdfs/PdfsUpdateImagePage";
+import PdfsUpdateGroupsPage from "../pages/admin/pdfs/PdfsUpdateGroupsPage";
+
+import PdfGroupsListPage from "../pages/admin/pdfs/groups/PdfGroupsListPage";
+import PdfGroupsCreatePage from "../pages/admin/pdfs/groups/PdfGroupsCreatePage";
+
 import EventsListPage from "../pages/admin/events/EventsListPage";
 import EventsReadPage from "../pages/admin/events/EventsReadPage";
 import EventsCreatePage from "../pages/admin/events/EventsCreatePage";
@@ -27,16 +39,6 @@ import EventsUpdateImagePage from "../pages/admin/events/EventsUpdateImagePage";
 
 import TopicsListPage from "../pages/admin/topics/TopicsListPage";
 import TopicsReadPage from "../pages/admin/topics/TopicsReadPage";
-
-import PdfsHomePage from "../pages/admin/pdfs/PdfsHomePage";
-import PdfsListPage from "../pages/admin/pdfs/PdfsListPage";
-import PdfsReadPage from "../pages/admin/pdfs/PdfsReadPage";
-import PdfsCreatePage from "../pages/admin/pdfs/PdfsCreatePage";
-import PdfsUpdatePage from "../pages/admin/pdfs/PdfsUpdatePage";
-import PdfsUpdateGroupsPage from "../pages/admin/pdfs/PdfsUpdateGroupsPage";
-
-import PdfGroupsListPage from "../pages/admin/pdfs/groups/PdfGroupsListPage";
-import PdfGroupsCreatePage from "../pages/admin/pdfs/groups/PdfGroupsCreatePage";
 
 function Routes() {
   // prettier-ignore
@@ -72,6 +74,8 @@ function Routes() {
         <AdminRoute exact path="/control/pdfs/create.html" component={PdfsCreatePage} />
         <AdminRoute exact path="/control/pdfs/:slug" component={PdfsReadPage} />
         <AdminRoute exact path="/control/pdfs/:slug/update" component={PdfsUpdatePage} />
+        <AdminRoute exact path="/control/pdfs/:slug/update-file" component={PdfsUpdateFilePage} />
+        <AdminRoute exact path="/control/pdfs/:slug/update-image" component={PdfsUpdateImagePage} />
         <AdminRoute exact path="/control/pdfs/:slug/update-groups" component={PdfsUpdateGroupsPage} />
 
         <AdminRoute exact path="/control/pdfgroups/list.html" component={PdfGroupsListPage} />

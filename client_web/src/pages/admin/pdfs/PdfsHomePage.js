@@ -17,15 +17,15 @@ function PDfsPage() {
     <AdminContainerComponent bread={nav}>
       <ul className="collection">
         <li className="collection-item">
-          <Link to="/control/pdfs/list.html" className="black-text">
-            <span className="material-icons notranslate">book</span>
+          <Link to="/control/pdfs/list.html" className="app-list-link">
+            <span className="material-icons notranslate">archive</span>
             <b>Pdf List</b>
           </Link>
         </li>
 
         <li className="collection-item">
-          <Link to="/control/pdfgroups/list.html" className="black-text">
-            <span className="material-icons notranslate">book</span>
+          <Link to="/control/pdfgroups/list.html" className="app-list-link">
+            <span className="material-icons notranslate">archive</span>
             <b>Pdf Groups</b>
           </Link>
         </li>

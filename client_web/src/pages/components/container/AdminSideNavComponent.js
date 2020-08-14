@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { adminSignOut } from "functions";
 import Office from "images/app/Office.jpg";
 import { Store } from "providers/AppProvider";
-import ThemeChangerSideNavComponent from "../ThemeChangerSideNavComponent";
+import ThemeChangerSideNavComponent from "./ThemeChangerSideNavComponent";
 
 function SideNavComponent() {
   const { state, callReducer } = React.useContext(Store);
@@ -43,6 +43,7 @@ function SideNavComponent() {
             </Link>
           </div>
         </li>
+        <ThemeChangerSideNavComponent />
         <li className="no-padding">
           <ul className="collapsible collapsible-accordion">
             <li className="active">
@@ -134,8 +135,6 @@ function SideNavComponent() {
             </li>
           </ul>
         </li>
-
-        <ThemeChangerSideNavComponent />
       </ul>
     </React.Fragment>
   );

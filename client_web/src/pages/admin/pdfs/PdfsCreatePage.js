@@ -16,6 +16,10 @@ function PdfsCreatePage(props) {
       link: "/control/pdfs/index.html",
     },
     {
+      label: "List",
+      link: "/control/pdfs/list.html",
+    },
+    {
       label: "Upload Pdf",
     },
   ];
@@ -60,7 +64,7 @@ function PdfsCreatePage(props) {
               text="Upload"
             />
           </div>
-          <div className="col l4 s12">Image Preview Goes Here</div>
+          {/* <div className="col l4 s12">Image Preview Goes Here</div> */}
         </div>
       </div>
     </AdminContainerComponent>

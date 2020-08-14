@@ -4,6 +4,14 @@ import { Store } from "providers/AppProvider";
 function ThemeChangerNavComponent() {
   const { callReducer } = React.useContext(Store);
 
+  React.useLayoutEffect(() => {
+    document.addEventListener("DOMContentLoaded", function () {
+      var elems = document.querySelectorAll(".dropdown-trigger");
+      console.log(elems);
+      M.Dropdown.init(elems, { coverTrigger: false, hover: true });
+    });
+  }, []);
+
   return (
     <React.Fragment>
       <li>

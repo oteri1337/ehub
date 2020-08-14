@@ -72,6 +72,25 @@ trait UtilsTrait
         }
     }
 
+    public function removeFile($dir, $name)
+    {
+        unlink($dir . $name);
+    }
+
+    public function uploadFile($dir, $file)
+    {
+        $name = time() . $this->slugify($file['name']);
+
+        try {
+            move_uploaded_file($file['tmp_name'], $dir . $name);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+        return $name;
+    }
+
+
     public function slugify($string)
     {
         $slug = strtolower($string);
@@ -93,18 +112,7 @@ trait UtilsTrait
         return $name;
     }
 
-    public function uploadFile($file, $dir)
-    {
-        $name = time() . $this->slugify($file['name']);
 
-        try {
-            move_uploaded_file($file['tmp_name'], $dir . $name);
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-
-        return $name;
-    }
 
     protected function prepareFiles($files, $id)
     {

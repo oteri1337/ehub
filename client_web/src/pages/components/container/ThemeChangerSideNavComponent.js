@@ -7,9 +7,9 @@ function ThemeChangerSideNavComponent() {
   return (
     <li className="no-padding">
       <ul className="collapsible collapsible-accordion">
-        <li>
+        <li className="active">
           <a className="collapsible-header">
-            THEME
+            Theme
             <i className="material-icons notranslate">arrow_drop_down</i>
           </a>
           <div className="collapsible-body">

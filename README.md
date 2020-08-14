@@ -1,12 +1,10 @@
 # Tasks
 
-Backend
-
-Onboarding
+Single PDF Group Page
 
 Push Notificatons
 
-Single PDF Group Page
+Onboarding
 
 Help and Support
 
@@ -17,6 +15,10 @@ Dark Mode
 Google Play Registration
 
 Webpage Design
+
+Fix Github Security Warnings
+
+resize uploaded images
 
 # Links
 

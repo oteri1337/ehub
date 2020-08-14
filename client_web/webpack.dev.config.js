@@ -72,6 +72,7 @@ const entryOne = {
     }),
     new webpack.DefinePlugin({
       PWA_NAME: JSON.stringify(process.env.PWA_NAME),
+      ENVIRONMENT: JSON.stringify(process.env.NODE_ENV),
       MAIL_NAME: JSON.stringify(process.env.MAIL_USERNAME),
       VAPID_KEY: JSON.stringify(process.env.PUBLIC_VAPID_KEY),
     }),

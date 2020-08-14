@@ -26,11 +26,13 @@ async function renderApp() {
   );
 }
 
-// if (location.protocol !== "https:") {
-//   location.replace(
-//     `https:${location.href.substring(location.protocol.length)}`
-//   );
-// }
+if (ENVIRONMENT == "production") {
+  if (location.protocol !== "https:") {
+    location.replace(
+      `https:${location.href.substring(location.protocol.length)}`
+    );
+  }
+}
 
 renderApp();
 registerWorker();

@@ -1,15 +1,12 @@
 import React from "react";
 import FormComponent from "components/FormComponent";
 import AdminContainerComponent from "components/container/AdminContainerComponent";
-import {
-  sendRequestThenDispatch,
-  getRequestThenDispatch,
-} from "../../../hooks";
+import { sendRequestThenDispatch } from "../../../hooks";
 
 function PdfsUpdatePage({ match, history }) {
   const { slug } = match.params;
-  const get = getRequestThenDispatch(`/api/programs/${slug}`, "UPDATE_program");
   const { request, callBack, state } = sendRequestThenDispatch();
+  const { fetching, errors, message } = request;
 
   const initialState = state.pdfs.object[slug];
 
@@ -46,17 +43,19 @@ function PdfsUpdatePage({ match, history }) {
   ];
 
   const onSuccess = () => {
-    history.push(`/control/events/${slug}`);
+    history.push(`/control/pdfs/${slug}`);
   };
 
   const onSubmit = (body) => {
-    callBack("/api/events", "UPDATE_EVENT", body, onSuccess, "PATCH");
+    callBack("/api/pdfs", "UPDATE_EVENT", body, onSuccess, "PATCH");
   };
 
   return (
     <AdminContainerComponent bread={nav}>
       <div className="card-panel">
-        <FormComponent {...{ formArray, initialState, onSubmit }} />
+        <FormComponent
+          {...{ formArray, initialState, onSubmit, fetching, errors, message }}
+        />
       </div>
     </AdminContainerComponent>
   );

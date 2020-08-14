@@ -25,6 +25,6 @@ class Pdf extends Model
 
     public function groups()
     {
-        return $this->belongsToMany(Pdfgroup::class);
+        return $this->belongsToMany(PdfgroupLight::class, "pdf_pdfgroup", null, "pdfgroup_id");
     }
 }
