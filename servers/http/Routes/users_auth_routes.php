@@ -17,6 +17,8 @@ $app->post('/api/users/auth/photo', UsersController::class . ':updatePhoto')->ad
 
 $app->patch('/api/users/auth/email', UsersController::class . ':updateEmail')->add($user_logged_in);
 
+$app->patch('/api/users/auth/pushtoken', UsersController::class . ':updatePushtoken')->add($user_logged_in);
+
 $app->patch('/api/users/auth/profile', UsersController::class . ':updateProfile')->add($user_logged_in);
 
 $app->patch('/api/users/auth/password', UsersController::class . ':updatePassword')->add($user_logged_in);

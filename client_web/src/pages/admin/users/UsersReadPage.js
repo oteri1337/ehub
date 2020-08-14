@@ -51,16 +51,7 @@ function UsersReadPage({ location, match }) {
 
       if (key == "push_subscription") return false;
 
-      if (key == "trading_balance") {
-        return (
-          <tr key={key}>
-            <td style={{ textTransform: "uppercase" }}>
-              {key.replace(/_/g, " ")}
-            </td>
-            <td>{format(data.currency, data[key])}</td>
-          </tr>
-        );
-      }
+      if (key == "bio" || key == "next_page_url") return false;
 
       return (
         <tr key={key}>
@@ -179,6 +170,7 @@ function UsersReadPage({ location, match }) {
           </div>
 
           <div className="col l8 s12">
+            <pre>{data.bio}</pre>
             <table className="striped">
               <tbody>{renderRow()}</tbody>
             </table>

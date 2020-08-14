@@ -12,15 +12,11 @@ class CreateUsersTable extends ParentMigration
 
             $table->increments('id');
 
+            $table->string('expo_push_token')->default("");
+
             $table->string('email')->unique();
 
             $table->string('password');
-
-            $table->integer('pin')->nullable();
-
-            $table->boolean('verified')->default(0);
-
-            $table->string('photo_profile')->default("human.png");
 
             $table->string('first_name');
 
@@ -34,13 +30,20 @@ class CreateUsersTable extends ParentMigration
 
             $table->string('link')->default("");
 
+            $table->integer('pin')->nullable();
+
+            $table->boolean('verified')->default(0);
+
+            $table->string('photo_profile')->default("human.png");
+
             $table->string('bio')->default("");
 
             $table->string('topics_count')->default(0);
 
             $table->string('next_page_url')->default("");
 
-            // $table->text('push_subscription')->nullable();
+
+            $table->text('web_push_token')->default("");
 
             $table->timestamps();
         });

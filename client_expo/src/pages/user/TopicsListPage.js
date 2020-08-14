@@ -8,6 +8,8 @@ import {
 } from "../../providers/actions/topicsActions";
 
 function TopicsListPage(props) {
+  console.log("topics list page rendered");
+
   const { list, refreshing, onRefresh, onEndReached } = props;
 
   React.useEffect(() => {

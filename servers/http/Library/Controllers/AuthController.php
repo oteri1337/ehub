@@ -198,6 +198,27 @@ class AuthController extends NewApiController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+    public function updatePushtoken($request, $response)
+    {
+        $body = $request->getParsedBody();
+
+        $user = $request->getAttribute("user");
+
+        $filtered = $this->filter($body, ["expo_push_token", "web_push_token"]);
+
+        $user->update($filtered);
+
+        $row = $this->model->where('id', $user->id)->first();
+
+        $this->data['data'] = $row;
+
+        $this->data['message'] = "Profile Updated";
+
+        $response->getBody()->write(json_encode($this->data));
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
     public function updatePhoto($request, $response)
     {
 

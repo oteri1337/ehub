@@ -36,18 +36,49 @@ function chatsReducer(state = defaultState, action) {
           [action.data.recvr_id]: action.data,
         },
       };
-    case "ADD_COMMENT_TO_CHAT":
-      const { slug, comment } = action.data;
+    // case "ADD_COMMENT_TO_CHAT":
+    //   const { slug, comment } = action.data;
+    //   return {
+    //     ...state,
+    //     object: {
+    //       ...state.object,
+    //       [slug]: {
+    //         ...state.object[slug],
+    //         messages: [...state.object[slug].messages, comment],
+    //       },
+    //     },
+    //   };
+    case "ADD_MESSAGE_TO_CHAT":
+      const slug = action.data.chat_id;
+
+      let sl = [];
+
+      const { messages } = state.object[slug];
+
+      if (messages.length == 12) {
+        sl = messages.slice(1, 12);
+      }
+
+      if (messages.length > 12) {
+        sl = messages.reverse().slice(0, 11).reverse();
+      }
+
+      if (messages.length < 12) {
+        sl = messages;
+      }
+
       return {
         ...state,
         object: {
           ...state.object,
           [slug]: {
             ...state.object[slug],
-            comments: [...state.object[slug].comments, comment],
+            next_page_url: `/api/chats/${slug}?page=2`,
+            messages: [...sl, action.data],
           },
         },
       };
+
     default:
       return state;
   }

@@ -125,7 +125,7 @@ function MessageListComponent({
 
   const renderLoadMore = () => {
     if (!refreshing) {
-      if (list.next_page_url && list.comments_count > 12) {
+      if (list?.next_page_url && list.comments_count > 12) {
         return (
           <Text
             style={{ padding: 10, textAlign: "center" }}
@@ -176,7 +176,6 @@ function MessageListComponent({
         </View>
       );
     }
-    console.log("afa");
     return renderLoadMore();
   };
 

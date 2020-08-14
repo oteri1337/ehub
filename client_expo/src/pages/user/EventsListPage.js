@@ -4,6 +4,8 @@ import EventsList from "../components/EventsListComponent";
 import { getRequestThenDispatch } from "../../providers/AppProvider";
 
 function EventsListPage() {
+  console.log("events list page rendered");
+
   const url = "/api/events";
   const dispatch = "UPDATE_EVENTS";
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);

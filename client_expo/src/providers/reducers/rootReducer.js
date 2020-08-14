@@ -10,7 +10,7 @@ import fetchingReducer from "./fetchingReducer";
 import pdfgroupsReducer from "./pdfgroupsReducer";
 
 function rootReducer(state = {}, action) {
-  console.log("action", action);
+  console.log(action);
 
   if (action.dispatch == "UPDATE_STATE") {
     if (action.data) {

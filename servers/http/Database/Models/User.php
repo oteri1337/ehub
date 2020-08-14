@@ -19,8 +19,9 @@ class User extends Model
         'first_name',
         'department',
         'phone_number',
+        'web_push_token',
+        'expo_push_token',
         'photo_profile',
-        'push_subscription',
     ];
 
     protected $hidden = [

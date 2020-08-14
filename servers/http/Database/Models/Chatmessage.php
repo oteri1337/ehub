@@ -12,8 +12,13 @@ class Chatmessage extends Model
         'type',
         'chat_id',
         'user_id',
-        'sender_id',
+        'recvr_id',
     ];
+
+    // protected $hidden = [
+    //     'id',
+    //     'chat_id',
+    // ];
 
     public function getCreatedAtAttribute($row)
     {

@@ -16,6 +16,8 @@ class CreateChatmessagesTable extends ParentMigration
 
             $table->integer('user_id');
 
+            $table->integer('recvr_id')->nullable();
+
             $table->integer('type')->default(0);
 
             $table->text('data');

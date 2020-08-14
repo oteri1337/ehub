@@ -47,13 +47,16 @@ class ItemPureComponent extends React.PureComponent {
 }
 
 function ChatsListPage({ navigation }) {
+  console.log("chats list page rendered");
+
   const url = "/api/chats";
   const dispatch = "UPDATE_CHATS";
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
   const list = state.chats;
-  let { data } = list;
 
-  console.log("chats", data);
+  console.log(list);
+
+  let { data } = list;
 
   const onRefresh = async () => {
     send("/api/chats", dispatch);

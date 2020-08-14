@@ -8,7 +8,7 @@ import { getRequestThenDispatch } from "../../../../providers/AppProvider";
 class ItemPureComponent extends React.PureComponent {
   render() {
     const { item } = this.props;
-    console.log("rendering group", this.props.item.id);
+    console.log("rendering pdfgroup ", item.id);
     return (
       <View>
         <Text style={{ fontWeight: "bold", marginLeft: 10, marginBottom: 5 }}>
@@ -21,6 +21,8 @@ class ItemPureComponent extends React.PureComponent {
 }
 
 function PdfgroupsPage() {
+  console.log("pdf group page rendered");
+
   const url = "/api/pdfgroups";
   const dispatch = "UPDATE_PDFGROUPS";
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
@@ -59,8 +61,6 @@ function PdfgroupsPage() {
   };
 
   const renderItem = ({ item }) => {
-    console.log("rendering pdfgroup ", item.id);
-
     return <ItemPureComponent item={item} />;
   };
 
