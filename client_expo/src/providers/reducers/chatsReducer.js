@@ -48,8 +48,25 @@ function chatsReducer(state = defaultState, action) {
     //       },
     //     },
     //   };
+
+    case "CLEAR_UNREAD":
+      return {
+        ...state,
+        object: {
+          ...state.object,
+          [action.data.recvr_id]: {
+            ...state.object[action.data.recvr_id],
+            unread_count: 0,
+          },
+        },
+      };
+
     case "ADD_MESSAGE_TO_CHAT":
-      const slug = action.data.chat_id;
+      const slug = action.data.recvr_id;
+
+      const newCount = state.object[slug].unread_count + 1;
+
+      console.log("add message", action);
 
       let sl = [];
 
@@ -73,6 +90,7 @@ function chatsReducer(state = defaultState, action) {
           ...state.object,
           [slug]: {
             ...state.object[slug],
+            unread_count: state.object[slug].unread_count + 1,
             next_page_url: `/api/chats/${slug}?page=2`,
             messages: [...sl, action.data],
           },

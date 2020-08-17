@@ -45,7 +45,7 @@ class NewApiController extends ServicesController
 
         $row = $this->model->create($body);
 
-        // $row = $this->model->where('id', $row->id)->with($this->eagerRead)->first();
+        $row = $this->model->where('id', $row->id)->first();
 
         $row = $this->lazyLoadRelationships($row);
 

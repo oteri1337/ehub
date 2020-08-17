@@ -36,7 +36,7 @@ class ChatSeeder extends AbstractSeed
 
         $data[] = [
             'chat_id' => 2,
-            'user_id' => 2,
+            'user_id' => 1,
             'recvr_id' => 3,
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
@@ -45,11 +45,58 @@ class ChatSeeder extends AbstractSeed
         $data[] = [
             'chat_id' => 2,
             'user_id' => 3,
-            'recvr_id' => 2,
+            'recvr_id' => 1,
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
-        // }
+
+        $data[] = [
+            'chat_id' => 3,
+            'user_id' => 1,
+            'recvr_id' => 4,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
+
+        $data[] = [
+            'chat_id' => 3,
+            'user_id' => 4,
+            'recvr_id' => 1,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
+
+        $data[] = [
+            'chat_id' => 4,
+            'user_id' => 1,
+            'recvr_id' => 5,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
+
+        $data[] = [
+            'chat_id' => 4,
+            'user_id' => 5,
+            'recvr_id' => 1,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
+
+        $data[] = [
+            'chat_id' => 5,
+            'user_id' => 1,
+            'recvr_id' => 6,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
+
+        $data[] = [
+            'chat_id' => 5,
+            'user_id' => 6,
+            'recvr_id' => 1,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
 
         $this->table('chats')->insert($data)->save();
     }

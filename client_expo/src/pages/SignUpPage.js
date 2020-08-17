@@ -1,14 +1,11 @@
 import React from "react";
 import Logo from "../../assets/icon.png";
 import Text from "./components/TextComponent";
-import Signup from "../../assets/library.png";
-import { ImageBackground, Keyboard } from "react-native";
-import ErrorsComponent from "./components/ErrorsComponent";
 import { sendRequestThenDispatch } from "../providers/AppProvider";
+import { Keyboard, Image, TouchableWithoutFeedback } from "react-native";
 import {
   View,
   Header,
-  Thumbnail,
   Form,
   Item,
   Input,
@@ -24,8 +21,7 @@ import {
 } from "native-base";
 
 function SignUpPage({ navigation }) {
-  const url = "/api/users";
-  const { send, fetching } = sendRequestThenDispatch(url, "UPDATE_USER");
+  const { send, refreshing } = sendRequestThenDispatch();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -35,7 +31,7 @@ function SignUpPage({ navigation }) {
   const [password_confirmation, setPasswordConf] = React.useState("");
 
   const onPress = () => {
-    navigation.navigate("HomePage");
+    navigation.navigate("SignInPage");
   };
 
   const onSubmit = () => {
@@ -49,7 +45,7 @@ function SignUpPage({ navigation }) {
         department,
         password_confirmation,
       });
-      send(body);
+      send("/api/users", "UPDATE_USER", body);
     }
   };
 
@@ -59,120 +55,161 @@ function SignUpPage({ navigation }) {
 
   return (
     <Container>
-      <View style={{ flex: 1 }}>
-        <ImageBackground
-          source={Signup}
-          style={{ width: "100%", height: "100%" }}
-        >
-          <Header
-            transparent
-            androidStatusBarColor="#FFF"
-            iosBarStyle="dark-content"
+      <Header transparent>
+        <Left>
+          <Button transparent onPress={onPress}>
+            <Icon name="arrow-back" style={{ marginLeft: 5, color: "black" }} />
+          </Button>
+        </Left>
+      </Header>
+      <TouchableWithoutFeedback>
+        <Content style={{ flex: 1 }}>
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
-            <Left>
-              <Button transparent onPress={onPress}>
-                <Icon name="ios-undo" style={{ color: "#fff" }} />
-              </Button>
-            </Left>
-            <Body></Body>
-            <Right></Right>
-          </Header>
-          <Content padder>
-            <View style={{ flex: 1, margin: "auto" }}>
-              <View style={{ alignSelf: "center" }}>
-                <Thumbnail large source={Logo} />
-              </View>
-              <H1
-                style={{ color: "white", textAlign: "center", marginTop: 25 }}
-              >
-                SIGN UP
-              </H1>
-              <Form>
-                <Item
-                  regular
-                  style={{ marginBottom: 25, marginTop: 25, borderRadius: 5 }}
-                >
-                  <Icon name="ios-contact" style={{ color: "#fff" }} />
-                  <Input
-                    placeholder="First Name"
-                    style={{ color: "#fff" }}
-                    placeholderTextColor="#fff"
-                    value={first_name}
-                    onChangeText={(text) => setFirstName(text)}
-                  />
-                </Item>
-                <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
-                  <Icon name="ios-person" style={{ color: "#fff" }} />
-                  <Input
-                    placeholder="Last Name"
-                    style={{ color: "#fff" }}
-                    placeholderTextColor="#fff"
-                    value={last_name}
-                    onChangeText={(text) => setLastName(text)}
-                  />
-                </Item>
-                <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
-                  <Icon name="ios-mail" style={{ color: "#fff" }} />
-                  <Input
-                    placeholder="Email"
-                    style={{ color: "#fff" }}
-                    placeholderTextColor="#fff"
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                  />
-                </Item>
-                <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
-                  <Icon name="ios-lock" style={{ color: "#fff" }} />
-                  <Input
-                    placeholder="Password"
-                    style={{ color: "#fff" }}
-                    placeholderTextColor="#fff"
-                    onChangeText={(text) => setPassword(text)}
-                    secureTextEntry={true}
-                    value={password}
-                  />
-                </Item>
-                <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
-                  <Icon name="ios-lock" style={{ color: "#fff" }} />
-                  <Input
-                    placeholder="Confirm Password"
-                    style={{ color: "#fff" }}
-                    placeholderTextColor="#fff"
-                    onChangeText={(text) => setPasswordConf(text)}
-                    secureTextEntry={true}
-                    value={password_confirmation}
-                  />
-                </Item>
-                <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
-                  <Icon name="ios-school" style={{ color: "#fff" }} />
-                  <Input
-                    placeholder="Department"
-                    style={{ color: "#fff" }}
-                    placeholderTextColor="#fff"
-                    onBlur={onBlur}
-                    onChangeText={(text) => setDepartment(text)}
-                    value={department}
-                  />
-                </Item>
+            <Image style={{ height: 100, width: 95 }} source={Logo} />
+            <Text style={{ textAlign: "center", marginTop: 20 }}>Sign Up</Text>
+          </View>
+          <View style={{ flex: 2.5, padding: 15 }}>
+            <Form>
+              <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
+                <Icon name="ios-mail" />
+                <Input
+                  placeholder="Email"
+                  autoCapitalize="none"
+                  onChangeText={(text) => setEmail(text)}
+                  value={email}
+                />
+              </Item>
+              <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
+                <Icon name="ios-lock" />
+                <Input
+                  placeholder="Password"
+                  onChangeText={(text) => setPassword(text)}
+                  secureTextEntry={true}
+                  value={password}
+                />
+              </Item>
+              <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
+                <Icon name="ios-lock" />
+                <Input
+                  placeholder="Confirm Password"
+                  onChangeText={(text) => setPasswordConf(text)}
+                  secureTextEntry={true}
+                  value={password_confirmation}
+                />
+              </Item>
+              <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
+                <Icon name="ios-contact" />
+                <Input
+                  placeholder="First Name"
+                  value={first_name}
+                  onChangeText={(text) => setFirstName(text)}
+                />
+              </Item>
+              <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
+                <Icon name="ios-person" />
+                <Input
+                  placeholder="Last Name"
+                  value={last_name}
+                  onChangeText={(text) => setLastName(text)}
+                />
+              </Item>
+              <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
+                <Icon name="ios-school" />
+                <Input
+                  placeholder="Department"
+                  onBlur={onBlur}
+                  onChangeText={(text) => setDepartment(text)}
+                  value={department}
+                />
+              </Item>
 
-                {!fetching && (
-                  <View style={{ alignSelf: "center" }}>
-                    <Button success bordered onPress={onSubmit}>
-                      <Text padding={20} style={{ color: "rgb(92, 184, 92)" }}>
-                        Sign Up
-                      </Text>
-                    </Button>
-                  </View>
-                )}
+              {!refreshing && (
+                <View style={{ alignSelf: "center" }}>
+                  <Button success bordered onPress={onSubmit}>
+                    <Text padding={20} style={{ color: "rgb(92, 184, 92)" }}>
+                      Sign Up
+                    </Text>
+                  </Button>
+                </View>
+              )}
 
-                {fetching && <Spinner />}
-              </Form>
-            </View>
-          </Content>
-        </ImageBackground>
-      </View>
+              {refreshing && <Spinner />}
+            </Form>
+          </View>
+        </Content>
+      </TouchableWithoutFeedback>
     </Container>
   );
+
+  // return (
+  //   <Container>
+  //     <View style={{ flex: 1 }}>
+  //       <Header
+  //         transparent
+  //         androidStatusBarColor="#FFF"
+  //         iosBarStyle="dark-content"
+  //       >
+  //         <Left>
+  //           <Button transparent onPress={onPress}>
+  //             <Icon
+  //               name="arrow-back"
+  //               style={{ marginLeft: 5, color: "black" }}
+  //             />
+  //           </Button>
+  //         </Left>
+  //         <Body></Body>
+  //         <Right></Right>
+  //       </Header>
+  //       <Content padder>
+  //         <View style={{ flex: 1, margin: "auto" }}>
+  //           <View style={{ alignSelf: "center" }}>
+  //             <Image style={{ height: 100, width: 95 }} source={Logo} />
+  //           </View>
+  //           <H1 style={{ textAlign: "center", marginTop: 25 }}>SIGN UP</H1>
+  //           <Form>
+  //             <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
+  //               <Icon name="ios-mail" />
+  //               <Input
+  //                 placeholder="Email"
+  //                 onChangeText={(text) => setEmail(text)}
+  //                 value={email}
+  //               />
+  //             </Item>
+  //             <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
+  //               <Icon name="ios-lock" />
+  //               <Input
+  //                 placeholder="Password"
+  //                 onChangeText={(text) => setPassword(text)}
+  //                 secureTextEntry={true}
+  //                 value={password}
+  //               />
+  //             </Item>
+  //             <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
+  //               <Icon name="ios-lock" />
+  //               <Input
+  //                 placeholder="Confirm Password"
+  //                 onChangeText={(text) => setPasswordConf(text)}
+  //                 secureTextEntry={true}
+  //                 value={password_confirmation}
+  //               />
+  //             </Item>
+  //             <Item regular style={{ marginBottom: 25, borderRadius: 5 }}>
+  //               <Icon name="ios-school" />
+  //               <Input
+  //                 placeholder="Department"
+  //                 onBlur={onBlur}
+  //                 onChangeText={(text) => setDepartment(text)}
+  //                 value={department}
+  //               />
+  //             </Item>
+  //           </Form>
+  //         </View>
+  //       </Content>
+  //     </View>
+  //   </Container>
+  // );
 }
 
 export default SignUpPage;

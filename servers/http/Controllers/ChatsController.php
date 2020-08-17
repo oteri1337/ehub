@@ -4,6 +4,7 @@ namespace Server\Controllers;
 
 
 use Server\Database\Models\Chat;
+use Illuminate\Support\Collection;
 use Server\Database\Models\Chatmessage;
 use Server\Library\Controllers\NewApiController;
 
@@ -14,16 +15,50 @@ class ChatsController extends NewApiController
     {
         parent::__construct();
         $this->model = new Chat;
-        $this->readBy = "chat_id";
+        $this->readBy = "recvr_id";
         $this->eagerList = ['recvr', 'messages'];
     }
 
-    public function getList($request)
+    public function create($request, $response)
     {
+        $user = $request->getAttribute('user');
 
-        $user = $request->getAttribute("user");
+        $body = $request->getParsedBody();
+        $data = $body['data'] ?? '';
+        $recvr_id = $body['recvr_id'] ?? '';
 
-        return $this->model->where("user_id", $user->id)->with($this->eagerList)->orderBy("updated_at", $this->order)->paginate($this->perPage);
+        $chat_id = time();
+
+        $this->model->create(['user_id' => $user->id, 'recvr_id' => $recvr_id, 'chat_id' => $chat_id]);
+
+        $this->model->create(['recvr_id' => $user->id, 'user_id' => $recvr_id, 'chat_id' => $chat_id]);
+
+        Chatmessage::create(['user_id' => $user->id, 'recvr_id' => $recvr_id, 'data' => $data, 'chat_id' => $chat_id]);
+
+        $list = $this->getList($request);
+
+        $list = $this->modifyList($list);
+
+        $list = $list->toArray();
+
+        $object = Collection::make($list['data'])->keyBy($this->readBy);
+
+        $list['object'] = $object;
+
+        $this->data['data'] = $list;
+
+        $response->getBody()->write(json_encode($this->data));
+
+        return $response->withHeader('Content-Type', 'application/json');
+
+
+        // $list = $this->model->where("user_id", $user->id)->with($this->eagerList)->orderBy("updated_at", $this->order)->paginate($this->perPage);
+
+        // $this->data['data'] = $this->modifyList($list);
+
+        // $response->getBody()->write(json_encode($this->data));
+
+        // return $response->withHeader('Content-Type', 'application/json');
     }
 
     public function modifyList($list)
@@ -57,6 +92,14 @@ class ChatsController extends NewApiController
         $row->next_page_url = $paginator->nextPageUrl();
 
         return $row;
+    }
+
+    public function getList($request)
+    {
+
+        $user = $request->getAttribute("user");
+
+        return $this->model->where("user_id", $user->id)->with($this->eagerList)->orderBy("updated_at", $this->order)->paginate($this->perPage);
     }
 
     public function message($request, $response)

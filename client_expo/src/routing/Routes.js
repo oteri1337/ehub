@@ -7,6 +7,7 @@ import {
 } from "@react-navigation/stack";
 
 import HomePage from "../pages/HomePage";
+import SignInPage from "../pages/SignInPage";
 import SignUpPage from "../pages/SignUpPage";
 import PasswordPage from "../pages/PasswordPage";
 
@@ -28,6 +29,7 @@ import PdfsReadPage from "../pages/user/pdfs/PdfsReadPage";
 import PdfsSavedPage from "../pages/user/pdfs/PdfsSavedPage";
 import PdfsPreviewPage from "../pages/user/pdfs/PdfsPreviewPage";
 import PdfsCommentPage from "../pages/user/pdfs/PdfsCommentPage";
+import PdfgroupPage from "../pages/user/pdfs/groups/PdfgroupPage";
 
 import TopicsReadPage from "../pages/user/TopicsReadPage";
 import TopicsCreatePage from "../pages/user/TopicsCreatePage";
@@ -70,6 +72,7 @@ function Routes() {
         <Screen name="PdfsSavedPage" component={PdfsSavedPage}/>
         <Screen name="PdfsPreviewPage" component={PdfsPreviewPage} />
         <Screen name="PdfsCommentPage" component={PdfsCommentPage} />
+        <Screen name="PdfGroupPage" component={PdfgroupPage} />
 
         <Screen name="TopicsReadPage" component={TopicsReadPage}  />
         <Screen name="TopicsCreatePage" component={TopicsCreatePage} />
@@ -84,6 +87,7 @@ function Routes() {
   return (
     <Navigator headerMode="none">
       <Screen name="HomePage" component={HomePage} />
+      <Screen name="SignInPage" component={SignInPage} />
       <Screen name="SignUpPage" component={SignUpPage} />
       <Screen name="PasswordPage" component={PasswordPage} />
     </Navigator>

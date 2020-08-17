@@ -37,7 +37,7 @@ class UsersController extends AuthController
         ];
     }
 
-    public function createBody($body)
+    public function beforeCreate($body)
     {
 
         $body['email'] = strtolower($body['email']);

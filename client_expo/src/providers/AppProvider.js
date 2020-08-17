@@ -1,7 +1,11 @@
 import React from "react";
-import { AsyncStorage, View, Text } from "react-native";
-import reducer from "./reducers/rootReducer";
+import { Notifications } from "expo";
+import Constants from "expo-constants";
+import * as Permissions from "expo-permissions";
 import NetInfo from "@react-native-community/netinfo";
+import { AsyncStorage, Platform, Vibration } from "react-native";
+
+import reducer from "./reducers/rootReducer";
 import { getRequest, sendRequest } from "./functions";
 
 export const Store = React.createContext({});
@@ -12,7 +16,7 @@ export default function AppProvider({ children, initialState }) {
   React.useEffect(() => {
     let debounceTime = setTimeout(() => {
       AsyncStorage.setItem("state", JSON.stringify(state));
-    }, 5000);
+    }, 1000);
     return () => {
       clearTimeout(debounceTime);
     };
@@ -127,7 +131,7 @@ export const sendRequestThenDispatch = () => {
     setRefreshing(true);
 
     const fetchResponse = await sendRequest(url, body, method);
-    // console.log(fetchResponse);
+    console.log(fetchResponse);
 
     setRefreshing(false);
 
@@ -145,4 +149,69 @@ export const sendRequestThenDispatch = () => {
   };
 
   return { state, refreshing, callReducer, send };
+};
+
+export const useNotification = () => {
+  const { callReducer } = React.useContext(Store);
+
+  const registerForPushNotificationsAsync = async () => {
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(
+        Permissions.NOTIFICATIONS
+      );
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Permissions.askAsync(
+          Permissions.NOTIFICATIONS
+        );
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
+        return;
+      }
+
+      // if (!state.user.expo_push_token.length) {
+      try {
+        const expo_push_token = await Notifications.getExpoPushTokenAsync();
+
+        const url = "/api/users/auth/pushtoken";
+
+        const data = { expo_push_token };
+
+        sendRequest(url, data, "PATCH");
+      } catch (error) {
+        console.log(error);
+        // alert(error, "You will not be able to recieve notifications");
+      }
+      // }
+
+      // this.setState({ expoPushToken: token });
+    } else {
+      alert("Must use physical device for Push Notifications");
+    }
+
+    if (Platform.OS === "android") {
+      Notifications.createChannelAndroidAsync("default", {
+        name: "default",
+        sound: true,
+        priority: "max",
+        vibrate: [0, 250, 250, 250],
+      });
+    }
+  };
+
+  const handleNotification = ({ data }) => {
+    console.log("notification", data);
+    Vibration.vibrate();
+    callReducer({ dispatch: data.dispatch, data: data.data });
+  };
+
+  React.useEffect(() => {
+    (async () => {
+      console.log("syncing push");
+      registerForPushNotificationsAsync();
+      Notifications.addListener(handleNotification);
+    })();
+  }, []);
 };

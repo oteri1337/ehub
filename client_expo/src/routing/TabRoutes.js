@@ -3,6 +3,7 @@ import { Feather } from "@expo/vector-icons";
 import { Button, Icon, View, Text } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import { Store } from "../providers/AppProvider";
 import ChatsListPage from "../pages/user/ChatsListPage";
 import UsersListPage from "../pages/user/UsersListPage";
 import TopicsListPage from "../pages/user/TopicsListPage";
@@ -41,6 +42,8 @@ const Tab = createBottomTabNavigator();
 const { Screen, Navigator } = Tab;
 
 function TabNavigator({ navigation, route }) {
+  const { state } = React.useContext(Store);
+
   let current = "";
 
   if (route.state) {
@@ -136,7 +139,7 @@ function TabNavigator({ navigation, route }) {
               name="message-circle"
               color={color}
               size={size}
-              badgeCount={1}
+              badgeCount={state?.unread}
             />
           );
         }

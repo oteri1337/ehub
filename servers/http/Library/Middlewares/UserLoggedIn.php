@@ -21,9 +21,15 @@ class UserLoggedIn
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $id = Session::where("key", $cookie)->first()->value;
+        $session = Session::where("key", $cookie)->first();
 
-        $user = User::where('id', $id)->first();
+        if (!$session) {
+            $response = new Response;
+            $response->getBody()->write(json_encode(['errors' => ['please sign out then sign in']]));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $user = User::where('id', $session->value)->first();
 
         if (!$user) {
             $response = new Response;

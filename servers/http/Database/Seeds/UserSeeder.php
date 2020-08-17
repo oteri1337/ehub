@@ -24,6 +24,7 @@ class UserSeeder extends AbstractSeed
             'first_name' => "Oteri",
             'last_name' => "Avwunudiogba",
             'photo_profile' => "boy1.jpg",
+            'expo_push_token' => 'ExponentPushToken[UmcboSPh62DUU2LLouAmCt]',
             'phone_number' => $faker->e164PhoneNumber,
             'bio' => $faker->text,
             'link' => $faker->url,
@@ -60,6 +61,50 @@ class UserSeeder extends AbstractSeed
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
 
+        $known[] = [
+            'email' => "declan@gmail.com",
+            'password' => sha1("password"),
+            'first_name' => "Declan",
+            'last_name' => "Okenachi",
+            'expo_push_token' => 'ExponentPushToken[IBTv4EE1J2Xk2ePviuA5eZ]',
+            'photo_profile' => "boy2.jpg",
+            'department' => "Civil Engineering",
+            'phone_number' => $faker->e164PhoneNumber,
+            'bio' => $faker->text,
+            'link' => $faker->url,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
+
+        $known[] = [
+            'email' => "max@gmail.com",
+            'password' => sha1("password"),
+            'first_name' => "Maxwell",
+            'last_name' => "Akpati",
+            'expo_push_token' => 'ExponentPushToken[3_NyKjN5dinDsttyzNcRb2]',
+            'photo_profile' => "boy3.jpg",
+            'department' => "Pharmacy",
+            'phone_number' => $faker->e164PhoneNumber,
+            'bio' => $faker->text,
+            'link' => $faker->url,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
+
+        $known[] = [
+            'email' => "tega@gmail.com",
+            'password' => sha1("password"),
+            'first_name' => "Tega",
+            'last_name' => "Obuareghe",
+            'department' => "Electrical Engineering",
+            'photo_profile' => "boy1.jpg",
+            'phone_number' => $faker->e164PhoneNumber,
+            'bio' => $faker->text,
+            'link' => $faker->url,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ];
+
         $this->table('users')->insert($known)->save();
 
         // User::create($known[0]);
@@ -84,7 +129,7 @@ class UserSeeder extends AbstractSeed
 
         $data = [];
 
-        for ($i = 0; $i <= 85; $i++) {
+        for ($i = 0; $i <= 20; $i++) {
             $data[] = [
                 'email' => $faker->email,
                 'password' => sha1("password2"),

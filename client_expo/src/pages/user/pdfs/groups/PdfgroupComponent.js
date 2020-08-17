@@ -34,8 +34,6 @@ class ItemPureComponent extends React.PureComponent {
 function PdfgroupComponent({ group }) {
   const { send, refreshing } = getRequestThenDispatch();
 
-  //   const refreshing = true;
-
   const data = group.pdfs;
 
   const navigation = useNavigation();
@@ -45,28 +43,6 @@ function PdfgroupComponent({ group }) {
   const keyExtractor = (item) => {
     return item.id.toString();
   };
-
-  // const renderItem = ({ item }) => {
-  //   console.log("rendering pdf", item.id);
-
-  //   const onPress = () => {
-  //     navigation.navigate("PdfsPreviewPage", item);
-  //   };
-
-  //   return (
-  //     <View style={{ margin: 1, backgroundColor: "silver" }} onPress={onPress}>
-  //       <TouchableHighlight onPress={onPress}>
-  //         <Thumbnail
-  //           style={{ width: 120, height: 180 }}
-  //           square
-  //           source={{
-  //             uri: `${BACKEND_URL}/uploads/images/${item.image_name}`,
-  //           }}
-  //         />
-  //       </TouchableHighlight>
-  //     </View>
-  //   );
-  // };
 
   const renderItem = ({ item }) => {
     return <ItemPureComponent item={item} navigation={navigation} />;

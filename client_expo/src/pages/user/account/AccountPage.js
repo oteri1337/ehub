@@ -49,7 +49,12 @@ function AccountPage({ navigation }) {
 
   const { state, signOut } = React.useContext(Store);
 
-  const { first_name, last_name, photo_profile, department } = state.user;
+  const {
+    first_name = "",
+    last_name = "",
+    photo_profile = "",
+    department = "",
+  } = state?.user;
 
   const uri = `${BACKEND_URL}/uploads/images/${photo_profile}`;
 
@@ -117,6 +122,10 @@ function AccountPage({ navigation }) {
           </ListItem>
         </List>
       </Content>
+
+      <Text note style={{ textAlign: "center", marginBottom: 10 }}>
+        contact info@ehubcore.com for help and feedback
+      </Text>
     </Container>
   );
 }

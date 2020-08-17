@@ -38,7 +38,7 @@ export function debounce(f, delay, user = " ") {
 }
 
 export const ERROR_OBJECT = {
-  errors: [`connection or server error @ ${BACKEND_URL}`],
+  errors: [`connection error, please check your data connection`],
   data: false,
 };
 

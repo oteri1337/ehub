@@ -2,20 +2,12 @@ import { Platform } from "react-native";
 
 let url;
 
-if (Platform.OS === "web") {
-  // development
-  url = "https://ehub";
-
-  // production
-  // url = "https://ehubcore.com";
-}
-
 if (Platform.OS === "ios") {
   // physical device
   url = "http://172.20.10.4:1025";
 
   // production
-  // url = "https://ehubcore.com";
+  url = "https://ehubcore.com";
 }
 
 if (Platform.OS === "android") {
@@ -26,7 +18,15 @@ if (Platform.OS === "android") {
   url = "http://192.168.43.149:1025";
 
   // production
-  // url = "https://ehubcore.com";
+  url = "https://ehubcore.com";
+}
+
+if (Platform.OS === "web") {
+  // development
+  url = "https://ehub";
+
+  // production
+  url = "https://ehubcore.com";
 }
 
 export const BACKEND_URL = url;

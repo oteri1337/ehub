@@ -1,24 +1,36 @@
-# Tasks
+# Tasks App
 
-Single PDF Group Page
+optimistic chat ui
 
-Push Notificatons
+offline friendly chat ui
 
-Onboarding
+message animations chat
 
-Help and Support
+break signup into steps
+
+start chat with image
 
 Save event to calendar
 
+Cache images on the app
+
+section list for pdf group page
+
+Consider making header icons color faint
+
 Dark Mode
 
-Google Play Registration
+# Tasks Backend
+
+resize uploaded images
 
 Webpage Design
 
-Fix Github Security Warnings
+# Other Tasks
 
-resize uploaded images
+Google Play Registration
+
+Fix Github Security Warnings
 
 # Links
 

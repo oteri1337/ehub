@@ -7,11 +7,16 @@ import { getRequestThenDispatch } from "../../../../providers/AppProvider";
 
 class ItemPureComponent extends React.PureComponent {
   render() {
-    const { item } = this.props;
+    const { item, navigation } = this.props;
     console.log("rendering pdfgroup ", item.id);
     return (
       <View>
-        <Text style={{ fontWeight: "bold", marginLeft: 10, marginBottom: 5 }}>
+        <Text
+          style={{ fontWeight: "bold", marginLeft: 10, marginBottom: 5 }}
+          onPress={() => {
+            navigation.navigate("PdfGroupPage", item);
+          }}
+        >
           {item.title}
         </Text>
         <PdfgroupComponent group={item} />
@@ -20,9 +25,7 @@ class ItemPureComponent extends React.PureComponent {
   }
 }
 
-function PdfgroupsPage() {
-  console.log("pdf group page rendered");
-
+function PdfgroupsPage({ navigation }) {
   const url = "/api/pdfgroups";
   const dispatch = "UPDATE_PDFGROUPS";
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
@@ -61,7 +64,7 @@ function PdfgroupsPage() {
   };
 
   const renderItem = ({ item }) => {
-    return <ItemPureComponent item={item} />;
+    return <ItemPureComponent item={item} navigation={navigation} />;
   };
 
   return (

@@ -1,15 +1,20 @@
 import React from "react";
 import { List, Container } from "native-base";
 import EventsList from "../components/EventsListComponent";
-import { getRequestThenDispatch } from "../../providers/AppProvider";
+import {
+  getRequestThenDispatch,
+  useNotification,
+} from "../../providers/AppProvider";
 
 function EventsListPage() {
+  useNotification();
+
   console.log("events list page rendered");
 
   const url = "/api/events";
   const dispatch = "UPDATE_EVENTS";
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
-  const list = state.events;
+  const list = state?.events;
 
   const onRefresh = async () => {
     send(url, dispatch);

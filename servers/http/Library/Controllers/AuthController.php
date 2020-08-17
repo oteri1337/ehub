@@ -44,7 +44,7 @@ class AuthController extends NewApiController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        // $row = $this->relationships($row);
+        $row = $this->lazyLoadRelationships($row);
 
         $_SESSION[$this->authKey]['id'] = $row->id;
 
@@ -88,7 +88,8 @@ class AuthController extends NewApiController
             $response->getBody()->write(json_encode($this->data));
             return $response->withHeader('Content-Type', 'application/json');
         }
-        // $row = $this->relationships($row);
+
+        $row = $this->lazyLoadRelationships($row);
 
         $this->data['data'] = $row;
 
@@ -253,7 +254,7 @@ class AuthController extends NewApiController
         ]);
 
         $user = $this->model->where('id', $user->id)->first();
-        $user = $this->relationships($user);
+        $user = $this->lazyLoadRelationships($user);
 
         $this->data['data'] = $user;
         $this->data['message'] = "Photo Updated";
@@ -484,7 +485,7 @@ class AuthController extends NewApiController
         // $_SESSION[$this->authKey]['id'] = $row->id;
 
         $row = $this->model->where('email', $email)->first();
-        $row = $this->relationships($row);
+        $row = $this->lazyLoadRelationships($row);
         $this->data['data'] = $row;
         $this->data['message'] = 'Verification Successful';
         $response->getBody()->write(json_encode($this->data));
@@ -526,7 +527,7 @@ class AuthController extends NewApiController
 
         $id = $_SESSION[$this->authKey]['id'];
         $user = $this->model->where('id', $id)->first();
-        $user = $this->relationships($user);
+        $user = $this->lazyLoadRelationships($user);
 
         $this->data['data'] = $user;
 

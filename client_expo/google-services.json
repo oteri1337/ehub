@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "802513169652",
+    "firebase_url": "https://ehub-7f8e0.firebaseio.com",
+    "project_id": "ehub-7f8e0",
+    "storage_bucket": "ehub-7f8e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802513169652:android:171576b4be1ea15afc42a1",
+        "android_client_info": {
+          "package_name": "com.abokiui.ehub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802513169652-g0rjvjm3dof8e7jhok3nqptom9if8hef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOq0n-keNviPVz4hpATzG5KmZ0ik42FkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802513169652-g0rjvjm3dof8e7jhok3nqptom9if8hef.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

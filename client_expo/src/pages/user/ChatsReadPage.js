@@ -1,85 +1,25 @@
 import React from "react";
-
-import { Notifications } from "expo";
-import Constants from "expo-constants";
 import { Button, Icon } from "native-base";
-import * as Permissions from "expo-permissions";
-import { sendRequest } from "../../providers/functions";
-import { KeyboardAvoidingView, Platform, Vibration } from "react-native";
+import { KeyboardAvoidingView, Platform, View, Text } from "react-native";
 import MessageListComponent from "../components/MessageListComponent";
 import MessageFormComponent from "../components/MessageFormComponent";
 import { sendRequestThenDispatch } from "../../providers/AppProvider";
 
 function ChatsReadPage({ navigation, route }) {
-  const { params } = route;
+  const { recvr_id, recvr } = route.params;
 
   const { state, callReducer, send } = sendRequestThenDispatch();
 
-  const registerForPushNotificationsAsync = async () => {
-    if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(
-        Permissions.NOTIFICATIONS
-      );
-      let finalStatus = existingStatus;
-      if (existingStatus !== "granted") {
-        const { status } = await Permissions.askAsync(
-          Permissions.NOTIFICATIONS
-        );
-        finalStatus = status;
-      }
-      if (finalStatus !== "granted") {
-        alert("Failed to get push token for push notification!");
-        return;
-      }
-
-      if (!state.user.expo_push_token.length) {
-        const expo_push_token = await Notifications.getExpoPushTokenAsync();
-        const response = await sendRequest(
-          "/api/users/auth/pushtoken",
-          {
-            expo_push_token,
-          },
-          "PATCH"
-        );
-        console.log(response);
-
-        // alert(expo_push_token, "send token to server");
-      }
-
-      // this.setState({ expoPushToken: token });
-    } else {
-      alert("Must use physical device for Push Notifications");
-    }
-
-    if (Platform.OS === "android") {
-      Notifications.createChannelAndroidAsync("default", {
-        name: "default",
-        sound: true,
-        priority: "max",
-        vibrate: [0, 250, 250, 250],
-      });
-    }
-  };
-
-  const handleNotification = ({ data }) => {
-    Vibration.vibrate();
-    const id = Date.now();
-    console.log(data);
-    // callReducer({ dispatch: "ADD_MESSAGE_TO_CHAT", data: { id, ...data } });
-    // this.setState({ notification: notification });
-  };
+  const chat = state.chats.object[recvr_id];
 
   React.useEffect(() => {
-    (async () => {
-      registerForPushNotificationsAsync();
-      Notifications.addListener(handleNotification);
-    })();
+    if (chat) {
+      callReducer({ dispatch: "CLEAR_UNREAD", data: chat });
+    }
   }, []);
 
-  const chat = state.chats.object[params.chat_id];
-
   navigation.setOptions({
-    title: `${params.recvr.first_name} ${params.recvr.last_name}`,
+    title: `${recvr.first_name} ${recvr.last_name}`,
     headerLeft: () => (
       <Button
         transparent
@@ -93,7 +33,7 @@ function ChatsReadPage({ navigation, route }) {
   });
 
   const start = (data) => {
-    const body = { recvr_id: params.recvr_id, data };
+    const body = { recvr_id, data };
     send("/api/chats", "UPDATE_CHATS", body);
   };
 
@@ -117,7 +57,7 @@ function ChatsReadPage({ navigation, route }) {
     );
   }
 
-  const { chat_id, recvr_id, messages } = chat;
+  const { chat_id, messages } = chat;
 
   const onSubmit = (data) => {
     const body = { id: chat_id, recvr_id, data };

@@ -1,6 +1,6 @@
 import React from "react";
-import { Container, List, Button, Icon } from "native-base";
 import PdfsList from "../../components/PdfsListComponent";
+import { Container, List, Button, Icon } from "native-base";
 import { getRequestThenDispatch } from "../../../providers/AppProvider";
 
 function PdfsListPage({ navigation }) {

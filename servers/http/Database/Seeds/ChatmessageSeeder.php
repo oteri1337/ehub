@@ -19,8 +19,8 @@ class ChatmessageSeeder extends AbstractSeed
         $data = [];
         for ($i = 0; $i < 35; $i++) {
             $data[] = [
-                'chat_id' => rand(1, 2),
-                'user_id' => rand(1, 2),
+                'chat_id' => rand(1, 6),
+                'user_id' => rand(1, 6),
                 'data' => $faker->text,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),

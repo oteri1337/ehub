@@ -14,7 +14,7 @@ import {
   CardItem,
 } from "native-base";
 
-class SingleTopicComponent extends React.PureComponent {
+class SingleEventComponent extends React.PureComponent {
   render() {
     const { item, navigation, lookup } = this.props;
 
@@ -28,9 +28,9 @@ class SingleTopicComponent extends React.PureComponent {
 
     let comments = item.comments_count;
 
-    if (lookup.comments.length > comments) {
-      comments = lookup.comments.length;
-    }
+    // if (lookup.comments.length > comments) {
+    //   comments = lookup.comments.length;
+    // }
 
     return (
       <TouchableWithoutFeedback onPress={onPress}>
@@ -105,7 +105,7 @@ function EventsListComponent({ list, refreshing, onRefresh, onEndReached }) {
     const lookup = list.object[item.id];
 
     return (
-      <SingleTopicComponent
+      <SingleEventComponent
         item={item}
         lookup={lookup}
         navigation={navigation}

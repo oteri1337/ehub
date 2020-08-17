@@ -20,6 +20,8 @@ class CreateChatsTable extends ParentMigration
 
             $table->integer('comments_count')->default(0);
 
+            $table->integer('unread_count')->default(0);
+
             $table->string('next_page_url')->default("");
 
             $table->timestamps();

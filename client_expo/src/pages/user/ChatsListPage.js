@@ -5,8 +5,10 @@ import { FlatList, Platform } from "react-native";
 import { getRequestThenDispatch } from "../../providers/AppProvider";
 import {
   List,
+  View,
   Left,
   Body,
+  Right,
   Spinner,
   ListItem,
   Container,
@@ -38,9 +40,24 @@ class ItemPureComponent extends React.PureComponent {
             {item.recvr.first_name} {item.recvr.last_name}
           </Text>
           <Text note style={{ fontWeight: "300" }}>
-            {item.messages[item.messages.length - 1]?.data.substring(0, 80)}
+            {item.messages[item.messages.length - 1]?.data?.substring(0, 71)}
           </Text>
         </Body>
+        <Right>
+          {item.unread_count ? (
+            <View
+              style={{
+                padding: 5,
+                borderRadius: 50,
+                backgroundColor: "#2588ed",
+              }}
+            >
+              <Text style={{ color: "white" }}>{item.unread_count}</Text>
+            </View>
+          ) : (
+            <React.Fragment />
+          )}
+        </Right>
       </ListItem>
     );
   }
@@ -52,9 +69,9 @@ function ChatsListPage({ navigation }) {
   const url = "/api/chats";
   const dispatch = "UPDATE_CHATS";
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
-  const list = state.chats;
+  const list = state?.chats;
 
-  console.log(list);
+  console.log("chats list", list);
 
   let { data } = list;
 
@@ -93,7 +110,12 @@ function ChatsListPage({ navigation }) {
   };
 
   const renderItem = ({ item }) => {
-    return <ItemPureComponent item={item} navigation={navigation} />;
+    return (
+      <ItemPureComponent
+        item={list.object[item.recvr_id]}
+        navigation={navigation}
+      />
+    );
   };
 
   if (data.length === 0) {
