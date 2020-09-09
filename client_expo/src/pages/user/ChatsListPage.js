@@ -25,6 +25,24 @@ class ItemPureComponent extends React.PureComponent {
       navigation.navigate("ChatsReadPage", item);
     };
 
+    const renderLastMessage = () => {
+      const lastMessage = item.messages[item.messages.length - 1];
+
+      if (lastMessage?.type == 1) {
+        return (
+          <Text note style={{ fontWeight: "300" }}>
+            Photo
+          </Text>
+        );
+      }
+
+      return (
+        <Text note style={{ fontWeight: "300" }}>
+          {lastMessage?.data?.substring(0, 71)}
+        </Text>
+      );
+    };
+
     return (
       <ListItem thumbnail onPress={onPress}>
         <Left>
@@ -39,12 +57,10 @@ class ItemPureComponent extends React.PureComponent {
           <Text style={{ fontWeight: "bold" }}>
             {item.recvr.first_name} {item.recvr.last_name}
           </Text>
-          <Text note style={{ fontWeight: "300" }}>
-            {item.messages[item.messages.length - 1]?.data?.substring(0, 71)}
-          </Text>
+          {renderLastMessage()}
         </Body>
         <Right>
-          {item.unread_count ? (
+          {item?.unread_count ? (
             <View
               style={{
                 padding: 5,
@@ -92,7 +108,7 @@ function ChatsListPage({ navigation }) {
   const onEndReachedThreshold = 0.1;
 
   const keyExtractor = (item) => {
-    return item.id.toString();
+    return item.recvr_id.toString();
   };
 
   const ListFooterComponent = () => {

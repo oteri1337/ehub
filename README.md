@@ -1,32 +1,42 @@
-# Tasks App
+# main stuff
+
+dismiss notifications
+
+notifications in forum
+
+scroll down for chats, up for events and forum
 
 optimistic chat ui
 
 offline friendly chat ui
 
-message animations chat
-
-break signup into steps
-
-start chat with image
-
 Save event to calendar
+
+# Refactor Tasks
 
 Cache images on the app
 
-section list for pdf group page
+header color pdf read page
 
-Consider making header icons color faint
+change of logo
+
+# New Tasks
+
+show percentage when downloading pdf
+
+message animations chat
+
+fullscreen images
+
+hold to copy messages
+
+more control of the forum
 
 Dark Mode
 
-# Tasks Backend
-
 resize uploaded images
 
-Webpage Design
-
-# Other Tasks
+Webpage Design https://www.google.com/drive/
 
 Google Play Registration
 

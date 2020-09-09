@@ -61,6 +61,7 @@ function ItemPureFunctional({ message }) {
         >
           <View style={{ ...s, marginLeft, marginRight }}>
             <Image
+              resizeMode="contain"
               source={{
                 uri: `${BACKEND_URL}/uploads/images/${message.data}`,
               }}
@@ -75,7 +76,7 @@ function ItemPureFunctional({ message }) {
     }
 
     //  pdf message
-    if (message.type === 2) {
+    if (message.type == 2) {
       return (
         <TouchableWithoutFeedback
           onPress={() => {
@@ -94,7 +95,7 @@ function ItemPureFunctional({ message }) {
       );
     }
 
-    // others message
+    // others messagez
     return (
       <View style={{ ...s, marginRight: 25 }}>
         {message.user ? (
@@ -157,8 +158,9 @@ function MessageListComponent({
             <View style={s}>
               {image.length ? (
                 <Image
+                  resizeMode="contain"
                   source={{ uri: `${BACKEND_URL}/uploads/images/${image}` }}
-                  style={{ height: 400 }}
+                  style={{ minHeight: 250 }}
                 />
               ) : (
                 <React.Fragment />

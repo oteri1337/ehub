@@ -14,6 +14,10 @@ class Chat extends Model
         'comments_count'
     ];
 
+    protected $hidden = [
+        'id'
+    ];
+
     public function recvr()
     {
         return $this->belongsTo(UserLight::class, "recvr_id");
@@ -33,7 +37,7 @@ class Chat extends Model
 
         $count = count($this->messages);
 
-        if ($count === 0 || $count < 12) {
+        if ($count === 0 || $count < 22) {
             return null;
         }
 
@@ -41,6 +45,6 @@ class Chat extends Model
 
         $next_page_url = $page + 1;
 
-        return "/api/chats/" . $this->chat_id .  "?page=" . $next_page_url;
+        return "/api/chats/" . $this->recvr_id .  "?page=" . $next_page_url;
     }
 }

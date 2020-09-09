@@ -21,8 +21,12 @@ class Sender
             $mailer->isHTML(true);
 
             if ($mail_type == "mail") {
+
+                $name = getenv("MAIL_NAME");
+                $email = getenv("MAIL_USERNAME");
+
                 $mailer->isMail();
-                $mailer->From = getenv("MAIL_USERNAME");
+                $mailer->setFrom($email, $name);
             }
 
             if ($mail_type == "smtp") {
@@ -31,13 +35,11 @@ class Sender
 
                 $mailer->isSMTP();
                 $mailer->SMTPAuth = true;
-                $mailer->SMTPDebug = getenv("MAIL_ERRORS");
                 $mailer->Host = getenv("MAIL_HOST");
                 $mailer->Port = getenv("MAIL_PORT");
-                $mailer->Username = $email;
+                $mailer->Username = getenv("MAIL_USERNAME");
                 $mailer->Password = getenv("MAIL_PASSWORD");
-                $mailer->setFrom($email, $name);
-                $mailer->addReplyTo($email, $name);
+                $mailer->SMTPDebug = getenv("MAIL_ERRORS");
             }
 
             foreach ($emails as $email) {

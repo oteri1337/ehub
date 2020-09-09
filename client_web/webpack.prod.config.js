@@ -71,6 +71,7 @@ const entryOne = {
     alias: {
       providers: rp("src/providers/"),
       components: rp("src/pages/components/"),
+      hooks$: path.resolve(__dirname, "src/hooks.js"),
       images: path.resolve(__dirname, "src/assets/images/"),
       functions$: path.resolve(__dirname, "src/functions.js"),
     },

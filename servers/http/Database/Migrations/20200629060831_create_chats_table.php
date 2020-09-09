@@ -10,13 +10,13 @@ class CreateChatsTable extends ParentMigration
     {
         $this->schema->create('chats', function (Blueprint $table) {
 
-            $table->increments('id');
-
-            $table->integer('chat_id');
+            $table->integer('recvr_id');
 
             $table->integer('user_id');
 
-            $table->integer('recvr_id');
+            $table->integer('chat_id');
+
+            $table->increments('id');
 
             $table->integer('comments_count')->default(0);
 

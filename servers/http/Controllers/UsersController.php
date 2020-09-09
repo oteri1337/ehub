@@ -23,17 +23,11 @@ class UsersController extends AuthController
         $email = $body['email'] ?? '';
         $password = $body['password'] ?? '';
         $confirm_password = $body['password_confirmation'] ?? '';
-        $first_name = $body['first_name'] ?? '';
-        $last_name = $body['last_name'] ?? '';
-        $department = $body['department'] ?? '';
 
         return [
             'password' => [$password, 'required|min(8)'],
             'email' => [$email, 'required|emailAlreadyExists'],
             'password confirmation' => [$confirm_password, 'required|matches(password)'],
-            'first name' => [$first_name, 'required'],
-            'last name' => [$last_name, 'required'],
-            'department' => [$department, 'required']
         ];
     }
 

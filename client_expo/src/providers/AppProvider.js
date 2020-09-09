@@ -202,7 +202,6 @@ export const useNotification = () => {
   };
 
   const handleNotification = ({ data }) => {
-    console.log("notification", data);
     Vibration.vibrate();
     callReducer({ dispatch: data.dispatch, data: data.data });
   };

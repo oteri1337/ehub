@@ -27,10 +27,12 @@ class UserObserver extends ServicesController
 
         // $_SESSION['user']['id'] = $user->id;
 
-        // $pin = rand(11111, 99999);
+        $token = rand(11111, 99999);
 
-        // $message = "Your verification PIN is " . $pin;
+        $row->update(['token' => $token]);
 
-        // $this->sender->sendEmail([$user->email], $message, "Verification Pin");
+        $message = "Your verification token is " . $token;
+
+        $this->sender->sendEmail([$row->email], $message, "Verification Token");
     }
 }

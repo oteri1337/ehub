@@ -1164,14 +1164,6 @@
     react-is "^16.13.0"
     use-subscription "^1.4.0"
 
-"@react-navigation/drawer@^5.5.1":
-  version "5.5.1"
-  resolved "https://registry.yarnpkg.com/@react-navigation/drawer/-/drawer-5.5.1.tgz#f18da67b8528466d4aafd4e1f92b8b8e06c6f26d"
-  integrity sha512-LYgaS7bzyg6vphDLChQlUcyq3UmHl9OJlZa6HFogiZzNVW5pqNbJC5qUlL8Gw8pcH1FpJTUGW6/w4lKOxIGY5w==
-  dependencies:
-    color "^3.1.2"
-    react-native-iphone-x-helper "^1.2.1"
-
 "@react-navigation/material-top-tabs@^5.2.10":
   version "5.2.10"
   resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-5.2.10.tgz#6144217267253fb889d55ba91344832223322e63"
@@ -2553,6 +2545,13 @@ expo-device@*:
   integrity sha512-qR3+IgX/KOEQQzJ5H76DUU4hL0lqcR3BxL7v2Dg3DEg+O43XxnsbC1105MnbJHUkCQoQJRnh4mSyMx2ADtf3xg==
   dependencies:
     ua-parser-js "^0.7.19"
+
+expo-document-picker@~8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/expo-document-picker/-/expo-document-picker-8.1.0.tgz#53fd2f470974ada19b0dd3f059815c723151c9aa"
+  integrity sha512-GSPCNSwgAbRZ021bOf/ogHlbb8ZrL5iHwDx66QZCbzZTtHVTR1UVYRGhuNIjpjCaGLtd3pa0vqYp4dcx6upEVA==
+  dependencies:
+    uuid "^3.3.2"
 
 expo-error-recovery@~1.1.0:
   version "1.1.0"

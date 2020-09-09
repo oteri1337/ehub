@@ -6,6 +6,7 @@ import GuestAdminRoute from "./GuestAdminRoute";
 
 import HomePage from "../pages/tour/HomePage";
 import ErrorPage from "../pages/tour/ErrorPage";
+import SignInPage from "../pages/tour/auth/SignInPage";
 
 import AdminHomePage from "../pages/admin/AdminHomePage";
 import AdminSigninPage from "../pages/admin/AdminSignInPage";
@@ -46,6 +47,7 @@ function Routes() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/index.html" component={HomePage} />
+        <Route exact path="/signin.html" component={SignInPage} />
 
         <GuestAdminRoute exact path="/control/signin.html" component={AdminSigninPage} />        
         <GuestAdminRoute exact path="/control/password.html" component={AdminPasswordPage} />

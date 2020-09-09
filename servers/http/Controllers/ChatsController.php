@@ -24,8 +24,26 @@ class ChatsController extends NewApiController
         $user = $request->getAttribute('user');
 
         $body = $request->getParsedBody();
-        $data = $body['data'] ?? '';
+
+        $type = $body['type'] ?? 0;
+
         $recvr_id = $body['recvr_id'] ?? '';
+
+        $data = $body['data'] ??  $_FILES['data']['name'] ?? '';
+
+        // rules
+        $rules = ['data' => [$data, 'required']];
+        $this->validator->validate($rules);
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+
+        // create chat
 
         $chat_id = time();
 
@@ -33,7 +51,60 @@ class ChatsController extends NewApiController
 
         $this->model->create(['recvr_id' => $user->id, 'user_id' => $recvr_id, 'chat_id' => $chat_id]);
 
-        Chatmessage::create(['user_id' => $user->id, 'recvr_id' => $recvr_id, 'data' => $data, 'chat_id' => $chat_id]);
+
+
+        // create message
+
+        // if message is image
+        if ($type == 1) {
+            if ($_FILES['data']['size'] === 0) {
+                $this->data['errors'] = ['Image Rejected'];
+                $response->getBody()->write(json_encode($this->data));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            $rules = ['image' => [$data, 'required|imageformat']];
+
+            $this->validator->validate($rules);
+
+            $errors = $this->validator->errors()->all();
+
+            if ($errors) {
+                $this->data['errors'] = $errors;
+                $response->getBody()->write(json_encode($this->data));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            $data = $this->uploadImage($_FILES['data']);
+        }
+
+        // if message is pdf
+        if ($type == 2) {
+            if ($_FILES['data']['size'] === 0) {
+                $this->data['errors'] = ['Pdf Rejected'];
+                $response->getBody()->write(json_encode($this->data));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            $rules = ['pdf' => [$data, 'required|pdfformat']];
+
+            $this->validator->validate($rules);
+
+            $errors = $this->validator->errors()->all();
+
+            if ($errors) {
+                $this->data['errors'] = $errors;
+                $response->getBody()->write(json_encode($this->data));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            $data = $this->uploadFile(PDF_DIR, $_FILES['data']);
+        }
+
+        Chatmessage::create(['user_id' => $user->id, 'recvr_id' => $recvr_id, 'data' => $data, 'chat_id' => $chat_id, 'type' => $type]);
+
+
+        // get chat list
 
         $list = $this->getList($request);
 
@@ -50,15 +121,6 @@ class ChatsController extends NewApiController
         $response->getBody()->write(json_encode($this->data));
 
         return $response->withHeader('Content-Type', 'application/json');
-
-
-        // $list = $this->model->where("user_id", $user->id)->with($this->eagerList)->orderBy("updated_at", $this->order)->paginate($this->perPage);
-
-        // $this->data['data'] = $this->modifyList($list);
-
-        // $response->getBody()->write(json_encode($this->data));
-
-        // return $response->withHeader('Content-Type', 'application/json');
     }
 
     public function modifyList($list)
@@ -68,7 +130,7 @@ class ChatsController extends NewApiController
 
             $li->comments_count = $li->messages->count();
 
-            $messages = array_reverse($li->messages->slice(0, 12)->toArray());
+            $messages = array_reverse($li->messages->slice(0, 22)->toArray());
 
             unset($li->messages);
 
@@ -83,7 +145,7 @@ class ChatsController extends NewApiController
 
         $row->recvr = $row->recvr;
 
-        $paginator = $row->messages()->paginate(12);
+        $paginator = $row->messages()->paginate(22);
 
         $row->messages = $paginator->items();
 
@@ -108,8 +170,9 @@ class ChatsController extends NewApiController
         $user = $request->getAttribute('user');
 
         $id = $body['id'] ?? '';
-        $type = $body['type'] ?? 0;
         $recvr_id = $body['recvr_id'] ?? '';
+
+        $type = $body['type'] ?? 0;
         $data = $body['data'] ??  $_FILES['data']['name'] ?? '';
 
         $rules = [
@@ -156,6 +219,29 @@ class ChatsController extends NewApiController
             }
 
             $data = $this->uploadImage($_FILES['data']);
+        }
+
+        // if message is pdf
+        if ($type == 2) {
+            if ($_FILES['data']['size'] === 0) {
+                $this->data['errors'] = ['Pdf Rejected'];
+                $response->getBody()->write(json_encode($this->data));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            $rules = ['pdf' => [$data, 'required|pdfformat']];
+
+            $this->validator->validate($rules);
+
+            $errors = $this->validator->errors()->all();
+
+            if ($errors) {
+                $this->data['errors'] = $errors;
+                $response->getBody()->write(json_encode($this->data));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            $data = $this->uploadFile(PDF_DIR, $_FILES['data']);
         }
 
         $comment = new Chatmessage(['user_id' => $user->id, 'data' => $data, 'type' => $type, 'recvr_id' => $recvr_id]);

@@ -9,8 +9,12 @@ class AuthController extends NewApiController
     protected $authKey;
 
 
-
     // Basic Auth
+
+    private function encryptPassword($password)
+    {
+        return sha1($password);
+    }
 
     public function signIn($request, $response)
     {
@@ -126,99 +130,8 @@ class AuthController extends NewApiController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function encryptPassword($password)
-    {
-        return sha1($password);
-    }
-
 
     // Updates
-
-    public function updatePassword($request, $response)
-    {
-        $body = $request->getParsedBody();
-        $user = $request->getAttribute("user");
-
-        $password = $body['password'] ?? '';
-        $new_password = $body['new_password'] ?? '';
-        $new_password_confirmation = $body['new_password_confirm'] ?? '';
-
-        $rules = [
-            'Password' => [$password, 'required'],
-            'New_password' => [$new_password, 'required|min(7)'],
-            'New password confirmation' => [$new_password_confirmation, 'required|matches(New_password)'],
-        ];
-
-        $this->validator->validate($rules);
-
-        $errors = $this->validator->errors;
-
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $password = $this->encryptPassword($password);
-        $row = $this->model->where('id', $user->id)->where('password', $password)->first();
-
-        if (!$row) {
-            $this->data['errors'] =  ['incorrect password'];
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $new_password = $this->encryptPassword($new_password);
-        $row->update(['password' => $new_password]);
-
-        $this->data['message'] = "Password Updated Successfully";
-
-        $response->getBody()->write(json_encode($this->data));
-
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function updateProfile($request, $response)
-    {
-        $body = $request->getParsedBody();
-
-        $user = $request->getAttribute("user");
-
-        $filtered = $this->filter($body, ["link", "department", "phone_number", "bio"]);
-
-        $user->update($filtered);
-
-        $row = $this->model->where('id', $user->id)->first();
-
-        $this->data['data'] = $row;
-
-        $this->data['message'] = "Profile Updated";
-
-        $response->getBody()->write(json_encode($this->data));
-
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function updatePushtoken($request, $response)
-    {
-        $body = $request->getParsedBody();
-
-        $user = $request->getAttribute("user");
-
-        $filtered = $this->filter($body, ["expo_push_token", "web_push_token"]);
-
-        $user->update($filtered);
-
-        $row = $this->model->where('id', $user->id)->first();
-
-        $this->data['data'] = $row;
-
-        $this->data['message'] = "Profile Updated";
-
-        $response->getBody()->write(json_encode($this->data));
-
-        return $response->withHeader('Content-Type', 'application/json');
-    }
 
     public function updatePhoto($request, $response)
     {
@@ -311,36 +224,96 @@ class AuthController extends NewApiController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-
-
-    // Tokens 
-
-    public function tokenForNewEmail($request, $response)
+    public function updateProfile($request, $response)
     {
-        $row = $request->getAttribute('user');
+        $body = $request->getParsedBody();
 
-        $pin = rand(0, 999999);
+        $user = $request->getAttribute("user");
 
-        $row->update(['pin' => $pin]);
+        $filtered = $this->filter($body, ["link", "department", "phone_number", "bio", "first_name", "last_name", "nse_number", "photo_profile"]);
 
-        $data = ['title' => 'Pin', 'content' => ' Your pin is ' . $pin];
+        $user->update($filtered);
 
-        $body = $this->renderer->render('email.html', $data);
+        $row = $this->model->where('id', $user->id)->first();
 
-        $sent = $this->sender->sendEmail([$row->email], $body, "Pin");
+        $this->data['data'] = $row;
 
-        if (!$sent) {
-            $this->data['errors'] = ['Failed to send pin, please contact ' . getenv("MAIL_USERNAME") . ' or try again later.'];
+        // $this->data['message'] = "Profile Updated";
+
+        $response->getBody()->write(json_encode($this->data));
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function updatePassword($request, $response)
+    {
+        $body = $request->getParsedBody();
+        $user = $request->getAttribute("user");
+
+        $password = $body['password'] ?? '';
+        $new_password = $body['new_password'] ?? '';
+        $new_password_confirmation = $body['new_password_confirm'] ?? '';
+
+        $rules = [
+            'Password' => [$password, 'required'],
+            'New_password' => [$new_password, 'required|min(7)'],
+            'New password confirmation' => [$new_password_confirmation, 'required|matches(New_password)'],
+        ];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors;
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
             $response->getBody()->write(json_encode($this->data));
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $this->data['message'] = 'Email update link sent successfully, please check your mail box.';
+        $password = $this->encryptPassword($password);
+        $row = $this->model->where('id', $user->id)->where('password', $password)->first();
+
+        if (!$row) {
+            $this->data['errors'] =  ['incorrect password'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $new_password = $this->encryptPassword($new_password);
+        $row->update(['password' => $new_password]);
+
+        $this->data['message'] = "Password Updated Successfully";
+
         $response->getBody()->write(json_encode($this->data));
+
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function tokenForNewPassword($request, $response)
+    public function updatePushtoken($request, $response)
+    {
+        $body = $request->getParsedBody();
+
+        $user = $request->getAttribute("user");
+
+        $filtered = $this->filter($body, ["expo_push_token", "web_push_token"]);
+
+        $user->update($filtered);
+
+        $row = $this->model->where('id', $user->id)->first();
+
+        $this->data['data'] = $row;
+
+        $this->data['message'] = "Profile Updated";
+
+        $response->getBody()->write(json_encode($this->data));
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+
+    // Tokens 
+
+    public function getToken($request, $response)
     {
         $body = $request->getParsedBody();
 
@@ -351,7 +324,7 @@ class AuthController extends NewApiController
         ];
 
         $this->validator->validate($rules);
-        $errors = $this->validator->errors;
+        $errors = $this->validator->errors()->all();
 
         if ($errors) {
             $this->data['errors'] = $errors;
@@ -359,27 +332,21 @@ class AuthController extends NewApiController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $row = $this->model->where('email', $email);
+        $row = $this->model->where('email', $email)->first();
 
-        if (!$row->exists()) {
+        if (!$row) {
             $this->data['errors'] = ['email not found'];
             $response->getBody()->write(json_encode($this->data));
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $row = $row->first();
+        $token = rand(11111, 99999);
 
-        $token = rand(0, 999999);
+        $row->update(['token' => $token]);
 
-        $row->update([
-            'password_token' => $token
-        ]);
+        $data = 'Your verification token is ' . $token;
 
-        $data = ['title' => 'Password Reset Password', 'content' => 'Your password token is' . $token];
-
-        $body = $this->renderer->render('email.html', $data);
-
-        $sent = $this->sender->sendEmail([$row->email], $body, "Reset Password");
+        $sent = $this->sender->sendEmail([$row->email], $data, "Token");
 
         if (!$sent) {
             $this->data['errors'] = ['Failed to send token, please contact ' . getenv("MAIL_USERNAME") . ' or try again later.'];
@@ -387,173 +354,63 @@ class AuthController extends NewApiController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $this->data['message'] = 'Password reset token sent successfully';
+        $this->data['message'] = 'Token Sent.';
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function tokenForVerification($request, $response)
-    {
-        $body = $request->getParsedBody();
-        $user = $request->getAttribute('user');
-
-        $email = $body['email'] ?? '';
-        $mobile_number = $body['mobile_number'] ?? '';
-
-        if ($mobile_number != '') {
-
-            $row = $this->model->where('mobile_number', $mobile_number)->where('id', '!=', $user->id)->exists();
-            if ($row) {
-                $this->data['errors'] = ['mobile number already in use'];
-                $response->getBody()->write(json_encode($this->data));
-                return $response->withHeader('Content-Type', 'application/json');
-            }
-
-            $rules = ['mobile number' => [$mobile_number, 'number']];
-        } else {
-            $rules = ['email' => [$email, 'email']];
-        }
-
-        $this->validator->validate($rules);
-        $errors = $this->validator->errors;
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-
-        $pin = rand(11111, 99999);
-
-        if ($mobile_number != '') {
-            $user->update(['pin' => $pin, 'mobile_number' => $mobile_number]);
-        } else {
-            $user->update(['pin' => $pin]);
-        }
-
-        $message = "Your verification PIN is " . $pin;
-
-        if ($mobile_number != '') {
-            $sent = $this->sender->sendSms([$mobile_number], $message);
-
-            if (!$sent) {
-                $this->data['errors'] = ['Failed to send PIN. Make sure your mobile number is in international format or click below to get PIN via email'];
-                $response->getBody()->write(json_encode($this->data));
-                return $response->withHeader('Content-Type', 'application/json');
-            }
-        } else {
-            $sent = $this->sender->sendEmail([$user->email], $message, "Verification Pin");
-
-            if (!$sent) {
-                $this->data['errors'] = ['Failed to send PIN. contact ' . getenv("MAIL_USERNAME")];
-                $response->getBody()->write(json_encode($this->data));
-                return $response->withHeader('Content-Type', 'application/json');
-            }
-        }
-
-
-        $this->data['message'] = 'PIN sent.';
-        $response->getBody()->write(json_encode($this->data));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function verifyVerificationToken($request, $response)
-    {
-        $body = $request->getParsedBody();
-        $email = $body['email'] ?? '';
-        $pin = $body["pin"] ?? "";
-
-        $row = $this->model->where('email', $email)->first();
-
-        if (!$row) {
-            $this->data['errors'] = ['Verification Failed'];
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        if ($pin != $row->pin) {
-            $this->data['errors'] = ['Incorrect PIN'];
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $row->update([
-            'device_verified' => 1,
-            'pin' => rand(11111, 99999)
-        ]);
-
-        // $_SESSION[$this->authKey]['id'] = $row->id;
-
-        $row = $this->model->where('email', $email)->first();
-        $row = $this->lazyLoadRelationships($row);
-        $this->data['data'] = $row;
-        $this->data['message'] = 'Verification Successful';
-        $response->getBody()->write(json_encode($this->data));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-
-    // Resets
-
-
-
-    public function setNewPassword($request, $response)
+    public function verifyToken($request, $response)
     {
         $user = $request->getAttribute("user");
         $body = $request->getParsedBody();
 
-        $token = $body['email_token'] ?? '';
-        $email = $body['new_email'] ?? '';
-        $email_confirmation = $body['confirm_new_email'] ?? '';
+        $token = $body['token'] ?? '';
 
-        $rules = [
-            'token' => [$token, 'required'],
-            'email' => [$email, 'required|email'],
-            'confirmation' => [$email_confirmation, 'required|email|matches(email)'],
-        ];
+        $rules = ['token' => [$token, 'required|number']];
 
         $this->validator->validate($rules);
-        $errors = $this->validator->errors;
+        $errors = $this->validator->errors()->all();
         if ($errors) {
             $this->data['errors'] = $errors;
             $response->getBody()->write(json_encode($this->data));
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $user->update([
-            'email' => $email,
-            'email_verified' => 0
-        ]);
+        $user = $this->model->where('email', $user->email)->where('token', $token)->first();
 
-        $id = $_SESSION[$this->authKey]['id'];
-        $user = $this->model->where('id', $id)->first();
+        if (!$user) {
+            $this->data['errors'] = ['invalid token'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $user->update(['verified' => 1, 'token' => rand(11111, 99999)]);
+        $user = $this->model->where('email', $user->email)->first();
         $user = $this->lazyLoadRelationships($user);
-
         $this->data['data'] = $user;
 
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-
-    // Notifications
-
-    public function sendPush($request, $response)
+    public function resetPassword($request, $response)
     {
         $body = $request->getParsedBody();
-        $subject = $body['subject'] ?? "";
-        $content = $body['body'] ?? "";
-        $user_id = $body['user_id'] ?? "";
+
+        $email = $body['email'] ?? '';
+        $token = $body['token'] ?? '';
+        $new_password = $body['new_password'] ?? '';
+        $new_password_confirmation = $body['new_password_confirmation'] ?? '';
 
         $rules = [
-            'subject' => [$subject, 'required'],
-            'user_id' => [$user_id, 'required'],
-            'body' => [$content, 'required'],
+            'email' => [$email, 'required|email'],
+            'token' => [$token, 'required|number'],
+            'new_password' => [$new_password, 'required'],
+            'new password confirmation' => [$new_password_confirmation, 'required|matches(new_password)']
         ];
 
         $this->validator->validate($rules);
-        $errors = $this->validator->errors;
-
+        $errors = $this->validator->errors()->all();
         if ($errors) {
             $this->data['errors'] = $errors;
             $response->getBody()->write(json_encode($this->data));
@@ -561,76 +418,21 @@ class AuthController extends NewApiController
         }
 
 
-        $user = $this->model->where('id', $user_id)->first();
 
-        if (!$user) {
-            $this->data['errors'] = ['not found'];
+        $row = $this->model->where('email', $email)->where('token', $token)->first();
+
+        if (!$row) {
+            $this->data['errors'] = ['Invalid Token'];
             $response->getBody()->write(json_encode($this->data));
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $sent = $this->sender->sendPush([$user->push_subscription], $content, $subject);
+        $password = $this->encryptPassword($new_password);
 
-        if ($sent) {
-            $this->data['message'] = "Sent";
+        $row->update(['password' => $password, 'token' => rand(11111, 99999)]);
 
-            $response->getBody()->write(json_encode($this->data));
-
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $this->data['errors'] = ["Failed To Send"];
-
+        $this->data['message'] = 'Password Reset Successful';
         $response->getBody()->write(json_encode($this->data));
-
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function sendEmail($request, $response)
-    {
-        $body = $request->getParsedBody();
-        $subject = $body['subject'] ?? "";
-        $content = $body['body'] ?? "";
-        $user_id = $body['user_id'] ?? "";
-
-        $rules = [
-            'subject' => [$subject, 'required'],
-            'user_id' => [$user_id, 'required'],
-            'body' => [$content, 'required'],
-        ];
-
-        $this->validator->validate($rules);
-        $errors = $this->validator->errors;
-
-        if ($errors) {
-            $this->data['errors'] = $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-
-        $user = $this->model->where('id', $user_id)->first();
-
-        if (!$user) {
-            $this->data['errors'] = ['not found'];
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $sent = $this->sender->sendEmail([$user->email], $content, $subject);
-
-        if ($sent) {
-            $this->data['message'] = "Sent";
-
-            $response->getBody()->write(json_encode($this->data));
-
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-
-        $this->data['errors'] = ["Failed To Send"];
-
-        $response->getBody()->write(json_encode($this->data));
-
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

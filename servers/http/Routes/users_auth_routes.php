@@ -17,15 +17,17 @@ $app->post('/api/users/auth/photo', UsersController::class . ':updatePhoto')->ad
 
 $app->patch('/api/users/auth/email', UsersController::class . ':updateEmail')->add($user_logged_in);
 
-$app->patch('/api/users/auth/pushtoken', UsersController::class . ':updatePushtoken')->add($user_logged_in);
-
 $app->patch('/api/users/auth/profile', UsersController::class . ':updateProfile')->add($user_logged_in);
 
 $app->patch('/api/users/auth/password', UsersController::class . ':updatePassword')->add($user_logged_in);
 
+$app->patch('/api/users/auth/pushtoken', UsersController::class . ':updatePushtoken')->add($user_logged_in);
+
 
 // Tokens
 
-$app->get('/api/users/auth/token/email', UsersController::class . ':tokenForNewEmail')->add($user_logged_in);
+$app->post('/api/users/auth/token', UsersController::class . ':getToken');
 
-$app->post('/api/users/auth/token/password/update', UsersController::class . ':tokenForPasswordUpdate');
+$app->post('/api/users/auth/verify', UsersController::class . ':verifyToken')->add($user_logged_in);
+
+$app->patch('/api/users/auth/password/reset', UsersController::class . ':resetPassword');

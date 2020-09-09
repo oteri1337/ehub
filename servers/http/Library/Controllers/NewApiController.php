@@ -207,6 +207,7 @@ class NewApiController extends ServicesController
     {
         $body = $request->getParsedBody();
         $attr = $body["id"] ?? "";
+
         $rules = $this->updateRules($body) ?? [];
 
         $this->validator->validate($rules);

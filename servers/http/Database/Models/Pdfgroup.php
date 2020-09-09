@@ -12,6 +12,11 @@ class Pdfgroup extends Model
         'title',
     ];
 
+    public function data()
+    {
+        return $this->belongsToMany(Pdf::class);
+    }
+
     public function pdfs()
     {
         return $this->belongsToMany(Pdf::class);

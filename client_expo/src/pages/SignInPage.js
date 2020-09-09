@@ -11,6 +11,7 @@ import {
   Spinner,
   Text,
   Container,
+  Header,
 } from "native-base";
 
 function SignInPage({ navigation }) {
@@ -38,11 +39,12 @@ function SignInPage({ navigation }) {
 
   return (
     <Container>
+      <Header transparent />
       <TouchableWithoutFeedback onPress={onBlur}>
-        <View style={{ flex: 1.5 }}>
+        <View style={{ flex: 1 }}>
           <View
             style={{
-              flex: 1,
+              flex: 1.1,
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -53,9 +55,11 @@ function SignInPage({ navigation }) {
             <Item regular style={{ borderRadius: 5 }}>
               <Icon name="ios-mail" />
               <Input
+                value={email}
                 placeholder="Email"
                 autoCapitalize="none"
-                value={email}
+                autoCompleteType="off"
+                keyboardType={"visible-password"}
                 onChangeText={(text) => setEmail(text)}
               />
             </Item>
@@ -69,10 +73,10 @@ function SignInPage({ navigation }) {
               <Icon name="ios-lock" />
               <Input
                 placeholder="Password"
+                autoCompleteType="off"
                 value={password}
                 secureTextEntry={true}
                 onChangeText={(text) => setPassword(text)}
-                onBlur={onBlur}
               />
             </Item>
             {!refreshing && (
@@ -85,7 +89,11 @@ function SignInPage({ navigation }) {
             {refreshing && <Spinner />}
           </View>
           <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            style={{
+              padding: 15,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
             <Text style={{ fontWeight: "bold" }}>
               Forgot password?{" "}

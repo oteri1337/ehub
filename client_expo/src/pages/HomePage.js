@@ -42,8 +42,9 @@ function HomePage({ navigation }) {
   ];
 
   return (
-    <Container style={{ padding: 5 }}>
+    <Container style={{ padding: 10 }}>
       <View style={{ flex: 1 }}>
+        <View style={{ flex: 0.3 }}></View>
         <View style={{ flex: 2 }}>
           <DeckSwiper
             dataSource={cards}
@@ -70,7 +71,7 @@ function HomePage({ navigation }) {
               }
 
               return (
-                <Card style={{ marginTop: 60 }}>
+                <Card>
                   <CardItem>
                     <Left>
                       <Body style={{ alignItems: "center" }}>
@@ -112,7 +113,7 @@ function HomePage({ navigation }) {
             }}
           />
         </View>
-        <View>
+        <View style={{ flex: 1, justifyContent: "flex-end" }}>
           <Button
             full
             style={{ backgroundColor: "#029151" }}

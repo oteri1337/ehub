@@ -144,6 +144,29 @@ class TopicsController extends NewApiController
             $data = $this->uploadImage($_FILES['data']);
         }
 
+        // if message is pdf
+        if ($type == 2) {
+            if ($_FILES['data']['size'] === 0) {
+                $this->data['errors'] = ['Pdf Rejected'];
+                $response->getBody()->write(json_encode($this->data));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            $rules = ['pdf' => [$data, 'required|pdfformat']];
+
+            $this->validator->validate($rules);
+
+            $errors = $this->validator->errors()->all();
+
+            if ($errors) {
+                $this->data['errors'] = $errors;
+                $response->getBody()->write(json_encode($this->data));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            $data = $this->uploadFile(PDF_DIR, $_FILES['data']);
+        }
+
         $comment = new Topiccomment(['user_id' => $user->id, 'data' => $data, 'type' => $type]);
 
         $data = $parent->comments()->save($comment);

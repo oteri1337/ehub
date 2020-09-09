@@ -19,11 +19,11 @@ function chatsReducer(state = defaultState, action) {
         ...state,
         object: {
           ...state.object,
-          [action.data.chat_id]: {
+          [action.data.recvr_id]: {
             ...action.data,
             messages: [
               ...action.data.messages.reverse(),
-              ...state.object[action.data.chat_id].messages,
+              ...state.object[action.data.recvr_id].messages,
             ],
           },
         },
@@ -36,18 +36,6 @@ function chatsReducer(state = defaultState, action) {
           [action.data.recvr_id]: action.data,
         },
       };
-    // case "ADD_COMMENT_TO_CHAT":
-    //   const { slug, comment } = action.data;
-    //   return {
-    //     ...state,
-    //     object: {
-    //       ...state.object,
-    //       [slug]: {
-    //         ...state.object[slug],
-    //         messages: [...state.object[slug].messages, comment],
-    //       },
-    //     },
-    //   };
 
     case "CLEAR_UNREAD":
       return {
@@ -62,15 +50,12 @@ function chatsReducer(state = defaultState, action) {
       };
 
     case "ADD_MESSAGE_TO_CHAT":
-      const slug = action.data.recvr_id;
-
-      const newCount = state.object[slug].unread_count + 1;
-
-      console.log("add message", action);
+      const key = parseInt(action.data.user_id);
+      const chat = state.object[key];
 
       let sl = [];
 
-      const { messages } = state.object[slug];
+      const { messages } = chat;
 
       if (messages.length == 12) {
         sl = messages.slice(1, 12);
@@ -88,11 +73,11 @@ function chatsReducer(state = defaultState, action) {
         ...state,
         object: {
           ...state.object,
-          [slug]: {
-            ...state.object[slug],
-            unread_count: state.object[slug].unread_count + 1,
-            next_page_url: `/api/chats/${slug}?page=2`,
+          [key]: {
+            ...state.object[key],
             messages: [...sl, action.data],
+            next_page_url: `/api/chats/${key}?page=2`,
+            unread_count: state.object[key].unread_count + 1,
           },
         },
       };

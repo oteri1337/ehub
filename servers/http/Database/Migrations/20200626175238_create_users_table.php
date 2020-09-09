@@ -12,17 +12,21 @@ class CreateUsersTable extends ParentMigration
 
             $table->increments('id');
 
+            $table->integer('token')->nullable();
+
+            $table->boolean('verified')->default(0);
+
             $table->string('expo_push_token')->default("");
 
             $table->string('email')->unique();
 
             $table->string('password');
 
-            $table->string('first_name');
+            $table->string('first_name')->default("");
 
-            $table->string('last_name');
+            $table->string('last_name')->default("");
 
-            $table->string('department');
+            $table->string('department')->default("");
 
             $table->string('phone_number')->default("");
 
@@ -30,9 +34,6 @@ class CreateUsersTable extends ParentMigration
 
             $table->string('link')->default("");
 
-            $table->integer('pin')->nullable();
-
-            $table->boolean('verified')->default(0);
 
             $table->string('photo_profile')->default("human.png");
 

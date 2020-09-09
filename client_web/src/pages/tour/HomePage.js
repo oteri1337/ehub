@@ -1,4 +1,19 @@
 import React from "react";
+import s1 from "../../assets/images/s1.jpeg";
+import s2 from "../../assets/images/s2.jpeg";
+import s3 from "../../assets/images/s3.jpeg";
+import s4 from "../../assets/images/s4.jpeg";
+
+import s5 from "../../assets/images/s5.jpeg";
+import s6 from "../../assets/images/s6.jpeg";
+import s7 from "../../assets/images/s7.jpeg";
+import s8 from "../../assets/images/s8.jpeg";
+
+import s9 from "../../assets/images/s9.jpeg";
+import s10 from "../../assets/images/s10.jpeg";
+import s11 from "../../assets/images/s11.jpeg";
+import s12 from "../../assets/images/s12.jpeg";
+
 import ContainerComponent from "components/container/TourContainerComponent";
 
 function HomePage() {
@@ -37,6 +52,52 @@ function HomePage() {
           {MAIL_NAME}
         </div>
         <div className="app-bg-overlay"></div>
+      </section>
+      <section>
+        <div>
+          <center>
+            <div className="row">
+              <div className="col l3 s12 app-my-3">
+                <img src={s1} style={{ maxHeight: "100vh" }} />
+              </div>
+              <div className="col l3 s12 app-my-3">
+                <img src={s2} style={{ maxHeight: "100vh" }} />
+              </div>
+              <div className="col l3 s12 app-my-3">
+                <img src={s3} style={{ maxHeight: "100vh" }} />
+              </div>
+              <div className="col l3 s12 app-my-3">
+                <img src={s4} style={{ maxHeight: "100vh" }} />
+              </div>
+
+              <div className="col l3 s12 app-my-3">
+                <img src={s5} style={{ maxHeight: "100vh" }} />
+              </div>
+              <div className="col l3 s12 app-my-3">
+                <img src={s6} style={{ maxHeight: "100vh" }} />
+              </div>
+              <div className="col l3 s12 app-my-3">
+                <img src={s7} style={{ maxHeight: "100vh" }} />
+              </div>
+              <div className="col l3 s12 app-my-3">
+                <img src={s8} style={{ maxHeight: "100vh" }} />
+              </div>
+
+              <div className="col l3 s12 app-my-3">
+                <img src={s9} style={{ maxHeight: "100vh" }} />
+              </div>
+              <div className="col l3 s12 app-my-3">
+                <img src={s10} style={{ maxHeight: "100vh" }} />
+              </div>
+              <div className="col l3 s12 app-my-3">
+                <img src={s11} style={{ maxHeight: "100vh" }} />
+              </div>
+              <div className="col l3 s12 app-my-3">
+                <img src={s12} style={{ maxHeight: "100vh" }} />
+              </div>
+            </div>
+          </center>
+        </div>
       </section>
     </ContainerComponent>
   );

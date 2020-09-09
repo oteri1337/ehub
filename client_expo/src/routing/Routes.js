@@ -11,6 +11,10 @@ import SignInPage from "../pages/SignInPage";
 import SignUpPage from "../pages/SignUpPage";
 import PasswordPage from "../pages/PasswordPage";
 
+import AvatarPage from "../pages/user/auth/AvatarPage";
+import DetailsPage from "../pages/user/auth/DetailsPage";
+import VerificationPage from "../pages/user/auth/VerificationPage";
+
 import AccountPage from "../pages/user/account/AccountPage";
 import ChangeEmailPage from "../pages/user/account/ChangeEmailPage";
 import ChangePhotoPage from "../pages/user/account/UpdatePhotoPage";
@@ -53,6 +57,26 @@ function Routes() {
 
   // prettier-ignore
   if (state.user ?? false) {
+
+
+    if (state.user.verified == 0) {
+      return <Navigator>
+          <Screen name="VerificationPage" component={VerificationPage}/>
+      </Navigator>
+    }
+
+    if (!state.user.first_name.length) {
+      return <Navigator>
+          <Screen name="DetailsPage" component={DetailsPage}/>
+      </Navigator>
+    }
+
+    if (state.user.photo_profile == "human.png") {
+      return <Navigator>
+          <Screen name="AvatarPage" component={AvatarPage}/>
+      </Navigator>
+    }
+
     return <Navigator>
         <Screen name="TabRoutes" component={TabRoutes} />
 
