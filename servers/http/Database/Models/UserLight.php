@@ -21,7 +21,6 @@ class UserLight extends Model
         'updated_at',
         'pin',
         'verified',
-        'id',
         'topics_count',
         'nse_number',
         'next_page_url'

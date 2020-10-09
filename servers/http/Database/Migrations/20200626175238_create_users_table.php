@@ -34,6 +34,7 @@ class CreateUsersTable extends ParentMigration
 
             $table->string('link')->default("");
 
+            $table->boolean('hidden')->default(1);
 
             $table->string('photo_profile')->default("human.png");
 
@@ -42,7 +43,6 @@ class CreateUsersTable extends ParentMigration
             $table->string('topics_count')->default(0);
 
             $table->string('next_page_url')->default("");
-
 
             $table->text('web_push_token')->default("");
 

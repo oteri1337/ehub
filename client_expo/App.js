@@ -27,8 +27,9 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync({
-      Montserrat: require("./assets/Montserrat/Montserrat-Medium.ttf"),
       Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Concert: require("./assets/Concert/ConcertOne-Regular.ttf"),
+      Patrick: require("./assets/Patrick/PatrickHand-Regular.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
       ...Ionicons.font,
       ...Feather.font,

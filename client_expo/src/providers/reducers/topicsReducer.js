@@ -55,7 +55,13 @@ function topicsReducer(state = defaultState, action) {
 
       let sl = [];
 
-      const { comments } = state.object[slug];
+      // console.log("topic id", slug);
+
+      // console.log(state.object[slug]);
+
+      // return state;
+
+      const { comments = [] } = state.object[slug];
 
       if (comments.length == 12) {
         sl = comments.slice(1, 12);

@@ -2,7 +2,6 @@ import React from "react";
 import { render } from "react-dom";
 import Router from "./routing/Router";
 import AppProvider from "./providers/AppProvider";
-import EditorProvider from "./providers/EditorProvider";
 import reducer from "./providers/reducers/rootReducer";
 import { registerWorker } from "./functions";
 import "./assets/app";
@@ -18,9 +17,7 @@ async function renderApp() {
   // render component
   render(
     <AppProvider initialState={data}>
-      <EditorProvider>
-        <Router />
-      </EditorProvider>
+      <Router />
     </AppProvider>,
     document.getElementById("root")
   );

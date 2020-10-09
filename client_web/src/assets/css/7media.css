@@ -30,6 +30,10 @@
   }
 
   h1 {
+    font-size: 30px;
+  }
+
+  h2 {
     font-size: 25px;
   }
 
@@ -53,7 +57,7 @@
   }
 
   .container {
-    width: 99%;
+    width: 90%;
   }
 
   ul.stepper .step .step-content {
@@ -82,16 +86,6 @@
 
 /* Tablets and PCs */
 @media (min-width: 416px) {
-  nav {
-    height: 99px;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-
-  .navbar-fixed {
-    height: 99px;
-  }
-
   .container-50 {
     max-width: 90%;
     padding-left: 5rem;

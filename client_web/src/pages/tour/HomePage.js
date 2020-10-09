@@ -1,103 +1,204 @@
 import React from "react";
-import s1 from "../../assets/images/s1.jpeg";
-import s2 from "../../assets/images/s2.jpeg";
-import s3 from "../../assets/images/s3.jpeg";
-import s4 from "../../assets/images/s4.jpeg";
+import { Link } from "react-router-dom";
 
-import s5 from "../../assets/images/s5.jpeg";
-import s6 from "../../assets/images/s6.jpeg";
-import s7 from "../../assets/images/s7.jpeg";
-import s8 from "../../assets/images/s8.jpeg";
+import news from "../../assets/images/news.png";
+import chat from "../../assets/images/chat3.png";
+import books from "../../assets/images/books.png";
+import forum from "../../assets/images/forum.png";
 
-import s9 from "../../assets/images/s9.jpeg";
-import s10 from "../../assets/images/s10.jpeg";
-import s11 from "../../assets/images/s11.jpeg";
-import s12 from "../../assets/images/s12.jpeg";
+import play from "../../assets/images/store-play.svg";
+import apple from "../../assets/images/store-apple.svg";
 
 import ContainerComponent from "components/container/TourContainerComponent";
 
 function HomePage() {
   return (
-    <ContainerComponent nav={false} footer={false}>
+    <ContainerComponent footer={false}>
       <section
-        className="app-vh bg app-image-back-1"
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          flexDirection: "column",
+          flexWrap: "wrap-reverse",
+        }}
+        className="bg app-vh"
+      >
+        <div style={{ flex: 1.2, flexBasis: "375px" }}>
+          <div
+            className="app-mobile-center"
+            style={{ paddingRight: "4rem", paddingLeft: "4rem" }}
+          >
+            <h1>
+              Easy access to all <br />
+              of your favourite books
+            </h1>
+            <p>
+              Save your books offline to make sure you can read everywhere,
+              <br />
+              even without an internet connection.
+            </p>
+            <a className="btn btn-secondary" target="_blank" href={IPA_LINK}>
+              Download on IOS
+            </a>
+            <a className="btn" target="_blank" href={APK_LINK}>
+              Download on Android
+            </a>
+          </div>
+        </div>
+        <div style={{ flex: 1, paddingRight: "1rem", flexBasis: "375px" }}>
+          <img src={books} className="responsive-img" />
+        </div>
+      </section>
+      <section
+        className="bg app-py-3"
+        style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
+      >
+        <div style={{ flex: 1, flexBasis: "375px" }} className="center">
+          <img
+            src={forum}
+            style={{ maxHeight: "100vh" }}
+            className="responsive-img"
+          />
+        </div>
+        <div
+          className="app-mobile-center"
+          style={{ flex: 1, flexBasis: "375px" }}
+        >
+          <div className="container">
+            <p
+              className="material-icons notranslate"
+              style={{
+                color: "blue",
+                padding: "1rem",
+                borderRadius: "50%",
+                backgroundColor: "#dadce0",
+              }}
+            >
+              people
+            </p>
+            <h2>Collaboration and teamwork made easy with forums</h2>
+            <p>
+              Using the discussion forum for sharing ideas or brainstorming
+              about an issue is another opportunity to encourage innovation.
+              Here the community is encouraged to share and also to respond to
+              peer driven solutions.
+            </p>
+            <a className="btn btn-secondary" target="_blank" href={IPA_LINK}>
+              Download on IOS
+            </a>
+          </div>
+        </div>
+      </section>
+      <section
+        className="bg app-py-3"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexWrap: "wrap-reverse",
         }}
       >
-        <div style={{ zIndex: 1, maxWidth: "90%", margin: "0 auto" }}>
-          <h1>{PWA_NAME}</h1>
-          <p>Join over 2000 students using the leading science app</p>
-          <br />
-          <a
-            className="btn btn-large"
-            href="https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40oteri2021/eHUB-956471d948da423b9a164ca5c3afa0a9-signed.apk"
-            target="_blank"
-          >
-            DOWNLOAD FOR ANDROID
-          </a>
-          <a
-            className="btn btn-large btn-secondary"
-            href="https://expo.io/@oteri2021/eHUB"
-            target="_blank"
-          >
-            DOWNLOAD FOR IOS
-          </a>
+        <div
+          style={{ flex: 1, flexBasis: "375px" }}
+          className="app-mobile-center"
+        >
+          <div className="container">
+            <p
+              className="material-icons notranslate"
+              style={{
+                color: "blue",
+                padding: "1rem",
+                borderRadius: "50%",
+                backgroundColor: "#dadce0",
+              }}
+            >
+              question_answer
+            </p>
+            <h2>Send private messages to community members</h2>
+            <p>
+              Connect friends and colleagues. Private messaging facilitates
+              one-on-one conversation with community members. Share emoji’s,
+              photos, and documents.
+            </p>
+            <a className="btn btn-secondary" target="_blank" href={APK_LINK}>
+              Download on Android
+            </a>
+          </div>
         </div>
-        <div style={{ position: "absolute", bottom: 0, zIndex: 1 }}>
-          {MAIL_NAME}
+        <div style={{ flex: 1, flexBasis: "375px" }} className="center">
+          <img
+            src={chat}
+            style={{ maxHeight: "100vh" }}
+            className="responsive-img"
+          />
         </div>
-        <div className="app-bg-overlay"></div>
       </section>
-      <section>
-        <div>
-          <center>
-            <div className="row">
-              <div className="col l3 s12 app-my-3">
-                <img src={s1} style={{ maxHeight: "100vh" }} />
-              </div>
-              <div className="col l3 s12 app-my-3">
-                <img src={s2} style={{ maxHeight: "100vh" }} />
-              </div>
-              <div className="col l3 s12 app-my-3">
-                <img src={s3} style={{ maxHeight: "100vh" }} />
-              </div>
-              <div className="col l3 s12 app-my-3">
-                <img src={s4} style={{ maxHeight: "100vh" }} />
-              </div>
-
-              <div className="col l3 s12 app-my-3">
-                <img src={s5} style={{ maxHeight: "100vh" }} />
-              </div>
-              <div className="col l3 s12 app-my-3">
-                <img src={s6} style={{ maxHeight: "100vh" }} />
-              </div>
-              <div className="col l3 s12 app-my-3">
-                <img src={s7} style={{ maxHeight: "100vh" }} />
-              </div>
-              <div className="col l3 s12 app-my-3">
-                <img src={s8} style={{ maxHeight: "100vh" }} />
-              </div>
-
-              <div className="col l3 s12 app-my-3">
-                <img src={s9} style={{ maxHeight: "100vh" }} />
-              </div>
-              <div className="col l3 s12 app-my-3">
-                <img src={s10} style={{ maxHeight: "100vh" }} />
-              </div>
-              <div className="col l3 s12 app-my-3">
-                <img src={s11} style={{ maxHeight: "100vh" }} />
-              </div>
-              <div className="col l3 s12 app-my-3">
-                <img src={s12} style={{ maxHeight: "100vh" }} />
-              </div>
-            </div>
-          </center>
+      <section
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+        className=" bg app-py-3"
+      >
+        <div style={{ flex: 1, flexBasis: "375px" }} className="center">
+          <img
+            src={news}
+            style={{ maxHeight: "100vh" }}
+            className="responsive-img"
+          />
         </div>
+        <div
+          style={{ flex: 1, flexBasis: "375px" }}
+          className="app-mobile-center"
+        >
+          <div className="container">
+            <p
+              className="material-icons notranslate"
+              style={{
+                color: "blue",
+                padding: "1rem",
+                borderRadius: "50%",
+                backgroundColor: "#dadce0",
+              }}
+            >
+              today
+            </p>
+            <h2>Join the Community and be informed about latest news</h2>
+            <p>
+              Whether you want to stay up-to-date on breaking news and events,
+              read in-depth articles, or merely catch a few headlines within the
+              community, eHUB will suit your needs and help you stay more
+              informed.
+            </p>
+            <a className="btn btn-secondary" target="_blank" href={IPA_LINK}>
+              Download on IOS
+            </a>
+          </div>
+        </div>
+      </section>
+      <section className="bg app-py-3">
+        <center className="container">
+          <h1>Experience eHUB on any device</h1>
+          <p>
+            eHUB works on all major platforms, enabling you to work seamlessly
+            across your mobile device, and tablets.
+          </p>
+          <img src={apple} className="app-px-1" />{" "}
+          <img src={play} className="app-px-1" />
+        </center>
+      </section>
+      <section className="center app-py-3">
+        <Link to="/developer.html" style={{ marginRight: "1rem" }}>
+          Developer
+        </Link>
+        <Link to="/screenshots.html" style={{ marginLeft: "1rem" }}>
+          Screenshots
+        </Link>
+        <p>
+          <a href="/" target="_blank">
+            Image Credits: Freepik
+          </a>
+        </p>
+        <a href={`mailto:${MAIL_NAME}`}>{MAIL_NAME}</a>
       </section>
     </ContainerComponent>
   );

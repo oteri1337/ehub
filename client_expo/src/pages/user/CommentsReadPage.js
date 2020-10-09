@@ -65,6 +65,10 @@ function CommentReadPage({ route, navigation }) {
       </Button>
     ),
     headerRight: () => {
+      if (route.params.chat_id) {
+        return <React.Fragment />;
+      }
+
       if (title == "Update Topic") {
         return <React.Fragment />;
       }
@@ -98,7 +102,11 @@ function CommentReadPage({ route, navigation }) {
     const uri = `${BACKEND_URL}/uploads/images/${data}`;
     return (
       <Container>
-        <Image source={{ uri }} style={{ height: 500 }} />
+        <Image
+          source={{ uri }}
+          style={{ height: "100%" }}
+          resizeMode="contain"
+        />
       </Container>
     );
   }

@@ -10,6 +10,7 @@ function EventsUpdatePage({ match, history }) {
   const { id } = match.params;
   const get = getRequestThenDispatch(`/api/programs/${id}`, "UPDATE_program");
   const { request, callBack, state } = sendRequestThenDispatch();
+  const { errors, fetching, message } = request;
 
   const initialState = state.events.object[id];
 
@@ -39,6 +40,24 @@ function EventsUpdatePage({ match, history }) {
       id: "data",
       type: "textarea",
     },
+    {
+      id: "type",
+      type: "select",
+      options: [
+        {
+          value: 1,
+          label: "News",
+        },
+        {
+          value: 2,
+          label: "Event",
+        },
+      ],
+    },
+    {
+      id: "date",
+      type: "date",
+    },
   ];
 
   const onSuccess = () => {
@@ -52,7 +71,9 @@ function EventsUpdatePage({ match, history }) {
   return (
     <AdminContainerComponent bread={nav}>
       <div className="card-panel">
-        <FormComponent {...{ formArray, initialState, onSubmit }} />
+        <FormComponent
+          {...{ formArray, initialState, onSubmit, errors, fetching, message }}
+        />
       </div>
     </AdminContainerComponent>
   );

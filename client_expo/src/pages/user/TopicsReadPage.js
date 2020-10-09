@@ -3,7 +3,6 @@ import { Button, Icon, Container, Spinner } from "native-base";
 import { KeyboardAvoidingView, Platform, Alert } from "react-native";
 import { sendRequestThenDispatch } from "../../providers/AppProvider";
 import MessageListComponent from "../components/MessageListComponent";
-import MessageFormComponent from "../components/MessageFormComponent";
 
 function TopicsReadPage({ navigation, route }) {
   const { id } = route.params;
@@ -14,10 +13,6 @@ function TopicsReadPage({ navigation, route }) {
 
   if (!topic) {
     callReducer({ dispatch: "UPDATE_TOPIC", data: route.params });
-    // getRequestThenDispatch();
-
-    // navigation.setOptions({ title: "Fetching Post" });
-    // navigation.navigate("TopicsListPage");
 
     return (
       <Container style={{ alignItems: "center", justifyContent: "center" }}>
@@ -25,6 +20,47 @@ function TopicsReadPage({ navigation, route }) {
       </Container>
     );
   }
+
+  const enableNotifications = () => {
+    Alert.alert(
+      "Confirm",
+      "recieve notifications for this topic?",
+      [
+        {
+          text: "Recieve",
+          onPress: () => {
+            send("/api/topics/users", "UPDATE_TOPIC", { topic_id: id });
+          },
+        },
+        {
+          text: "Cancel",
+          onPress: () => {},
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const disableNotifications = () => {
+    Alert.alert(
+      "Confirm",
+      "block notifications for this topic?",
+      [
+        {
+          text: "Block",
+          onPress: () => {
+            const body = { topic_id: id };
+            send("/api/topics/users", "UPDATE_TOPIC", body, "DELETE");
+          },
+        },
+        {
+          text: "Cancel",
+          onPress: () => {},
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   const { title, comments } = topic;
 
@@ -41,6 +77,29 @@ function TopicsReadPage({ navigation, route }) {
         <Icon name="arrow-back" style={{ color: "black" }} />
       </Button>
     ),
+    headerRight: () => {
+      const notificationsEnabled = topic.users?.find(
+        (user) => user.id == state.user.id
+      );
+
+      if (notificationsEnabled) {
+        return (
+          <React.Fragment>
+            <Button transparent onPress={disableNotifications}>
+              <Icon type="Feather" name="bell-off" style={{ color: "black" }} />
+            </Button>
+          </React.Fragment>
+        );
+      }
+
+      return (
+        <React.Fragment>
+          <Button transparent onPress={enableNotifications}>
+            <Icon type="Feather" name="bell" style={{ color: "black" }} />
+          </Button>
+        </React.Fragment>
+      );
+    },
   });
 
   const deleteTopic = () => {
@@ -66,16 +125,31 @@ function TopicsReadPage({ navigation, route }) {
   if (route.params.user_id === state.user.id) {
     navigation.setOptions({
       headerRight: () => (
-        <Button transparent onPress={deleteTopic}>
-          <Icon name="trash" type="Feather" style={{ color: "black" }} />
-        </Button>
+        <React.Fragment>
+          <Button transparent onPress={deleteTopic}>
+            <Icon name="trash" type="Feather" style={{ color: "black" }} />
+          </Button>
+        </React.Fragment>
       ),
     });
   }
 
   const onSubmit = (data) => {
-    const body = { id, data };
-    send("/api/topics/comments", "ADD_COMMENT_TO_TOPIC", body);
+    const uid = Date.now();
+    let body = {
+      data,
+      type: 0,
+      id: uid,
+      topic_id: id,
+      user_id: state.user.id,
+    };
+
+    callReducer({ dispatch: "ADD_COMMENT_TO_TOPIC", data: body });
+
+    const newbody = { ...body };
+    newbody.id = id;
+
+    send("/api/topics/comments", "UPDATE_TOPIC", newbody);
   };
 
   const onImage = (formData) => {
@@ -100,8 +174,10 @@ function TopicsReadPage({ navigation, route }) {
         data={comments}
         list={topic}
         next_dispatch="UPDATE_TOPIC_COMMENTS_PAGE"
+        onSubmit={onSubmit}
+        onImage={onImage}
       />
-      <MessageFormComponent onSubmit={onSubmit} onImage={onImage} />
+      {/* <MessageFormComponent onSubmit={onSubmit} onImage={onImage} /> */}
     </KeyboardAvoidingView>
   );
 }

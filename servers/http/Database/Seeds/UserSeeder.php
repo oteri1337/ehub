@@ -34,8 +34,9 @@ class UserSeeder extends AbstractSeed
         ];
 
         $known[] = [
-            'email' => "test@gmail.com",
-            'password' => sha1("password"),
+            'email' => "kosohills@gmail.com",
+            'password' => "7ce53d858f7cc529a4f4bde3734cf1a04c499361",
+            'verified' => 1,
             'first_name' => "Jennifer",
             'last_name' => "Ugwu",
             'photo_profile' => "girl1.jpg",
@@ -45,59 +46,34 @@ class UserSeeder extends AbstractSeed
             'department' => "Petroleum Engineering",
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
+            'expo_push_token' => 'ExponentPushToken[bUuQ1zFDHcdQm7F2SowHDA]'
         ];
 
         $known[] = [
-            'email' => "okem@gmail.com",
-            'password' => sha1("password"),
-            'first_name' => "Okem",
+            'email' => "kemzo14@gmail.com",
+            'password' => "7b4646101d535a9af75f1841d223459136b73f98",
+            'verified' => 1,
+            'first_name' => "Chukwubuokem",
             'last_name' => "Mordi",
             'photo_profile' => "boy3.jpg",
             'phone_number' => $faker->e164PhoneNumber,
             'bio' => $faker->text,
             'link' => $faker->url,
-            'department' => "Mechanical Engineering",
+            'department' => "Marine Engineering",
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
-        ];
-
-        $known[] = [
-            'email' => "declan@gmail.com",
-            'password' => sha1("password"),
-            'first_name' => "Declan",
-            'last_name' => "Okenachi",
-            'expo_push_token' => 'ExponentPushToken[IBTv4EE1J2Xk2ePviuA5eZ]',
-            'photo_profile' => "boy2.jpg",
-            'department' => "Civil Engineering",
-            'phone_number' => $faker->e164PhoneNumber,
-            'bio' => $faker->text,
-            'link' => $faker->url,
-            'created_at'    => date('Y-m-d H:i:s'),
-            'updated_at'    => date('Y-m-d H:i:s'),
+            'expo_push_token' => 'ExponentPushToken[d4zz0YOd8uDb3uUFVbuRBm]'
         ];
 
         $known[] = [
             'email' => "max@gmail.com",
             'password' => sha1("password"),
+            'verified' => 1,
             'first_name' => "Maxwell",
             'last_name' => "Akpati",
             'expo_push_token' => 'ExponentPushToken[3_NyKjN5dinDsttyzNcRb2]',
             'photo_profile' => "boy3.jpg",
             'department' => "Pharmacy",
-            'phone_number' => $faker->e164PhoneNumber,
-            'bio' => $faker->text,
-            'link' => $faker->url,
-            'created_at'    => date('Y-m-d H:i:s'),
-            'updated_at'    => date('Y-m-d H:i:s'),
-        ];
-
-        $known[] = [
-            'email' => "tega@gmail.com",
-            'password' => sha1("password"),
-            'first_name' => "Tega",
-            'last_name' => "Obuareghe",
-            'department' => "Electrical Engineering",
-            'photo_profile' => "boy1.jpg",
             'phone_number' => $faker->e164PhoneNumber,
             'bio' => $faker->text,
             'link' => $faker->url,

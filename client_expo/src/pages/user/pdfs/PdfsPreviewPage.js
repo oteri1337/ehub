@@ -15,13 +15,14 @@ import {
 
 function PdfsPreviewPage({ navigation, route }) {
   const { params } = route;
+  const [percent, setpercent] = React.useState(1);
   const [saving, setSaving] = React.useState(false);
   const { state, callReducer } = React.useContext(Store);
   const { id, title, description, image_name, file_size, file_name } = params;
 
   let saved = false;
 
-  if (state.saved.object[id]) {
+  if (state?.saved.object[id]) {
     saved = true;
   }
 
@@ -39,7 +40,17 @@ function PdfsPreviewPage({ navigation, route }) {
     const file = await FileSystem.getInfoAsync(path);
 
     if (!file.exists) {
-      await FileSystem.downloadAsync(uri, path);
+      // await FileSystem.downloadAsync(uri, path);
+
+      const dr = FileSystem.createDownloadResumable(uri, path, {}, (data) => {
+        const { totalBytesExpectedToWrite, totalBytesWritten } = data;
+
+        const progress = totalBytesExpectedToWrite / totalBytesWritten;
+
+        setpercent(100 / progress);
+      });
+
+      await dr.downloadAsync(uri, path);
     }
 
     callReducer({ dispatch: "SAVE_PDF", data: params });
@@ -71,7 +82,8 @@ function PdfsPreviewPage({ navigation, route }) {
     navigation.setOptions({
       headerRight: () => (
         <Button transparent>
-          <Spinner color="black" style={{ marginRight: 10 }} />
+          <Text style={{ color: "black" }}>{percent}%</Text>
+          {/* <Spinner color="black" style={{ marginRight: 10 }} /> */}
         </Button>
       ),
     });

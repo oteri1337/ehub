@@ -130,7 +130,7 @@ class ChatsController extends NewApiController
 
             $li->comments_count = $li->messages->count();
 
-            $messages = array_reverse($li->messages->slice(0, 22)->toArray());
+            $messages = array_reverse($li->messages->slice(0, 12)->toArray());
 
             unset($li->messages);
 
@@ -145,9 +145,15 @@ class ChatsController extends NewApiController
 
         $row->recvr = $row->recvr;
 
-        $paginator = $row->messages()->paginate(22);
+        $paginator = $row->messages()->paginate(12);
 
-        $row->messages = $paginator->items();
+        // $messages = array_reverse($paginator->messages->slice(0, 12)->toArray());
+
+        // unset($paginator->messages);
+
+        // $paginator->messages = $messages;
+
+        $row->messages = array_reverse($paginator->items());
 
         $row->comments_count = $paginator->total();
 
@@ -254,10 +260,53 @@ class ChatsController extends NewApiController
 
         $list = $this->listBody($list);
 
-        $this->data['data'] = $list;
+        $chat = $this->model->where('chat_id', $id)->where('user_id', $user->id)->first();
+        $chat = $this->lazyLoadRelationships($chat);
+
+        $this->data['data'] = $chat;
 
         $response->getBody()->write(json_encode($this->data));
 
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function update($request, $response)
+    {
+        $body = $request->getParsedBody();
+        $user = $request->getAttribute('user');
+
+        $recvr_id = $body['recvr_id'] ?? '';
+        $notifications = $body['notifications'] ?? '';
+
+        $rules = [
+            'recvr id' => [$recvr_id, 'required|number'],
+            'notifications' => [$notifications, 'required|number'],
+        ];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $chat = $this->model->where('user_id', $user->id)->where('recvr_id', $recvr_id)->first();
+        if (!$chat) {
+            $this->data['errors'] = ['chat not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $chat->update(['notifications' => $notifications]);
+
+        $chat = $this->model->where('user_id', $user->id)->where('recvr_id', $recvr_id)->first();
+        $chat = $this->lazyLoadRelationships($chat);
+
+        $this->data['data'] = $chat;
+        $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

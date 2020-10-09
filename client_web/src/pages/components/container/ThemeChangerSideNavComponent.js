@@ -22,7 +22,7 @@ function ThemeChangerSideNavComponent() {
                   }
                 >
                   <span className="material-icons notranslate">bookmark</span>
-                  DARK
+                  Dark
                 </a>
               </li>
               <li>
@@ -35,7 +35,7 @@ function ThemeChangerSideNavComponent() {
                   <span className="material-icons notranslate">
                     bookmark_border
                   </span>
-                  LIGHT
+                  Light
                 </a>
               </li>
             </ul>

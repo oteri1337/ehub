@@ -2,6 +2,14 @@
 
 use Server\Controllers\TopicsController;
 
+
+// users api
+
+$app->post('/api/topics/users', TopicsController::class . ':addUser')->add($user_logged_in);
+
+$app->delete('/api/topics/users', TopicsController::class . ':deleteUser')->add($user_logged_in);
+
+
 // comments api
 
 $app->post('/api/topics/comments', TopicsController::class . ':comment')->add($user_logged_in);

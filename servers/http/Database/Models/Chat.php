@@ -11,6 +11,7 @@ class Chat extends Model
         'chat_id',
         'user_id',
         'recvr_id',
+        'notifications',
         'comments_count'
     ];
 

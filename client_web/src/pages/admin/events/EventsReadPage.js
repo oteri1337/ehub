@@ -79,7 +79,7 @@ function TopicsReadPage({ match }) {
             </Link>
             <br />
             <br />
-            <p> {data.data}</p>
+            <pre> {data.data}</pre>
             <table className="striped">
               <tbody>{renderRow}</tbody>
             </table>

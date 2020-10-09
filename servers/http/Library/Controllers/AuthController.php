@@ -55,6 +55,7 @@ class AuthController extends NewApiController
         $key = time();
         $expires = time() + 30 * 24 * 60 * 60;
         $key = sha1($key);
+
         Session::create(['key' => $key, 'value' => $row->id, 'expires' => $expires]);
         $this->data['cookie'] = $key;
         setcookie($this->authKey, $key, $expires, "/");
@@ -230,7 +231,7 @@ class AuthController extends NewApiController
 
         $user = $request->getAttribute("user");
 
-        $filtered = $this->filter($body, ["link", "department", "phone_number", "bio", "first_name", "last_name", "nse_number", "photo_profile"]);
+        $filtered = $this->filter($body, ["link", "department", "phone_number", "bio", "first_name", "last_name", "nse_number", "photo_profile", 'hidden']);
 
         $user->update($filtered);
 

@@ -8,6 +8,7 @@ import { Spinner, Button, Icon, View, Text } from "native-base";
 function PdfsReadPage({ navigation, route }) {
   const { params } = route;
   const [base64, setBase] = React.useState("");
+  const [percent, setpercent] = React.useState(1);
   const [saving, setSaving] = React.useState(false);
   const { state, callReducer } = React.useContext(Store);
   const { id, title, file_name } = params;
@@ -72,7 +73,16 @@ function PdfsReadPage({ navigation, route }) {
     const file = await FileSystem.getInfoAsync(path);
 
     if (!file.exists) {
-      await FileSystem.downloadAsync(uri, path);
+      // await FileSystem.downloadAsync(uri, path);
+      const dr = FileSystem.createDownloadResumable(uri, path, {}, (data) => {
+        const { totalBytesExpectedToWrite, totalBytesWritten } = data;
+
+        const progress = totalBytesExpectedToWrite / totalBytesWritten;
+
+        setpercent(100 / progress);
+      });
+
+      await dr.downloadAsync(uri, path);
     }
 
     callReducer({ dispatch: "SAVE_PDF", data: params });
@@ -91,7 +101,8 @@ function PdfsReadPage({ navigation, route }) {
     navigation.setOptions({
       headerRight: () => (
         <Button transparent>
-          <Spinner color="black" style={{ marginRight: 10 }} />
+          <Text style={{ color: "black" }}>{percent}%</Text>
+          {/* <Spinner color="black" style={{ marginRight: 10 }} /> */}
         </Button>
       ),
     });

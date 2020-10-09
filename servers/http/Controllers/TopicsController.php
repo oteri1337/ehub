@@ -14,7 +14,7 @@ class TopicsController extends NewApiController
         parent::__construct();
         $this->model = new Topic;
         $this->searchBy = 'title';
-        $this->eagerList = ['user', 'comments.user'];
+        $this->eagerList = ['user', 'comments.user', 'users'];
     }
 
     public function createRules($body)
@@ -76,6 +76,8 @@ class TopicsController extends NewApiController
     {
 
         $row->user = $row->user;
+
+        $row->users = $row->users;
 
         $paginator = $row->comments()->with('user')->paginate(12);
 
@@ -171,9 +173,11 @@ class TopicsController extends NewApiController
 
         $data = $parent->comments()->save($comment);
 
-        // $data = Topiccomment::where('id', $data->id)->with(['user', 'event'])->first();
+        $topic = $this->model->where('id', $id)->first();
 
-        $this->data['data'] = $data;
+        $topic = $this->lazyLoadRelationships($topic);
+
+        $this->data['data'] = $topic;
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }
@@ -275,6 +279,82 @@ class TopicsController extends NewApiController
 
         $response->getBody()->write(json_encode($this->data));
 
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function addUser($request, $response)
+    {
+        $body = $request->getParsedBody();
+
+        $user = $request->getAttribute('user');
+
+        $topic_id = $body['topic_id'] ?? '';
+
+        $rules = ['topic id' => [$topic_id, 'required|number']];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $topic = $this->model->where('id', $topic_id)->first();
+
+        if (!$topic) {
+            $this->data['errors'] = ['Not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $topic->users()->attach($user->id);
+
+        $topic = $this->model->where('id', $topic_id)->with($this->eagerList)->first();
+
+        $this->data['data'] = $topic;
+
+        $response->getBody()->write(json_encode($this->data));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function deleteUser($request, $response)
+    {
+        $body = $request->getParsedBody();
+
+        $user = $request->getAttribute('user');
+
+        $topic_id = $body['topic_id'] ?? '';
+
+        $rules = ['topic id' => [$topic_id, 'required|number']];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $topic = $this->model->where('id', $topic_id)->first();
+
+        if (!$topic) {
+            $this->data['errors'] = ['Not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $topic->users()->detach($user->id);
+
+        $topic = $this->model->where('id', $topic_id)->with($this->eagerList)->first();
+
+        $this->data['data'] = $topic;
+
+        $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import CachedImage from "./CachedImage";
 import { BACKEND_URL } from "../../../env";
 import { useNavigation } from "@react-navigation/native";
 import { FlatList, Image, TouchableWithoutFeedback } from "react-native";
@@ -46,7 +47,7 @@ class SingleEventComponent extends React.PureComponent {
             </Left>
           </CardItem>
           <CardItem cardBody>
-            <Image
+            <CachedImage
               source={{ uri }}
               style={{ height: 200, width: null, flex: 1 }}
             />

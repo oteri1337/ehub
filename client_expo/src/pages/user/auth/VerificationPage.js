@@ -24,7 +24,7 @@ function VerificationPage({ navigation }) {
   return (
     <Container>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{ flex: 1, alignItems: "center" }}>
+        <View style={{ flex: 1, alignItems: "center", padding: 10 }}>
           <View style={{ flex: 1.5, justifyContent: "center" }}>
             <Image style={{ height: 100, width: 95 }} source={Logo} />
           </View>
@@ -47,7 +47,6 @@ function VerificationPage({ navigation }) {
             {!refreshing && (
               <Button
                 full
-                success
                 style={{ marginTop: 15 }}
                 onPress={() => {
                   send("/api/users/auth/verify", "UPDATE_USER", { token });
@@ -60,9 +59,8 @@ function VerificationPage({ navigation }) {
             {!refreshing && (
               <Button
                 full
-                success
                 bordered
-                style={{ marginTop: 40 }}
+                style={{ marginTop: 10 }}
                 onPress={() => {
                   send("/api/users/auth/token", "", { email });
                 }}

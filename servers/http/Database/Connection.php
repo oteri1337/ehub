@@ -8,8 +8,6 @@ class Connection
 
     public function __construct()
     {
-        // $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . "/../../..");
-        // $dotenv->load();
 
         $settings = [
             'driver' => 'mysql',
@@ -40,25 +38,3 @@ class Connection
         $this->capsule = $capsule;
     }
 }
-
-// use Illuminate\Pagination\Paginator;
-// use Illuminate\Database\Eloquent\Collection;
-// use Illuminate\Pagination\LengthAwarePaginator;
-
-// if (!Collection::hasMacro('paginate')) {
-
-//     Collection::macro(
-//         'paginate',
-//         function ($perPage = 15, $page = null, $options = []) {
-//             $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-//             return (new LengthAwarePaginator(
-//                 $this->forPage($page, $perPage),
-//                 $this->count(),
-//                 $perPage,
-//                 $page,
-//                 $options
-//             ))
-//                 ->withPath('');
-//         }
-//     );
-// }

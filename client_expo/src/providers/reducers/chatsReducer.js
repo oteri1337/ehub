@@ -49,6 +49,33 @@ function chatsReducer(state = defaultState, action) {
         },
       };
 
+    case "ADD_OPTIMISTIC_MESSAGE":
+      const keyo = parseInt(action.data.recvr_id);
+      const chato = state.object[keyo];
+
+      let slo = [];
+
+      if (chato.messages.length == 12) {
+        slo = chato.messages.slice(1, 12);
+      } else if (chato.messages.length > 12) {
+        slo = chato.messages.reverse().slice(0, 11).reverse();
+      } else if (chato.messages.length < 12) {
+        slo = chato.messages;
+      }
+
+      return {
+        ...state,
+        object: {
+          ...state.object,
+          [keyo]: {
+            ...state.object[keyo],
+            messages: [...slo, action.data],
+            next_page_url: `/api/chats/${keyo}?page=2`,
+            unread_count: state.object[keyo].unread_count + 1,
+          },
+        },
+      };
+
     case "ADD_MESSAGE_TO_CHAT":
       const key = parseInt(action.data.user_id);
       const chat = state.object[key];

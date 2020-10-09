@@ -27,7 +27,7 @@ function ThemeChangerNavComponent() {
               callReducer({ dispatch: "UPDATE_THEME", data: "LIGHT" })
             }
           >
-            LIGHT
+            Light
           </a>
         </li>
         <li>
@@ -37,7 +37,7 @@ function ThemeChangerNavComponent() {
               callReducer({ dispatch: "UPDATE_THEME", data: "DARK" })
             }
           >
-            DARK
+            Dark
           </a>
         </li>
       </ul>

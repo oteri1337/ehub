@@ -2,8 +2,9 @@
 
 namespace Server\Controllers;
 
-use Server\Library\Controllers\AuthController;
 use Server\Database\Models\User;
+use Illuminate\Support\Collection;
+use Server\Library\Controllers\AuthController;
 
 class UsersController extends AuthController
 {
@@ -60,7 +61,7 @@ class UsersController extends AuthController
 
     public function updateBody($body, $row)
     {
-        return $this->filter($body, ['first_name', 'last_name', 'dob', 'country', 'street_address',  'mobile_number']);
+        return $this->filter($body, ['hidden', 'link', 'department',  'phone_number', 'bio']);
     }
 
     public function modifyList($list)
@@ -93,5 +94,32 @@ class UsersController extends AuthController
 
 
         return $row;
+    }
+
+    public function getList($request)
+    {
+        return $this->model->where('hidden', 1)->with($this->eagerList)->orderBy($this->orderBy, $this->order)->paginate($this->perPage);
+    }
+
+    public function search($request, $response)
+    {
+        $term = $request->getAttribute("attr") ?? '';
+
+        if (strlen($term) === 0) {
+            var_dump($term);
+            $this->data['errors'] = ['search term is required'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $paginator =  $this->model->where('hidden', 1)->where($this->searchBy, 'LIKE', "%{$term}%")->with($this->eagerList)->orderBy('created_at', 'DESC')->paginate($this->perPage);
+
+        $paginator = $paginator->toArray();
+        $collection = Collection::make($paginator['data'])->keyBy($this->readBy);
+        $paginator['object'] = $collection;
+
+        $this->data['data'] = $paginator;
+        $response->getBody()->write(json_encode($this->data));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

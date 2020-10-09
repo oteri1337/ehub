@@ -4,7 +4,7 @@ let url;
 
 if (Platform.OS === "ios") {
   // physical device
-  url = "http://172.20.10.4:1025";
+  url = "http://172.20.10.3:1025";
 
   // production
   url = "https://ehubcore.com";

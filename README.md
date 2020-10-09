@@ -1,58 +1,48 @@
 # main stuff
 
-dismiss notifications
+start chat optimistic
 
-notifications in forum
+unsubscribe from notifications when logout
 
-scroll down for chats, up for events and forum
+forum notifications -- NEEDS TESTING
 
-optimistic chat ui
+event notifications -- NEEDS TESTING
 
-offline friendly chat ui
+block chat notifications
 
-Save event to calendar
+resize uploaded pdf and profile images
 
-# Refactor Tasks
+unread messages forum
 
-Cache images on the app
+optimistic image and document send
 
-header color pdf read page
-
-change of logo
-
-# New Tasks
-
-show percentage when downloading pdf
-
-message animations chat
-
-fullscreen images
-
-hold to copy messages
+set allow comments when creating topics
 
 more control of the forum
 
-Dark Mode
+failed request reconcilation
 
-resize uploaded images
+Save event to calendar
 
-Webpage Design https://www.google.com/drive/
+refactor admin panel - request fetching errors and message
+
+new screenshots - singup and password
 
 Google Play Registration
 
-Fix Github Security Warnings
+zoomable fullscreen images
 
-# Links
+Dark Mode
 
-[APK Link](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40oteri2021/eHUB-956471d948da423b9a164ca5c3afa0a9-signed.apk)
+integrate hermes
 
-[Expo Link](https://expo.io/@oteri2021/eHUB)
+# Animations
 
-### Demo Account
+profile image animations
 
-email: test@gmail.com
+message animations chat
 
-password: password
+image animations chat
 
 # Project Setup
 

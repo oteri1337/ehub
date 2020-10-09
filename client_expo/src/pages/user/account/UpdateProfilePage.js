@@ -11,6 +11,7 @@ import {
   Button,
   Text,
   Textarea,
+  Picker,
 } from "native-base";
 
 function UpdateProfilePage({ navigation }) {
@@ -19,6 +20,7 @@ function UpdateProfilePage({ navigation }) {
 
   const [bio, setBio] = React.useState(state.user.bio);
   const [link, setLink] = React.useState(state.user.link);
+  const [hidden, setHidden] = React.useState(state.user.hidden);
   const [department, setDept] = React.useState(state.user.department);
   const [phone_number, setPhone] = React.useState(state.user.phone_number);
 
@@ -32,6 +34,7 @@ function UpdateProfilePage({ navigation }) {
       link,
       department,
       phone_number,
+      hidden,
     };
 
     await send("/api/users/auth/profile", "UPDATE_USER", body, "PATCH");
@@ -61,6 +64,21 @@ function UpdateProfilePage({ navigation }) {
               </Text>
               <Item regular>
                 <Input value={phone_number} onChangeText={(t) => setPhone(t)} />
+              </Item>
+
+              <Text style={{ marginTop: 40, marginBottom: 5 }}>
+                Profile Visibility
+              </Text>
+              <Item regular>
+                <Picker
+                  mode="dropdown"
+                  selectedValue={hidden}
+                  iosHeader="Profile Visibility"
+                  onValueChange={(data) => setHidden(data)}
+                >
+                  <Picker.Item label="Visible" value={1} />
+                  <Picker.Item label="Hidden" value={2} />
+                </Picker>
               </Item>
 
               <Text style={{ marginTop: 40, marginBottom: 5 }}>About</Text>

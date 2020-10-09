@@ -1,14 +1,20 @@
 import React from "react";
-import { View, Text, Icon } from "native-base";
 import { BACKEND_URL } from "../../../env";
+import { View, Text, Icon, Toast } from "native-base";
 import { useNavigation } from "@react-navigation/native";
-import { Image, FlatList, TouchableWithoutFeedback } from "react-native";
+import MessageFormComponent from "./MessageFormComponent";
+import {
+  Image,
+  FlatList,
+  TouchableWithoutFeedback,
+  Clipboard,
+} from "react-native";
 import { Store, getRequestThenDispatch } from "../../providers/AppProvider";
 
 const s = {
   padding: 10,
   borderWidth: 2,
-  borderRadius: 5,
+  borderRadius: 10,
   marginBottom: 5,
   borderColor: "#e7e6e6",
   backgroundColor: "white",
@@ -27,8 +33,6 @@ function ItemPureFunctional({ message }) {
   }
 
   return React.useMemo(() => {
-    console.log("rendering message", message.id);
-
     // user message
     if (message.user_id === state.user.id && message.type === 0) {
       return (
@@ -38,8 +42,12 @@ function ItemPureFunctional({ message }) {
               navigation.navigate("CommentsReadPage", message);
             }
           }}
+          onLongPress={() => {
+            Clipboard.setString(message.data);
+            Toast.show({ text: "Copied" });
+          }}
         >
-          <View style={{ ...s, marginLeft: 25 }}>
+          <View style={{ ...s, marginLeft: 25, backgroundColor: "#e2eefe" }}>
             <Text>{message.data}</Text>
             <Text note style={{ marginTop: 5 }}>
               {message.created_at}
@@ -54,9 +62,9 @@ function ItemPureFunctional({ message }) {
       return (
         <TouchableWithoutFeedback
           onPress={() => {
-            if (!message.chat_id) {
-              navigation.navigate("CommentsReadPage", message);
-            }
+            // if (!message.chat_id) {
+            navigation.navigate("CommentsReadPage", message);
+            // }
           }}
         >
           <View style={{ ...s, marginLeft, marginRight }}>
@@ -97,29 +105,33 @@ function ItemPureFunctional({ message }) {
 
     // others messagez
     return (
-      <View style={{ ...s, marginRight: 25 }}>
-        {message.user ? (
-          <Text note style={{ marginBottom: 5 }}>
-            {message.user.first_name} {message.user.last_name}
+      <TouchableWithoutFeedback
+        onLongPress={() => {
+          Clipboard.setString(message.data);
+          Toast.show({ text: "Copied" });
+        }}
+      >
+        <View style={{ ...s, marginRight: 25 }}>
+          {message.user ? (
+            <Text note style={{ marginBottom: 5 }}>
+              {message.user.first_name} {message.user.last_name}
+            </Text>
+          ) : (
+            <React.Fragment />
+          )}
+          <Text>{message.data}</Text>
+          <Text note style={{ marginTop: 5 }}>
+            {message.created_at}
           </Text>
-        ) : (
-          <React.Fragment />
-        )}
-        <Text>{message.data}</Text>
-        <Text note style={{ marginTop: 5 }}>
-          {message.created_at}
-        </Text>
-      </View>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }, [message]);
 }
 
-function MessageListComponent({
-  data = [],
-  list,
-  image = "",
-  next_dispatch = "",
-}) {
+function MessageListComponent(props) {
+  let { onSubmit, onImage, type } = props;
+  const { data = [], list, image = "", next_dispatch = "" } = props;
   const sref = React.useRef();
   const navigation = useNavigation();
   const { state, refreshing, send } = getRequestThenDispatch();
@@ -157,18 +169,27 @@ function MessageListComponent({
           >
             <View style={s}>
               {image.length ? (
-                <Image
-                  resizeMode="contain"
-                  source={{ uri: `${BACKEND_URL}/uploads/images/${image}` }}
-                  style={{ minHeight: 250 }}
-                />
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    navigation.navigate("CommentsReadPage", {
+                      type: 1,
+                      data: image,
+                    });
+                  }}
+                >
+                  <Image
+                    resizeMode="contain"
+                    source={{ uri: `${BACKEND_URL}/uploads/images/${image}` }}
+                    style={{ minHeight: 250 }}
+                  />
+                </TouchableWithoutFeedback>
               ) : (
                 <React.Fragment />
               )}
               <Text note style={{ marginBottom: 5 }}>
                 {list?.user?.first_name} {list?.user?.last_name}
               </Text>
-              <Text>{list?.data}</Text>
+              <Text style={{ lineHeight: 25 }}>{list?.data}</Text>
               <Text note style={{ marginTop: 5 }}>
                 {list.created_at}
               </Text>
@@ -181,25 +202,34 @@ function MessageListComponent({
     return renderLoadMore();
   };
 
+  const onMessageHook = () => {
+    sref.current.scrollToEnd({ animated: false });
+  };
+
   return (
-    <View style={{ flex: 1 }}>
-      <FlatList
-        ref={sref}
-        data={data}
-        refreshing={refreshing}
-        ListHeaderComponent={ListHeaderComponent}
-        keyExtractor={(item) => {
-          return item.id.toString();
-        }}
-        contentContainerStyle={{ padding: 10 }}
-        renderItem={({ item }) => {
-          return <ItemPureFunctional message={item} list={list} />;
-        }}
-        onContentSizeChange={() => {
-          // sref.current.scrollToEnd({ animated: false });
-        }}
-      />
-    </View>
+    <React.Fragment>
+      <View style={{ flex: 1 }}>
+        <FlatList
+          ref={sref}
+          data={data}
+          refreshing={refreshing}
+          ListHeaderComponent={ListHeaderComponent}
+          keyExtractor={(item) => {
+            return item.id.toString();
+          }}
+          contentContainerStyle={{ padding: 10 }}
+          renderItem={({ item }) => {
+            return <ItemPureFunctional message={item} list={list} />;
+          }}
+          onContentSizeChange={() => {
+            if (type == "chat") {
+              sref.current.scrollToEnd({ animated: false });
+            }
+          }}
+        />
+      </View>
+      <MessageFormComponent {...{ onMessageHook, onSubmit, onImage }} />
+    </React.Fragment>
   );
 }
 

@@ -1,5 +1,5 @@
 :root {
-  --background-colour: #f2f2f2;
+  --background-colour: #ffffff;
 
   --background-font-colour: #121212;
 
@@ -15,9 +15,14 @@
 
   --border-colour: #f2f2f2;
 
-  --button-colour: #ffba57;
+  --button-colour: #1a73e8;
 
   --button-font-colour: #ffffff;
+}
+
+h1,
+h2 {
+  color: var(--background-font-colour);
 }
 
 /* nav .brand-logo {
@@ -25,14 +30,13 @@
 } */
 
 nav ul a:hover {
-  background-color: var(--secondary-background);
-  color: var(--button-colour);
+  background-color: #f8f9fa;
+  color: #000;
 }
 
 nav {
   text-transform: initial;
   background: var(--secondary-background);
-  border-bottom: 5px solid var(--button-colour);
 }
 
 /* a.hover:hover {
@@ -41,6 +45,10 @@ nav {
 
 nav .brand-logo,
 nav ul a {
+  color: var(--secondary-font-colour);
+}
+
+.sidenav-trigger {
   color: var(--secondary-font-colour);
 }
 
@@ -54,7 +62,7 @@ nav ul a {
 }
 
 a {
-  color: var(--button-colour);
+  color: var(--primary-font-colour);
 }
 
 .w {
@@ -207,20 +215,21 @@ button:focus {
 }
 
 .btn:hover {
-  background: transparent;
-  color: var(--button-colour) !important;
+  background: var(--button-colour);
   font-weight: bold;
+  box-shadow: none;
 }
 
 .btn.btn-secondary {
   background: transparent;
-  border: 2px solid var(--button-font-colour);
+  border: 1px solid #dadce0;
   color: var(--button-colour) !important;
 }
 
-.bg .btn.btn-secondary {
+/* .bg .btn.btn-secondary {
   color: var(--primary-font-colour) !important;
-}
+  border: 1px solid silver;
+} */
 
 .btn.btn-alt {
   background: transparent;
@@ -230,7 +239,7 @@ button:focus {
 
 .btn.btn-secondary:hover {
   background: var(--button-font-colour);
-  border: 2px solid var(--button-font-colour);
+  border: 1px solid var(--button-colour);
   color: var(--button-colour) !important;
 }
 
@@ -238,9 +247,9 @@ footer a:hover {
   border-bottom: 2px solid white;
 }
 
-.bg h2 {
+/* .bg h2 {
   color: var(--primary-font-colour);
-}
+} */
 
 .sidenav {
   background: var(--background-colour);

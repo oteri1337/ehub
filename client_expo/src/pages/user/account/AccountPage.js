@@ -1,7 +1,8 @@
 import React from "react";
 import { BACKEND_URL } from "../../../../env";
-import { useNavigation } from "@react-navigation/native";
 import { Store } from "../../../providers/AppProvider";
+import { useNavigation } from "@react-navigation/native";
+import CachedThumbnail from "../../components/CachedThumbnail";
 import {
   Container,
   Content,
@@ -53,7 +54,7 @@ function AccountPage({ navigation }) {
     first_name = "",
     last_name = "",
     photo_profile = "",
-    department = "",
+    email = "",
   } = state?.user;
 
   const uri = `${BACKEND_URL}/uploads/images/${photo_profile}`;
@@ -64,7 +65,7 @@ function AccountPage({ navigation }) {
         <View
           style={{ paddingBottom: 15, paddingTop: 15, alignItems: "center" }}
         >
-          <Thumbnail
+          <CachedThumbnail
             large
             source={{ uri }}
             style={{ backgroundColor: "silver" }}
@@ -73,7 +74,7 @@ function AccountPage({ navigation }) {
             {first_name} {last_name}
           </H1>
 
-          <Text>{department}</Text>
+          <Text>{email}</Text>
         </View>
         <List>
           <Li
@@ -99,6 +100,13 @@ function AccountPage({ navigation }) {
             text="Update Password"
             icon="ios-lock"
           />
+
+          {/* <Li
+            color="grey"
+            to="ChangePhotoPage"
+            text="Notification Settings"
+            icon="ios-notifications"
+          /> */}
 
           <Li
             color="green"

@@ -81,6 +81,8 @@ const entryOne = {
       filename: "assets/css/reactapp.css",
     }),
     new webpack.DefinePlugin({
+      APK_LINK: JSON.stringify(process.env.APK_LINK),
+      IPA_LINK: JSON.stringify(process.env.IPA_LINK),
       PWA_NAME: JSON.stringify(process.env.PWA_NAME),
       ENVIRONMENT: JSON.stringify(process.env.NODE_ENV),
       MAIL_NAME: JSON.stringify(process.env.MAIL_USERNAME),

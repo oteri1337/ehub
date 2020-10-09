@@ -35,115 +35,25 @@ function SideNavComponent() {
         <ul className="collapsible collapsible-accordion">
           <li className="active">
             <a className="collapsible-header">
-              Members
-              <i className="material-icons notranslate">arrow_drop_down</i>
-            </a>
-            <div className="collapsible-body">
-              <ul>
-                <li>
-                  <Link to="/signin.html" className="sidenav-close">
-                    <span className="material-icons notranslate">
-                      account_circle
-                    </span>
-                    LOGIN
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/signup.html" className="sidenav-close">
-                    <span className="material-icons notranslate">
-                      account_circle
-                    </span>
-                    SIGNUP
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </li>
-
-      <li className="no-padding">
-        <ul className="collapsible collapsible-accordion">
-          <li className="active">
-            <a className="collapsible-header">
               Pages
               <i className="material-icons notranslate">arrow_drop_down</i>
             </a>
             <div className="collapsible-body">
               <ul>
                 <li>
-                  <Link to="/" className="sidenav-close">
+                  <Link to="/developer.html" className="sidenav-close">
                     <span className="material-icons notranslate">
-                      account_balance
+                      account_circle
                     </span>
-                    HOME
+                    Developer
                   </Link>
                 </li>
-
                 <li>
-                  <Link to="/pricing.html" className="sidenav-close">
+                  <Link to="/screenshots.html" className="sidenav-close">
                     <span className="material-icons notranslate">
-                      attach_money
+                      phone_iphone
                     </span>
-                    PRICING
-                  </Link>
-                </li>
-
-                <li>
-                  <Link to="/about.html" className="sidenav-close">
-                    <span className="material-icons notranslate">
-                      supervised_user_circle
-                    </span>
-                    ABOUT US
-                  </Link>
-                </li>
-
-                <li>
-                  <Link to="/why-mining.html" className="sidenav-close">
-                    <span className="material-icons notranslate">wb_sunny</span>
-                    WHY MINING
-                  </Link>
-                </li>
-
-                <li>
-                  <Link to="/customer-service.html" className="sidenav-close">
-                    <span className="material-icons notranslate">
-                      emoji_people
-                    </span>
-                    CUSTOMER SERVICE
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </li>
-
-      <li className="no-padding">
-        <ul className="collapsible collapsible-accordion">
-          <li className="active">
-            <a className="collapsible-header">
-              Technology
-              <i className="material-icons notranslate">arrow_drop_down</i>
-            </a>
-            <div className="collapsible-body">
-              <ul>
-                <li>
-                  <Link to="/hive.html" className="sidenav-close">
-                    <span className="material-icons notranslate">dns</span>
-                    Hive
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/radiant-tech.html" className="sidenav-close">
-                    <span className="material-icons notranslate">dns</span>
-                    Radiant Tech
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/enigma.html" className="sidenav-close">
-                    <span className="material-icons notranslate">dns</span>
-                    Enigma Datacenter
+                    Screenshots
                   </Link>
                 </li>
               </ul>

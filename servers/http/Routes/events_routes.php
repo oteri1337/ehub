@@ -2,6 +2,12 @@
 
 use Server\Controllers\EventsController;
 
+// users api
+
+$app->post('/api/events/users', EventsController::class . ':addUser')->add($user_logged_in);
+
+$app->delete('/api/events/users', EventsController::class . ':deleteUser')->add($user_logged_in);
+
 // comments api
 
 $app->post('/api/events/comments', EventsController::class . ':comment')->add($user_logged_in);

@@ -8,6 +8,14 @@ body {
   font-weight: 400;
 }
 
+pre {
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
 .pin-top {
   position: relative;
 }
@@ -174,8 +182,9 @@ input {
   text-transform: none;
   letter-spacing: 0.07em;
   font-weight: bolder;
-  padding: 0 22px !important;
-  border-radius: 2px;
+  padding: 2px 22px 4px !important;
+  border-radius: 5px;
+  box-shadow: none;
 }
 
 .fixed-action-btn {
@@ -219,7 +228,7 @@ div.public-DraftEditor-content {
 }
 
 .app-vh {
-  min-height: 100vh;
+  min-height: 90vh;
   position: relative;
 }
 
@@ -453,6 +462,10 @@ div.public-DraftEditor-content {
   width: 100%;
 }
 
+.app-no-shadow {
+  box-shadow: none;
+}
+
 .app-inline {
   display: inline;
 }
@@ -549,13 +562,13 @@ a.btn {
 }
 
 h1 {
-  font-size: 58px;
-  font-weight: 600;
+  font-size: 48px;
+  font-weight: 400;
 }
 
 h2 {
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 36px;
+  font-weight: 400;
 }
 
 h3 {
@@ -586,7 +599,7 @@ footer p {
 } */
 
 :root {
-  --background-colour: #f2f2f2;
+  --background-colour: #ffffff;
 
   --background-font-colour: #121212;
 
@@ -602,9 +615,14 @@ footer p {
 
   --border-colour: #f2f2f2;
 
-  --button-colour: #ffba57;
+  --button-colour: #1a73e8;
 
   --button-font-colour: #ffffff;
+}
+
+h1,
+h2 {
+  color: var(--background-font-colour);
 }
 
 /* nav .brand-logo {
@@ -612,14 +630,13 @@ footer p {
 } */
 
 nav ul a:hover {
-  background-color: var(--secondary-background);
-  color: var(--button-colour);
+  background-color: #f8f9fa;
+  color: #000;
 }
 
 nav {
   text-transform: initial;
   background: var(--secondary-background);
-  border-bottom: 5px solid var(--button-colour);
 }
 
 /* a.hover:hover {
@@ -628,6 +645,10 @@ nav {
 
 nav .brand-logo,
 nav ul a {
+  color: var(--secondary-font-colour);
+}
+
+.sidenav-trigger {
   color: var(--secondary-font-colour);
 }
 
@@ -641,7 +662,7 @@ nav ul a {
 }
 
 a {
-  color: var(--button-colour);
+  color: var(--primary-font-colour);
 }
 
 .w {
@@ -794,20 +815,21 @@ button:focus {
 }
 
 .btn:hover {
-  background: transparent;
-  color: var(--button-colour) !important;
+  background: var(--button-colour);
   font-weight: bold;
+  box-shadow: none;
 }
 
 .btn.btn-secondary {
   background: transparent;
-  border: 2px solid var(--button-font-colour);
+  border: 1px solid #dadce0;
   color: var(--button-colour) !important;
 }
 
-.bg .btn.btn-secondary {
+/* .bg .btn.btn-secondary {
   color: var(--primary-font-colour) !important;
-}
+  border: 1px solid silver;
+} */
 
 .btn.btn-alt {
   background: transparent;
@@ -817,7 +839,7 @@ button:focus {
 
 .btn.btn-secondary:hover {
   background: var(--button-font-colour);
-  border: 2px solid var(--button-font-colour);
+  border: 1px solid var(--button-colour);
   color: var(--button-colour) !important;
 }
 
@@ -825,9 +847,9 @@ footer a:hover {
   border-bottom: 2px solid white;
 }
 
-.bg h2 {
+/* .bg h2 {
   color: var(--primary-font-colour);
-}
+} */
 
 .sidenav {
   background: var(--background-colour);
@@ -947,6 +969,10 @@ body {
   }
 
   h1 {
+    font-size: 30px;
+  }
+
+  h2 {
     font-size: 25px;
   }
 
@@ -970,7 +996,7 @@ body {
   }
 
   .container {
-    width: 99%;
+    width: 90%;
   }
 
   ul.stepper .step .step-content {
@@ -999,16 +1025,6 @@ body {
 
 /* Tablets and PCs */
 @media (min-width: 416px) {
-  nav {
-    height: 99px;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-
-  .navbar-fixed {
-    height: 99px;
-  }
-
   .container-50 {
     max-width: 90%;
     padding-left: 5rem;

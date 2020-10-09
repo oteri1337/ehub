@@ -39,7 +39,7 @@
     "react-native-web": "~0.11.7",
     "react-native-webview": "8.1.1",
     "rn-pdf-reader-js": "^0.7.2",
-    "sentry-expo": "^2.1.2"
+    "shorthash": "^0.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

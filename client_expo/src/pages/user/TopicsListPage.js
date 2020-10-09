@@ -26,8 +26,8 @@ function TopicsListPage(props) {
 }
 
 const mapStateToProps = (state) => ({
-  list: state.topics,
-  refreshing: state.fetching.topics,
+  list: state?.topics,
+  refreshing: state?.fetching.topics,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -13,6 +13,7 @@ class User extends Model
         'bio',
         'link',
         'email',
+        'hidden',
         'token',
         'verified',
         'password',

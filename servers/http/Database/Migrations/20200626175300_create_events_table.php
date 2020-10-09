@@ -20,9 +20,13 @@ class CreateEventsTable extends ParentMigration
 
             $table->string("image")->default("event.jpg");
 
-            $table->boolean("type")->default(0);
+            $table->boolean("type")->default(1);
 
             $table->string("date")->default("");
+
+            $table->string("timestamp")->default("");
+
+            $table->string("time_left")->default("");
 
             $table->integer('comments_count')->nullable();
 

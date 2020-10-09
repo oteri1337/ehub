@@ -3,11 +3,11 @@ import { Store } from "./providers/AppProvider";
 import { getRequest, sendRequest, sendFormRequest } from "./functions";
 
 export const getNavClassName = () => {
-  const [className, setClassName] = React.useState("transparent");
+  const [className, setClassName] = React.useState("app-no-shadow");
 
   const eventListener = () => {
     if (pageYOffset === 0) {
-      setClassName("transparent");
+      setClassName("app-no-shadow");
     } else {
       setClassName("");
     }

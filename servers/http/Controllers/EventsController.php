@@ -15,7 +15,7 @@ class EventsController extends NewApiController
         $this->model = new Event;
         // $this->readBy = 'slug';
         $this->searchBy = 'title';
-        $this->eagerList = ['comments.user'];
+        $this->eagerList = ['comments.user', 'users'];
     }
 
     public function createRules($body)
@@ -35,11 +35,12 @@ class EventsController extends NewApiController
 
         $body["slug"] = $this->slugify($body["title"]);
 
-        return $this->filter($body, ['title', 'data', 'slug', 'user_id']);
+        return $this->filter($body, ['title', 'data', 'slug', 'user_id', 'type', 'date']);
     }
 
     public function lazyLoadRelationships($row)
     {
+        $row->users = $row->users;
 
         $paginator = $row->comments()->with('user')->paginate(12);
 
@@ -152,8 +153,11 @@ class EventsController extends NewApiController
         $data = $parent->comments()->save($comment);
 
         // $data = Eventcomment::where('id', $data->id)->with(['user', 'event'])->first();
+        $event = $this->model->where('id', $id)->first();
 
-        $this->data['data'] = $data;
+        $event = $this->lazyLoadRelationships($event);
+
+        $this->data['data'] = $event;
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }
@@ -295,6 +299,82 @@ class EventsController extends NewApiController
 
         $this->data['data'] = $row;
         $this->data['message'] = "Update Successful";
+        $response->getBody()->write(json_encode($this->data));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function addUser($request, $response)
+    {
+        $body = $request->getParsedBody();
+
+        $user = $request->getAttribute('user');
+
+        $event_id = $body['event_id'] ?? '';
+
+        $rules = ['event id' => [$event_id, 'required|number']];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $event = $this->model->where('id', $event_id)->first();
+
+        if (!$event) {
+            $this->data['errors'] = ['Not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $event->users()->attach($user->id);
+
+        $event = $this->model->where('id', $event_id)->with($this->eagerList)->first();
+
+        $this->data['data'] = $event;
+
+        $response->getBody()->write(json_encode($this->data));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function deleteUser($request, $response)
+    {
+        $body = $request->getParsedBody();
+
+        $user = $request->getAttribute('user');
+
+        $event_id = $body['event_id'] ?? '';
+
+        $rules = ['event id' => [$event_id, 'required|number']];
+
+        $this->validator->validate($rules);
+
+        $errors = $this->validator->errors()->all();
+
+        if ($errors) {
+            $this->data['errors'] = $errors;
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $event = $this->model->where('id', $event_id)->first();
+
+        if (!$event) {
+            $this->data['errors'] = ['Not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        $event->users()->detach($user->id);
+
+        $event = $this->model->where('id', $event_id)->with($this->eagerList)->first();
+
+        $this->data['data'] = $event;
+
         $response->getBody()->write(json_encode($this->data));
         return $response->withHeader('Content-Type', 'application/json');
     }

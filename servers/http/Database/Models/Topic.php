@@ -26,6 +26,11 @@ class Topic extends Model
         return $this->hasMany(Topiccomment::class)->orderBy('created_at', 'DESC');
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(UserLight::class, 'topic_user', null, "user_id");
+    }
+
     public function getNextPageUrlAttribute($data)
     {
 

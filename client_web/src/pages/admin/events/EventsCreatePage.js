@@ -5,6 +5,7 @@ import AdminContainerComponent from "components/container/AdminContainerComponen
 
 function EventsCreatePage({ history }) {
   const { request, callBack } = sendFormRequestThenDispatch();
+  const { errors, fetching, message } = request;
 
   const nav = [
     {
@@ -28,6 +29,24 @@ function EventsCreatePage({ history }) {
       id: "data",
       type: "textarea",
     },
+    {
+      id: "type",
+      type: "select",
+      options: [
+        {
+          value: 1,
+          label: "News",
+        },
+        {
+          value: 2,
+          label: "Event",
+        },
+      ],
+    },
+    {
+      id: "date",
+      type: "date",
+    },
   ];
 
   const onSuccess = () => {
@@ -47,7 +66,9 @@ function EventsCreatePage({ history }) {
   return (
     <AdminContainerComponent bread={nav}>
       <div className="card-panel">
-        <Form {...{ formArray, request, onSubmit }} />
+        <Form
+          {...{ formArray, request, onSubmit, errors, fetching, message }}
+        />
       </div>
     </AdminContainerComponent>
   );

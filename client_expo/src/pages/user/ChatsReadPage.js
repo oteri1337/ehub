@@ -1,9 +1,8 @@
 import React from "react";
 import { Notifications } from "expo";
 import { Button, Icon } from "native-base";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import { KeyboardAvoidingView, Platform, Alert } from "react-native";
 import MessageListComponent from "../components/MessageListComponent";
-import MessageFormComponent from "../components/MessageFormComponent";
 import { sendRequestThenDispatch } from "../../providers/AppProvider";
 
 function ChatsReadPage({ navigation, route }) {
@@ -17,7 +16,9 @@ function ChatsReadPage({ navigation, route }) {
     if (chat) {
       callReducer({ dispatch: "CLEAR_UNREAD", data: chat });
     }
-    Notifications.dismissAllNotificationsAsync();
+    if (Platform.OS != "ios") {
+      Notifications.dismissAllNotificationsAsync();
+    }
   }, []);
 
   navigation.setOptions({
@@ -59,17 +60,86 @@ function ChatsReadPage({ navigation, route }) {
         style={{ flex: 1 }}
         keyboardVerticalOffset={60}
       >
-        <MessageListComponent />
-        <MessageFormComponent onSubmit={start} onImage={startWithImage} />
+        <MessageListComponent onSubmit={start} onImage={startWithImage} />
+        {/* <MessageFormComponent onSubmit={start} onImage={startWithImage} /> */}
       </KeyboardAvoidingView>
     );
   }
 
   const { chat_id, messages } = chat;
 
+  const enableNotifications = () => {
+    Alert.alert(
+      "Confirm",
+      "recieve notifications from this user?",
+      [
+        {
+          text: "Recieve",
+          onPress: () => {
+            const body = { recvr_id, notifications: 1 };
+            send("/api/chats", "UPDATE_CHAT", body, "PATCH");
+          },
+        },
+        {
+          text: "Cancel",
+          onPress: () => {},
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const disableNotifications = () => {
+    Alert.alert(
+      "Confirm",
+      "block notifications from this user?",
+      [
+        {
+          text: "Block",
+          onPress: () => {
+            const body = { recvr_id, notifications: 2 };
+            send("/api/chats", "UPDATE_CHAT", body, "PATCH");
+          },
+        },
+        {
+          text: "Cancel",
+          onPress: () => {},
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  navigation.setOptions({
+    headerRight: () => {
+      if (chat.notifications == 1) {
+        return (
+          <React.Fragment>
+            <Button transparent onPress={disableNotifications}>
+              <Icon type="Feather" name="bell-off" style={{ color: "black" }} />
+            </Button>
+          </React.Fragment>
+        );
+      }
+
+      return (
+        <React.Fragment>
+          <Button transparent onPress={enableNotifications}>
+            <Icon type="Feather" name="bell" style={{ color: "black" }} />
+          </Button>
+        </React.Fragment>
+      );
+    },
+  });
+
   const onSubmit = (data) => {
-    const body = { id: chat_id, recvr_id, data };
-    send("/api/chats/messages", "UPDATE_CHATS", body);
+    if (data) {
+      const id = Date.now();
+      let body = { id, type: 0, recvr_id, data, user_id: state.user.id };
+      callReducer({ dispatch: "ADD_OPTIMISTIC_MESSAGE", data: body });
+      body.id = chat_id;
+      send("/api/chats/messages", "UPDATE_CHAT", body);
+    }
   };
 
   const onImage = (formData) => {
@@ -89,8 +159,11 @@ function ChatsReadPage({ navigation, route }) {
         data={messages}
         list={chat}
         next_dispatch="UPDATE_CHAT_MESSAGES_PAGE"
+        onSubmit={onSubmit}
+        onImage={onImage}
+        type="chat"
       />
-      <MessageFormComponent onSubmit={onSubmit} onImage={onImage} />
+      {/* <MessageFormComponent onSubmit={onSubmit} onImage={onImage} /> */}
     </KeyboardAvoidingView>
   );
 }

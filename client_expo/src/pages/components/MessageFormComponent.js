@@ -4,28 +4,32 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import { View, Textarea, Button, Icon, ActionSheet } from "native-base";
+import { readDirectoryAsync } from "expo-file-system";
 
 var BUTTONS = ["Image", "Document", "Cancel"];
 var DESTRUCTIVE_INDEX = 1;
 var CANCEL_INDEX = 2;
 
-function MessageFormComponent({ onSubmit, onImage, onDocument }) {
-  onImage =
-    onImage ||
-    function (formData) {
-      console.log("upload image", formData);
-    };
+function MessageFormComponent(props) {
+  const { onSubmit, onImage, onMessageHook } = props;
 
-  onDocument =
-    onDocument ||
-    function () {
-      console.log("upload document");
-    };
+  // onImage =
+  //   onImage ||
+  //   function (formData) {
+  //     console.log("upload image", formData);
+  //   };
+
+  // onMessageHook =
+  //   onMessageHook ||
+  //   function () {
+  //     console.log("on message hook");
+  //   };
 
   const [message, setMessage] = React.useState("");
 
   const onPress = () => {
     onSubmit(message);
+    onMessageHook();
     setMessage("");
     // Keyboard.dismiss();
   };
@@ -79,12 +83,14 @@ function MessageFormComponent({ onSubmit, onImage, onDocument }) {
       style={{
         flexDirection: "row",
         alignItems: "center",
+        backgroundColor: "white",
+        paddingTop: 10,
+        paddingBottom: 10,
       }}
     >
-      <View style={{ padding: 5 }}>
+      <View>
         <Button
-          bordered
-          dark
+          transparent
           onPress={() => {
             ActionSheet.show(
               {
@@ -103,35 +109,32 @@ function MessageFormComponent({ onSubmit, onImage, onDocument }) {
               }
             );
           }}
-          style={{ height: 50, width: 50 }}
         >
-          <Icon
-            name="image"
-            type="Feather"
-            style={{ fontSize: 18, lineHeight: 30 }}
-          />
+          <Icon name="plus" type="Feather" style={{ color: "#007aff" }} />
         </Button>
       </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, paddingRight: 5 }}>
         <Textarea
           value={message}
           onChangeText={(m) => setMessage(m)}
           style={{
-            borderColor: "black",
-            borderWidth: 0.5,
-            height: 50,
+            fontSize: 15,
+            lineHeight: 22,
+            borderColor: "silver",
+            borderWidth: 1.5,
+            borderRadius: 5,
+            height: 45,
             padding: 5,
           }}
         />
       </View>
-      <View style={{ padding: 5 }}>
+      <View style={{ paddingRight: 5 }}>
         <Button
-          dark
           onPress={onPress}
           rounded
-          style={{ height: 50, width: 50 }}
+          style={{ width: 45, backgroundColor: "#007aff" }}
         >
-          <Icon name="send" />
+          <Icon name="send" style={{ fontSize: 17, right: -1.5 }} />
         </Button>
       </View>
     </View>

@@ -2,6 +2,7 @@ import React from "react";
 import { BACKEND_URL } from "../../../env";
 import Text from "../components/TextComponent";
 import { FlatList, Platform } from "react-native";
+import CachedThumbnail from "../components/CachedThumbnail";
 import { getRequestThenDispatch } from "../../providers/AppProvider";
 import {
   List,
@@ -19,7 +20,7 @@ class ItemPureComponent extends React.PureComponent {
   render() {
     const { item, navigation } = this.props;
 
-    console.log("rendering chat ", item.id);
+    console.log("rendering chat ", item.recvr_id);
 
     const onPress = () => {
       navigation.navigate("ChatsReadPage", item);
@@ -46,7 +47,7 @@ class ItemPureComponent extends React.PureComponent {
     return (
       <ListItem thumbnail onPress={onPress}>
         <Left>
-          <Thumbnail
+          <CachedThumbnail
             source={{
               uri: `${BACKEND_URL}/uploads/images/${item.recvr.photo_profile}`,
             }}
@@ -80,14 +81,10 @@ class ItemPureComponent extends React.PureComponent {
 }
 
 function ChatsListPage({ navigation }) {
-  console.log("chats list page rendered");
-
   const url = "/api/chats";
   const dispatch = "UPDATE_CHATS";
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
   const list = state?.chats;
-
-  console.log("chats list", list);
 
   let { data } = list;
 

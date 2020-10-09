@@ -1,8 +1,9 @@
 import React from "react";
-import { BACKEND_URL } from "../../../env";
 import { FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { BACKEND_URL } from "../../../env";
+import CachedThumbnail from "./CachedThumbnail";
 import { TouchableHighlight } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { View, Spinner, Thumbnail, Text } from "native-base";
 
 class SingleTopicComponent extends React.PureComponent {
@@ -23,7 +24,7 @@ class SingleTopicComponent extends React.PureComponent {
           <View
             style={{ margin: 1, backgroundColor: "silver", marginBottom: 10 }}
           >
-            <Thumbnail
+            <CachedThumbnail
               style={{ width: 180, height: 280 }}
               square
               source={{

@@ -1,6 +1,7 @@
 import React from "react";
 import { FlatList } from "react-native";
 import { BACKEND_URL } from "../../../env";
+import CachedThumbnail from "./CachedThumbnail";
 import { useNavigation } from "@react-navigation/native";
 import { Text, ListItem, Left, Body, Spinner, Thumbnail } from "native-base";
 
@@ -19,7 +20,10 @@ class SingleUserComponent extends React.PureComponent {
     return (
       <ListItem thumbnail onPress={onPress}>
         <Left>
-          <Thumbnail source={{ uri }} style={{ backgroundColor: "silver" }} />
+          <CachedThumbnail
+            source={{ uri }}
+            style={{ backgroundColor: "silver" }}
+          />
         </Left>
         <Body>
           <Text style={{ fontWeight: "bold" }}>

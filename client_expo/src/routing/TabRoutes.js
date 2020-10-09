@@ -149,7 +149,7 @@ function TabNavigator({ navigation, route }) {
   };
 
   const tabBarOptions = {
-    activeTintColor: "black",
+    activeTintColor: "#0577f1",
     inactiveTintColor: "gray",
   };
 
