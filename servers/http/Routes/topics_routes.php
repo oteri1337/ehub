@@ -12,7 +12,7 @@ $app->delete('/api/topics/users', TopicsController::class . ':deleteUser')->add(
 
 // comments api
 
-$app->post('/api/topics/comments', TopicsController::class . ':comment')->add($user_logged_in);
+$app->post('/api/topics/{attr}', TopicsController::class . ':comment')->add($user_logged_in);
 
 $app->patch('/api/topics/comments', TopicsController::class . ':updateComment')->add($user_logged_in);
 

@@ -132,20 +132,23 @@ function ChatsReadPage({ navigation, route }) {
     },
   });
 
+  const user_id = state.user.id;
+
   const onSubmit = (data) => {
     if (data) {
       const id = Date.now();
-      let body = { id, type: 0, recvr_id, data, user_id: state.user.id };
-      callReducer({ dispatch: "ADD_OPTIMISTIC_MESSAGE", data: body });
-      body.id = chat_id;
-      send("/api/chats/messages", "UPDATE_CHAT", body);
+      const opBody = { id, type: 0, recvr_id, data, user_id };
+      // callReducer({ dispatch: "ADD_OPTIMISTIC_MESSAGE", data: opBody });
+
+      const body = { id:chat_id, type: 0, recvr_id, data, user_id };
+      send(`/api/chats/${recvr_id}`, "UPDATE_CHAT", body);
     }
   };
 
   const onImage = (formData) => {
     formData.append("id", chat_id);
     formData.append("recvr_id", recvr_id);
-    send("/api/chats/messages", "UPDATE_CHATS", formData);
+    send(`/api/chats/${recvr_id}`, "UPDATE_CHATS", formData);
   };
 
   return (

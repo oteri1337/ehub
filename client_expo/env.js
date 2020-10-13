@@ -7,7 +7,7 @@ if (Platform.OS === "ios") {
   url = "http://172.20.10.3:1025";
 
   // production
-  url = "https://ehubcore.com";
+  // url = "https://ehubcore.com";
 }
 
 if (Platform.OS === "android") {

@@ -3,7 +3,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class EventSeeder extends AbstractSeed
+class ChatmessageSeeder extends AbstractSeed
 {
     /**
      * Run Method.
@@ -15,21 +15,18 @@ class EventSeeder extends AbstractSeed
      */
     public function run()
     {
-
         $faker = Faker\Factory::create();
         $data = [];
-        for ($i = 1; $i < 12; $i++) {
+        for ($i = 0; $i < 25; $i++) {
             $data[] = [
-                'slug' => $faker->slug,
-                'title' => $faker->name,
-                'data' => $faker->text(500),
-                'image' => 'event' . $i . '.jpg',
-                'date' =>   $faker->date('Y-m-d'),
+                'chat_id' => 1,
+                'user_id' => rand(1, 4),
+                'data' => $faker->text(75),
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ];
         }
 
-        $this->table('events')->insert($data)->save();
+        $this->table('chatmessages')->insert($data)->save();
     }
 }

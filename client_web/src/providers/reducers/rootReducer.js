@@ -14,6 +14,8 @@ function rootReducer(state = {}, action) {
     }
   }
 
+  console.log(action);
+
   return {
     pdfs: pdfsReducer(state.pdfs, action),
     theme: themeReducer(state.theme, action),

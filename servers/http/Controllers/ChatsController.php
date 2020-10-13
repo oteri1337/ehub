@@ -130,7 +130,9 @@ class ChatsController extends NewApiController
 
             $li->comments_count = $li->messages->count();
 
-            $messages = array_reverse($li->messages->slice(0, 12)->toArray());
+            $messages = $li->messages->slice(0, 15)->toArray();
+
+            // $messages = array_reverse($li->messages->slice(0, 15)->toArray());
 
             unset($li->messages);
 
@@ -145,15 +147,15 @@ class ChatsController extends NewApiController
 
         $row->recvr = $row->recvr;
 
-        $paginator = $row->messages()->paginate(12);
+        $paginator = $row->messages()->paginate(15);
 
         // $messages = array_reverse($paginator->messages->slice(0, 12)->toArray());
 
         // unset($paginator->messages);
 
-        // $paginator->messages = $messages;
+        $row->messages = $paginator->items();
 
-        $row->messages = array_reverse($paginator->items());
+        //        $row->messages = array_reverse($paginator->items());
 
         $row->comments_count = $paginator->total();
 

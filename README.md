@@ -1,5 +1,37 @@
 # main stuff
 
+notification takes you to page in app
+
+group notifications on android
+
+schedule notification for event
+
+reduce message chat to avoid
+
+add percentage donwloaded pdf read page
+
+improve ux pdf upload - percentage, view image
+
+optimistic image and document send
+
+page numbers scrolling
+
+sub cateories for books
+
+set time zone from php
+
+clear notifications after view
+
+cache image pdf group page
+
+cache image pdf read page
+
+refresh chat list alot
+
+move books to last tab search page
+
+fix github vunlerabilites
+
 start chat optimistic
 
 unsubscribe from notifications when logout
@@ -8,21 +40,17 @@ forum notifications -- NEEDS TESTING
 
 event notifications -- NEEDS TESTING
 
-block chat notifications
+block chat notifications -- NEEDS TESTING
 
 resize uploaded pdf and profile images
 
 unread messages forum
-
-optimistic image and document send
 
 set allow comments when creating topics
 
 more control of the forum
 
 failed request reconcilation
-
-Save event to calendar
 
 refactor admin panel - request fetching errors and message
 

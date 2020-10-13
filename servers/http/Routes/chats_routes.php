@@ -4,7 +4,7 @@ use Server\Controllers\ChatsController;
 
 // messages api
 
-$app->post('/api/chats/messages', ChatsController::class . ':message')->add($user_logged_in);
+$app->post('/api/chats/{attr}', ChatsController::class . ':message')->add($user_logged_in);
 
 
 // chats api

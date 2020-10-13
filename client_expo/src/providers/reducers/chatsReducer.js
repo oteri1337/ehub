@@ -22,8 +22,8 @@ function chatsReducer(state = defaultState, action) {
           [action.data.recvr_id]: {
             ...action.data,
             messages: [
-              ...action.data.messages.reverse(),
               ...state.object[action.data.recvr_id].messages,
+              ...action.data.messages,
             ],
           },
         },
@@ -69,7 +69,7 @@ function chatsReducer(state = defaultState, action) {
           ...state.object,
           [keyo]: {
             ...state.object[keyo],
-            messages: [...slo, action.data],
+            messages: [action.data, ...slo ],
             next_page_url: `/api/chats/${keyo}?page=2`,
             unread_count: state.object[keyo].unread_count + 1,
           },

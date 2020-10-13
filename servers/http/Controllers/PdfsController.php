@@ -15,8 +15,8 @@ class PdfsController extends NewApiController
         $this->model = new Pdf;
         $this->readBy = 'slug';
         $this->searchBy = 'title';
-        $this->orderBy = 'title';
-        $this->order = 'ASC';
+        // $this->orderBy = 'title';
+        // $this->order = 'ASC';
     }
 
     public function createRules($body)
@@ -44,8 +44,8 @@ class PdfsController extends NewApiController
     {
 
         $body['slug'] = $this->slugify($body['title']);
-        $body['file_name'] = $this->uploadFile($_FILES['file'], PDF_DIR);
-        $body['image_name'] = $this->uploadFile($_FILES['image'], IMAGE_DIR);
+        $body['file_name'] = $this->uploadFile(PDF_DIR, $_FILES['file']);
+        $body['image_name'] = $this->uploadFile(IMAGE_DIR, $_FILES['image']);
         $body['file_size'] = $_FILES['file']['size'];
 
         return $this->filter($body, ['title', 'description', 'slug', 'format', 'file_name', 'file_size', 'image_name', 'image_size']);

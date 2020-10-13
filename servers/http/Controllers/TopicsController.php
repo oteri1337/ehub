@@ -14,6 +14,7 @@ class TopicsController extends NewApiController
         parent::__construct();
         $this->model = new Topic;
         $this->searchBy = 'title';
+        $this->orderBy = "updated_at";
         $this->eagerList = ['user', 'comments.user', 'users'];
     }
 
@@ -62,7 +63,7 @@ class TopicsController extends NewApiController
 
             $li->comments_count = $li->comments->count();
 
-            $comments = array_reverse($li->comments->slice(0, 12)->toArray());
+            $comments = $li->comments->slice(0, 12)->toArray();
 
             unset($li->comments);
 
@@ -173,7 +174,10 @@ class TopicsController extends NewApiController
 
         $data = $parent->comments()->save($comment);
 
+
         $topic = $this->model->where('id', $id)->first();
+
+        $topic->update(['slug' => time()]);
 
         $topic = $this->lazyLoadRelationships($topic);
 

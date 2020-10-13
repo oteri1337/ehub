@@ -26,6 +26,7 @@
     "expo-font": "~8.1.0",
     "expo-image-picker": "~8.1.0",
     "expo-linking": "^1.0.1",
+    "expo-notifications": "~0.1.1",
     "expo-permissions": "~8.1.0",
     "native-base": "2.13.8",
     "react": "~16.9.0",

@@ -225,6 +225,7 @@ function EventsReadPage({ navigation, route }) {
       keyboardVerticalOffset={60}
     >
       <MessageListComponent
+        type="forum"
         data={comments}
         list={event}
         image={image}

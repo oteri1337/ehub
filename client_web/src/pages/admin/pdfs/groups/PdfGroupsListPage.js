@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import ListComponent from "components/ListComponent";
 import SearchComponent from "components/SearchComponent";
 import { getRequestThenDispatch } from "providers/AppProvider";
@@ -41,15 +40,7 @@ function PdfGroupsListPage() {
     return (
       <li className="collection-item" key={props.id}>
         <SecondaryButtonComponent {...{ url, dispatch, type, body }} />
-        <Link
-          to={{
-            pathname: `/control/pdfgroups/${props.slug}`,
-            props,
-          }}
-          className="black-text"
-        >
-          <b>{props.title}</b>
-        </Link>
+        <b>{props.title}</b>
         <p>{props.slug}</p>
       </li>
     );

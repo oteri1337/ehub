@@ -79,6 +79,7 @@ trait UtilsTrait
 
     public function uploadFile($dir, $file)
     {
+
         $name = time() . $this->slugify($file['name']);
 
         try {

@@ -15,7 +15,7 @@ function topicsReducer(state = defaultState, action) {
           ...state.object,
           [action.data.id]: {
             ...action.data,
-            comments: action.data.comments.reverse(),
+            comments: action.data.comments,
           },
         },
       };
@@ -43,8 +43,8 @@ function topicsReducer(state = defaultState, action) {
           [action.data.id]: {
             ...action.data,
             comments: [
-              ...action.data.comments.reverse(),
               ...state.object[action.data.id].comments,
+              ...action.data.comments,
             ],
           },
         },

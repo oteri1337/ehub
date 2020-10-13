@@ -1,11 +1,11 @@
 import React from "react";
 
 function SubmitComponent(props) {
-  const onClick = props.onClick || function() {};
+  const onClick = props.onClick || function () {};
 
   if (props.fetching) {
     return (
-      <div>
+      <center>
         <br />
         <div id="fetching" className="preloader-wrapper active">
           <div className="spinner-layer spinner-blue-only">
@@ -20,7 +20,7 @@ function SubmitComponent(props) {
             </div>
           </div>
         </div>
-      </div>
+      </center>
     );
   }
 

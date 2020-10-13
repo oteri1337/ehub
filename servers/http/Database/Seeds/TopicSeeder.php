@@ -26,7 +26,7 @@ class TopicSeeder extends AbstractSeed
             $data[] = [
                 'slug' => $faker->slug,
                 'title' => $faker->name,
-                'data' => $faker->text(1000),
+                'data' => $faker->text(500),
                 'color' => $color[rand(0, 3)],
                 'icon' => $icon[rand(0, 4)],
                 'user_id' => rand(1, 5),

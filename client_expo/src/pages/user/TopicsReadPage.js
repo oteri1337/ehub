@@ -1,8 +1,14 @@
 import React from "react";
-import { Button, Icon, Container, Spinner } from "native-base";
-import { KeyboardAvoidingView, Platform, Alert } from "react-native";
+import { Button, Icon, Container, Spinner, Text, View } from "native-base";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+  ScrollView,
+} from "react-native";
 import { sendRequestThenDispatch } from "../../providers/AppProvider";
 import MessageListComponent from "../components/MessageListComponent";
+import { exp } from "react-native-reanimated";
 
 function TopicsReadPage({ navigation, route }) {
   const { id } = route.params;
@@ -144,17 +150,17 @@ function TopicsReadPage({ navigation, route }) {
       user_id: state.user.id,
     };
 
-    callReducer({ dispatch: "ADD_COMMENT_TO_TOPIC", data: body });
+    // callReducer({ dispatch: "ADD_COMMENT_TO_TOPIC", data: body });
 
     const newbody = { ...body };
     newbody.id = id;
 
-    send("/api/topics/comments", "UPDATE_TOPIC", newbody);
+    send(`/api/topics/${id}`, "UPDATE_TOPIC", newbody);
   };
 
   const onImage = (formData) => {
     formData.append("id", id);
-    send("/api/topics/comments", "ADD_COMMENT_TO_TOPIC", formData);
+    send(`/api/topics/${id}`, "ADD_COMMENT_TO_TOPIC", formData);
   };
 
   let avoid = false;
@@ -163,6 +169,17 @@ function TopicsReadPage({ navigation, route }) {
     avoid = true;
   }
 
+  // const [expanded, setExpanded] = React.useState(true);
+  // let name = "chevron-up";
+
+  // if (!expanded) {
+  //   name = "chevron-down";
+  // }
+
+  // const toggle = () => {
+  //   setExpanded(!expanded);
+  // };
+
   return (
     <KeyboardAvoidingView
       enabled={avoid}
@@ -170,7 +187,25 @@ function TopicsReadPage({ navigation, route }) {
       style={{ flex: 1 }}
       keyboardVerticalOffset={60}
     >
+      {/* <View style={{ backgroundColor: "white" }}>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
+            <Text></Text>
+          </View>
+          <View>
+            <Button transparent onPress={toggle}>
+              <Icon name={name} type="Feather" style={{ color: "black" }} />
+            </Button>
+          </View>
+        </View>
+        {expanded ? (
+          <Text style={{ padding: 10, lineHeight: 25 }}>{topic.data}</Text>
+        ) : (
+          <React.Fragment />
+        )}
+      </View> */}
       <MessageListComponent
+        type="forum"
         data={comments}
         list={topic}
         next_dispatch="UPDATE_TOPIC_COMMENTS_PAGE"

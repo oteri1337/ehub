@@ -38,7 +38,7 @@ class Chat extends Model
 
         $count = count($this->messages);
 
-        if ($count === 0 || $count < 22) {
+        if ($count === 0 || $count < 15) {
             return null;
         }
 

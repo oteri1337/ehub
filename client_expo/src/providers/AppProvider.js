@@ -1,7 +1,8 @@
 import React from "react";
-import { Notifications } from "expo";
+// import { Notifications } from "expo";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
+import * as Notifications from "expo-notifications";
 import NetInfo from "@react-native-community/netinfo";
 import { AsyncStorage, Platform, Vibration } from "react-native";
 
@@ -110,6 +111,8 @@ export const getRequestThenDispatch = (starturl = "", startdispatch = "") => {
 
     let fetchResponse = await getRequest(url);
 
+    console.log(url, fetchResponse);
+
     setRefreshing(false);
     //  setResponse(fetchResponse);
 
@@ -202,15 +205,17 @@ export const useNotification = () => {
   };
 
   const handleNotification = ({ data }) => {
+    // play sound
     Vibration.vibrate();
     callReducer({ dispatch: data.dispatch, data: data.data });
+    // navigate to page
   };
 
-  React.useEffect(() => {
-    (async () => {
-      console.log("syncing push");
-      registerForPushNotificationsAsync();
-      Notifications.addListener(handleNotification);
-    })();
-  }, []);
+  // React.useEffect(() => {
+  //   (async () => {
+  //     console.log("syncing push");
+  //     registerForPushNotificationsAsync();
+  //     Notifications.addListener(handleNotification);
+  //   })();
+  // }, []);
 };

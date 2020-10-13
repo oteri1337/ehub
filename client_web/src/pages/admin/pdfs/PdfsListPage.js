@@ -57,7 +57,7 @@ function PdfsPage() {
       />
       <ListComponent
         list={state.pdfs}
-        dispatch={`${dispatch}_PAGE`}
+        dispatch={`${dispatch}`}
         callback={callback}
       />
       <FloatingButtonComponent title="Add Pdf" to="/control/pdfs/create.html" />

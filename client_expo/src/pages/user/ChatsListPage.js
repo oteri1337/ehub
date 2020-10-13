@@ -27,7 +27,8 @@ class ItemPureComponent extends React.PureComponent {
     };
 
     const renderLastMessage = () => {
-      const lastMessage = item.messages[item.messages.length - 1];
+      const lastMessage = item.messages[0];
+      // const lastMessage = item.messages[item.messages.length - 1];
 
       if (lastMessage?.type == 1) {
         return (

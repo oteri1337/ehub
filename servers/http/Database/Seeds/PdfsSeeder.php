@@ -19,7 +19,7 @@ class PdfsSeeder extends AbstractSeed
         $data = [];
 
 
-        $books = ['sample-book.pdf', 'Document1.pdf', 'Document2.pdf', 'Document3.pdf'];
+        $books = ['sample-book.pdf', 'Document1.pdf', 'Document2.pdf', 'Document3.pdf', 'forex.pdf'];
 
         for ($i = 1; $i < 20; $i++) {
             $data[] = [
@@ -27,7 +27,7 @@ class PdfsSeeder extends AbstractSeed
                 'title' => $faker->firstName . " " . $faker->lastName,
                 'description' => $faker->text(1000),
                 'image_name' => 'book' . $i . '.jpg',
-                'file_name' => $books[rand(0, 3)],
+                'file_name' => $books[rand(0, 4)],
                 'file_size' => 1000000,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
