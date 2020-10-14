@@ -3,7 +3,7 @@ import { List, Container } from "native-base";
 import UsersList from "../components/UsersListComponent";
 import { getRequestThenDispatch } from "../../providers/AppProvider";
 
-const UsersListPage = function Users({ route }) {
+function UsersListPage({ route }) {
   console.log("users list page rendered");
 
   const url = "/api/users";
@@ -32,6 +32,6 @@ const UsersListPage = function Users({ route }) {
       </List>
     </Container>
   );
-};
+}
 
 export default UsersListPage;

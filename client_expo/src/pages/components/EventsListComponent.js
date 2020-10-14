@@ -19,8 +19,6 @@ class SingleEventComponent extends React.PureComponent {
   render() {
     const { item, navigation, lookup } = this.props;
 
-    console.log("rendering event ", item.id);
-
     const onPress = () => {
       navigation.navigate("EventsReadPage", item);
     };

@@ -31,7 +31,9 @@ function UsersReadPage({ navigation, route }) {
     topics,
   } = params;
 
-  navigation.setOptions({ title: `${first_name} ${last_name}` });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: `${first_name} ${last_name}` });
+  }, []);
 
   const open = () => {
     Linking.openURL(link);

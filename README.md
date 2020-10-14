@@ -1,6 +1,10 @@
 # main stuff
 
-notification takes you to page in app
+refresh chat list alot
+
+optimistic image and document send
+
+notification takes you to page in app for forum and events
 
 group notifications on android
 
@@ -12,10 +16,6 @@ add percentage donwloaded pdf read page
 
 improve ux pdf upload - percentage, view image
 
-optimistic image and document send
-
-page numbers scrolling
-
 sub cateories for books
 
 set time zone from php
@@ -25,8 +25,6 @@ clear notifications after view
 cache image pdf group page
 
 cache image pdf read page
-
-refresh chat list alot
 
 move books to last tab search page
 
@@ -71,6 +69,10 @@ profile image animations
 message animations chat
 
 image animations chat
+
+# Push Notifications Tool
+
+https://expo.io/notifications
 
 # Project Setup
 

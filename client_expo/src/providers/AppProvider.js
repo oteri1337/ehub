@@ -1,9 +1,9 @@
 import React from "react";
-// import { Notifications } from "expo";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import NetInfo from "@react-native-community/netinfo";
+import { useNavigation } from "@react-navigation/native";
 import { AsyncStorage, Platform, Vibration } from "react-native";
 
 import reducer from "./reducers/rootReducer";
@@ -15,31 +15,31 @@ export default function AppProvider({ children, initialState }) {
   const [state, callReducer] = React.useReducer(reducer, initialState || {});
 
   React.useEffect(() => {
-    let debounceTime = setTimeout(() => {
-      AsyncStorage.setItem("state", JSON.stringify(state));
-    }, 1000);
-    return () => {
-      clearTimeout(debounceTime);
-    };
+    // let debounceTime = setTimeout(() => {
+    AsyncStorage.setItem("state", JSON.stringify(state));
+    // }, 1000);
+    // return () => {
+    //   clearTimeout(debounceTime);
+    // };
   }, [state]);
 
-  React.useEffect(() => {
-    const asyncOperation = async () => {
-      const network = await NetInfo.fetch();
+  // React.useEffect(() => {
+  //   const asyncOperation = async () => {
+  //     const network = await NetInfo.fetch();
 
-      if (network.isConnected) {
-        console.log("connected");
-        let response = await getRequest("/api/users/auth/status");
-        if (response.errors.length === 0) {
-          callReducer({ dispatch: "UPDATE_USER", data: response.data });
-        }
-      } else {
-        console.log("not connected");
-      }
-    };
+  //     if (network.isConnected) {
+  //       console.log("connected");
+  //       let response = await getRequest("/api/users/auth/status");
+  //       if (response.errors.length === 0) {
+  //         callReducer({ dispatch: "UPDATE_USER", data: response.data });
+  //       }
+  //     } else {
+  //       console.log("not connected");
+  //     }
+  //   };
 
-    asyncOperation();
-  }, []);
+  //   asyncOperation();
+  // }, []);
 
   const signOut = () => {
     callReducer({ dispatch: "UPDATE_USER", data: false });
@@ -155,6 +155,7 @@ export const sendRequestThenDispatch = () => {
 };
 
 export const useNotification = () => {
+  const navigation = useNavigation();
   const { callReducer } = React.useContext(Store);
 
   const registerForPushNotificationsAsync = async () => {
@@ -178,9 +179,11 @@ export const useNotification = () => {
       try {
         const expo_push_token = await Notifications.getExpoPushTokenAsync();
 
+        console.log("token", expo_push_token);
+
         const url = "/api/users/auth/pushtoken";
 
-        const data = { expo_push_token };
+        const data = { expo_push_token: expo_push_token.data };
 
         sendRequest(url, data, "PATCH");
       } catch (error) {
@@ -204,18 +207,31 @@ export const useNotification = () => {
     }
   };
 
-  const handleNotification = ({ data }) => {
+  const recvListener = ({ data }) => {
     // play sound
-    Vibration.vibrate();
-    callReducer({ dispatch: data.dispatch, data: data.data });
+    console.log("recvd");
+    // Vibration.vibrate();
+    // if (data.dispatch) {
+    //   callReducer({ dispatch: data.dispatch, data: data.data });
+    // }
     // navigate to page
   };
 
-  // React.useEffect(() => {
-  //   (async () => {
-  //     console.log("syncing push");
-  //     registerForPushNotificationsAsync();
-  //     Notifications.addListener(handleNotification);
-  //   })();
-  // }, []);
+  const respListener = ({ notification }) => {
+    const { data } = notification.request.content;
+    console.log("respond", data);
+    if (data.dispatch == "ADD_MESSAGE_TO_CHAT") {
+      navigation.navigate("ChatsReadPage", data.data);
+    }
+  };
+
+  React.useEffect(() => {
+    (async () => {
+      registerForPushNotificationsAsync();
+      // Notifications.removeAllNotificationListeners();
+      Notifications.addNotificationReceivedListener(recvListener);
+      Notifications.addNotificationResponseReceivedListener(respListener);
+      // Notifications.addListener(handleNotification);
+    })();
+  }, []);
 };

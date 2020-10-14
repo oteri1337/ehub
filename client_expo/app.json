@@ -2,9 +2,10 @@
   "expo": {
     "name": "eHUB",
     "slug": "eHUB",
+    "privacy": "public",
     "description": "The application will serve as the knowledge hub of the university with more focus on the faculty of engineering to provide access to qualitative resources which will support teaching, researches and is going to further enhance / bridge the gap with professionals, interns and students",
     "platforms": ["ios", "android", "web"],
-    "version": "0.0.2",
+    "version": "0.0.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {

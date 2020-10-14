@@ -13,7 +13,6 @@ import {
   Spinner,
   ListItem,
   Container,
-  Thumbnail,
 } from "native-base";
 
 class ItemPureComponent extends React.PureComponent {
@@ -86,6 +85,10 @@ function ChatsListPage({ navigation }) {
   const dispatch = "UPDATE_CHATS";
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
   const list = state?.chats;
+
+  React.useEffect(() => {
+    console.log("refresh chats");
+  });
 
   let { data } = list;
 

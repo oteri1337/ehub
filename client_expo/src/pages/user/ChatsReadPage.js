@@ -21,19 +21,99 @@ function ChatsReadPage({ navigation, route }) {
     }
   }, []);
 
-  navigation.setOptions({
-    title: `${recvr.first_name} ${recvr.last_name}`,
-    headerLeft: () => (
-      <Button
-        transparent
-        onPress={() => {
-          navigation.pop();
-        }}
-      >
-        <Icon name="arrow-back" style={{ color: "black" }} />
-      </Button>
-    ),
-  });
+  console.log("chat", chat);
+
+  React.useLayoutEffect(() => {
+    if (!chat) {
+      navigation.setOptions({
+        title: `${recvr.first_name} ${recvr.last_name}`,
+      });
+    }
+
+    navigation.setOptions({
+      headerLeft: () => (
+        <Button
+          transparent
+          onPress={() => {
+            navigation.pop();
+          }}
+        >
+          <Icon name="arrow-back" style={{ color: "black" }} />
+        </Button>
+      ),
+    });
+
+    if (chat) {
+      const enableNotifications = () => {
+        Alert.alert(
+          "Confirm",
+          "recieve notifications from this user?",
+          [
+            {
+              text: "Recieve",
+              onPress: () => {
+                const body = { recvr_id, notifications: 1 };
+                send("/api/chats", "UPDATE_CHAT", body, "PATCH");
+              },
+            },
+            {
+              text: "Cancel",
+              onPress: () => {},
+            },
+          ],
+          { cancelable: false }
+        );
+      };
+
+      const disableNotifications = () => {
+        Alert.alert(
+          "Confirm",
+          "block notifications from this user?",
+          [
+            {
+              text: "Block",
+              onPress: () => {
+                const body = { recvr_id, notifications: 2 };
+                send("/api/chats", "UPDATE_CHAT", body, "PATCH");
+              },
+            },
+            {
+              text: "Cancel",
+              onPress: () => {},
+            },
+          ],
+          { cancelable: false }
+        );
+      };
+
+      navigation.setOptions({
+        title: `${chat.recvr.first_name} ${chat.recvr.last_name}`,
+        headerRight: () => {
+          if (chat.notifications == 1) {
+            return (
+              <React.Fragment>
+                <Button transparent onPress={disableNotifications}>
+                  <Icon
+                    type="Feather"
+                    name="bell-off"
+                    style={{ color: "black" }}
+                  />
+                </Button>
+              </React.Fragment>
+            );
+          }
+
+          return (
+            <React.Fragment>
+              <Button transparent onPress={enableNotifications}>
+                <Icon type="Feather" name="bell" style={{ color: "black" }} />
+              </Button>
+            </React.Fragment>
+          );
+        },
+      });
+    }
+  }, []);
 
   const start = (data) => {
     const body = { recvr_id, data };
@@ -68,79 +148,15 @@ function ChatsReadPage({ navigation, route }) {
 
   const { chat_id, messages } = chat;
 
-  const enableNotifications = () => {
-    Alert.alert(
-      "Confirm",
-      "recieve notifications from this user?",
-      [
-        {
-          text: "Recieve",
-          onPress: () => {
-            const body = { recvr_id, notifications: 1 };
-            send("/api/chats", "UPDATE_CHAT", body, "PATCH");
-          },
-        },
-        {
-          text: "Cancel",
-          onPress: () => {},
-        },
-      ],
-      { cancelable: false }
-    );
-  };
-
-  const disableNotifications = () => {
-    Alert.alert(
-      "Confirm",
-      "block notifications from this user?",
-      [
-        {
-          text: "Block",
-          onPress: () => {
-            const body = { recvr_id, notifications: 2 };
-            send("/api/chats", "UPDATE_CHAT", body, "PATCH");
-          },
-        },
-        {
-          text: "Cancel",
-          onPress: () => {},
-        },
-      ],
-      { cancelable: false }
-    );
-  };
-
-  navigation.setOptions({
-    headerRight: () => {
-      if (chat.notifications == 1) {
-        return (
-          <React.Fragment>
-            <Button transparent onPress={disableNotifications}>
-              <Icon type="Feather" name="bell-off" style={{ color: "black" }} />
-            </Button>
-          </React.Fragment>
-        );
-      }
-
-      return (
-        <React.Fragment>
-          <Button transparent onPress={enableNotifications}>
-            <Icon type="Feather" name="bell" style={{ color: "black" }} />
-          </Button>
-        </React.Fragment>
-      );
-    },
-  });
-
   const user_id = state.user.id;
 
   const onSubmit = (data) => {
     if (data) {
       const id = Date.now();
       const opBody = { id, type: 0, recvr_id, data, user_id };
-      // callReducer({ dispatch: "ADD_OPTIMISTIC_MESSAGE", data: opBody });
+      callReducer({ dispatch: "ADD_OPTIMISTIC_MESSAGE", data: opBody });
 
-      const body = { id:chat_id, type: 0, recvr_id, data, user_id };
+      const body = { id: chat_id, type: 0, recvr_id, data, user_id };
       send(`/api/chats/${recvr_id}`, "UPDATE_CHAT", body);
     }
   };

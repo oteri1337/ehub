@@ -9,8 +9,6 @@ import {
 function EventsListPage() {
   useNotification();
 
-  console.log("events list page rendered");
-
   const url = "/api/events";
   const dispatch = "UPDATE_EVENTS";
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);

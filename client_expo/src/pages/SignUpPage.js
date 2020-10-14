@@ -10,7 +10,6 @@ import {
   Item,
   Input,
   Icon,
-  H1,
   Button,
   Left,
   Body,
@@ -25,9 +24,6 @@ function SignUpPage({ navigation }) {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [first_name, setFirstName] = React.useState("");
-  const [last_name, setLastName] = React.useState("");
-  const [department, setDepartment] = React.useState("");
   const [password_confirmation, setPasswordConf] = React.useState("");
 
   const onPress = () => {
@@ -47,10 +43,6 @@ function SignUpPage({ navigation }) {
       });
       send("/api/users", "UPDATE_USER", body);
     }
-  };
-
-  const onBlur = () => {
-    Keyboard.dismiss();
   };
 
   return (

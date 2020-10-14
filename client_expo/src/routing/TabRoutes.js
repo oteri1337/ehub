@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { Button, Icon, View, Text } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -44,78 +45,80 @@ const { Screen, Navigator } = Tab;
 function TabNavigator({ navigation, route }) {
   const { state } = React.useContext(Store);
 
-  let current = "";
+  React.useLayoutEffect(() => {
+    let current = "";
 
-  if (route.state) {
-    current = route.state.routes[route.state.index].name;
-  }
+    if (route.state) {
+      current = route.state.routes[route.state.index].name;
+    }
 
-  navigation.setOptions({
-    title: "eHUB",
-    headerLeft: () => {
-      if (current == "PdfgroupsPage") {
+    navigation.setOptions({
+      title: "eHUB",
+      headerLeft: () => {
+        if (current == "PdfgroupsPage") {
+          return (
+            <Button
+              transparent
+              onPress={() => {
+                navigation.navigate("PdfsListPage");
+              }}
+            >
+              <Icon name="server" type="Feather" style={{ color: "black" }} />
+            </Button>
+          );
+        }
+
         return (
           <Button
             transparent
             onPress={() => {
-              navigation.navigate("PdfsListPage");
+              navigation.navigate("SearchPage");
             }}
           >
-            <Icon name="server" type="Feather" style={{ color: "black" }} />
+            <Icon name="search" type="Feather" style={{ color: "black" }} />
           </Button>
         );
-      }
+      },
+      headerRight: () => {
+        if (current == "TopicsListPage") {
+          return (
+            <Button
+              transparent
+              onPress={() => {
+                navigation.navigate("TopicsCreatePage");
+              }}
+            >
+              <Icon name="plus" type="Feather" style={{ color: "black" }} />
+            </Button>
+          );
+        }
 
-      return (
-        <Button
-          transparent
-          onPress={() => {
-            navigation.navigate("SearchPage");
-          }}
-        >
-          <Icon name="search" type="Feather" style={{ color: "black" }} />
-        </Button>
-      );
-    },
-    headerRight: () => {
-      if (current == "TopicsListPage") {
+        if (current == "PdfgroupsPage") {
+          return (
+            <Button
+              transparent
+              onPress={() => {
+                navigation.navigate("PdfsSavedPage");
+              }}
+            >
+              <Icon name="save" type="Feather" style={{ color: "black" }} />
+            </Button>
+          );
+        }
+
         return (
           <Button
             transparent
             onPress={() => {
-              navigation.navigate("TopicsCreatePage");
+              navigation.navigate("AccountPage");
             }}
           >
-            <Icon name="plus" type="Feather" style={{ color: "black" }} />
+            <Icon name="user" type="Feather" style={{ color: "black" }} />
           </Button>
         );
-      }
-
-      if (current == "PdfgroupsPage") {
-        return (
-          <Button
-            transparent
-            onPress={() => {
-              navigation.navigate("PdfsSavedPage");
-            }}
-          >
-            <Icon name="save" type="Feather" style={{ color: "black" }} />
-          </Button>
-        );
-      }
-
-      return (
-        <Button
-          transparent
-          onPress={() => {
-            navigation.navigate("AccountPage");
-          }}
-        >
-          <Icon name="user" type="Feather" style={{ color: "black" }} />
-        </Button>
-      );
-    },
-  });
+      },
+    });
+  }, [route]);
 
   const screenOptions = ({ route }) => {
     return {
@@ -139,7 +142,7 @@ function TabNavigator({ navigation, route }) {
               name="message-circle"
               color={color}
               size={size}
-              badgeCount={state?.unread}
+              // badgeCount={state?.unread}
             />
           );
         }
@@ -156,7 +159,8 @@ function TabNavigator({ navigation, route }) {
   const initialRouteName = "EventsListPage";
 
   return (
-    <Navigator {...{ tabBarOptions, screenOptions, initialRouteName }}>
+    // <Navigator {...{ tabBarOptions, screenOptions, initialRouteName }}>
+    <Navigator {...{ tabBarOptions, initialRouteName, screenOptions }}>
       <Screen
         name="UsersListPage"
         component={UsersListPage}

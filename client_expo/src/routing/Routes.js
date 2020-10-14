@@ -58,7 +58,6 @@ function Routes() {
   // prettier-ignore
   if (state.user ?? false) {
 
-
     if (state.user.verified == 0) {
       return <Navigator>
           <Screen name="VerificationPage" component={VerificationPage}/>
@@ -77,13 +76,14 @@ function Routes() {
       </Navigator>
     }
 
+
     return <Navigator>
         <Screen name="TabRoutes" component={TabRoutes} />
 
         <Screen name="AccountPage" component={AccountPage} options={{...modalNav}} initialParams={{test: 1}} />
         <Screen name="ChangeEmailPage" component={ChangeEmailPage} options={{...modalNav}} />
         <Screen name="ChangePhotoPage" component={ChangePhotoPage} options={{...modalNav}} />
-        <Screen name="ChangePasswordPage" component={ChangePasswordPage} options={{...modalNav}} /> 
+        <Screen name="ChangePasswordPage" component={ChangePasswordPage} options={{...modalNav}} />
         <Screen name="UpdateProfilePage" component={UpdateProfilePage} options={{...modalNav}} />
 
         <Screen name="SearchPage" component={SearchPage}/>
