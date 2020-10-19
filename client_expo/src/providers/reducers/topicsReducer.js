@@ -51,38 +51,17 @@ function topicsReducer(state = defaultState, action) {
       };
 
     case "ADD_COMMENT_TO_TOPIC":
-      const slug = action.data.topic_id;
-
-      let sl = [];
-
-      // console.log("topic id", slug);
-
-      // console.log(state.object[slug]);
-
-      // return state;
-
-      const { comments = [] } = state.object[slug];
-
-      if (comments.length == 12) {
-        sl = comments.slice(1, 12);
-      }
-
-      if (comments.length > 12) {
-        sl = comments.reverse().slice(0, 11).reverse();
-      }
-
-      if (comments.length < 12) {
-        sl = comments;
-      }
+      const { topic_id } = action.data;
+      const { comments } = state.object[topic_id];
 
       return {
         ...state,
         object: {
           ...state.object,
-          [slug]: {
-            ...state.object[slug],
-            next_page_url: `/api/topics/${slug}?page=2`,
-            comments: [...sl, action.data],
+          [topic_id]: {
+            ...state.object[topic_id],
+            next_page_url: `/api/topics/${topic_id}?page=2`,
+            comments: [action.data, ...comments],
           },
         },
       };

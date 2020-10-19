@@ -36,9 +36,6 @@ function SignUpPage({ navigation }) {
       const body = JSON.stringify({
         email,
         password,
-        first_name,
-        last_name,
-        department,
         password_confirmation,
       });
       send("/api/users", "UPDATE_USER", body);
@@ -96,7 +93,7 @@ function SignUpPage({ navigation }) {
 
               {!refreshing && (
                 <View style={{ alignSelf: "center" }}>
-                  <Button success onPress={onSubmit}>
+                  <Button onPress={onSubmit}>
                     <Text padding={20} style={{ color: "white" }}>
                       Sign Up
                     </Text>

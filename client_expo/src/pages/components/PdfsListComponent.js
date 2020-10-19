@@ -19,7 +19,7 @@ class SingleTopicComponent extends React.PureComponent {
     return (
       <TouchableHighlight key={item.id} onPress={onPress}>
         <View>
-          <Text style={{ marginLeft: 5 }}>{item.title}</Text>
+          <Text style={{ marginLeft: 5 }}>{item.title.substring(0, 22)}</Text>
 
           <View
             style={{ margin: 1, backgroundColor: "silver", marginBottom: 10 }}

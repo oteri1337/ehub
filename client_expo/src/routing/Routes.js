@@ -10,6 +10,7 @@ import HomePage from "../pages/HomePage";
 import SignInPage from "../pages/SignInPage";
 import SignUpPage from "../pages/SignUpPage";
 import PasswordPage from "../pages/PasswordPage";
+import FullImagePage from "../pages/user/FullImagePage";
 
 import AvatarPage from "../pages/user/auth/AvatarPage";
 import DetailsPage from "../pages/user/auth/DetailsPage";
@@ -104,6 +105,7 @@ function Routes() {
         <Screen name="EventsReadPage" component={EventsReadPage} />
 
         <Screen name="CommentsReadPage" component={CommentsReadPage} />
+        <Screen name="FullImagePage" component={FullImagePage} />
 
     </Navigator>
   }

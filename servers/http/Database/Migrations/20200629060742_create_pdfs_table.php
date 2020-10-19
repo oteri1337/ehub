@@ -22,6 +22,8 @@ class CreatePdfsTable extends ParentMigration
 
             $table->float('file_size', 11, 2)->default(0);
 
+            $table->string("file_size_string")->nullable();
+
             $table->text('description')->nullable();
 
             $table->timestamps();

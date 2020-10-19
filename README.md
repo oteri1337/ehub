@@ -1,74 +1,68 @@
-# main stuff
+# Todos
 
-refresh chat list alot
+## done similar
 
-optimistic image and document send
+refresh profile users read page
+
+new screenshots - singup, password and chats read page
+
+department dropdown select
+
+display nse number
+
+test pagination chats
 
 notification takes you to page in app for forum and events
 
-group notifications on android
-
-schedule notification for event
-
-reduce message chat to avoid
-
-add percentage donwloaded pdf read page
-
-improve ux pdf upload - percentage, view image
-
-sub cateories for books
-
-set time zone from php
-
-clear notifications after view
-
-cache image pdf group page
-
-cache image pdf read page
-
-move books to last tab search page
-
-fix github vunlerabilites
+improve login page on small devices
 
 start chat optimistic
 
-unsubscribe from notifications when logout
-
-forum notifications -- NEEDS TESTING
-
-event notifications -- NEEDS TESTING
-
-block chat notifications -- NEEDS TESTING
-
-resize uploaded pdf and profile images
-
 unread messages forum
 
-set allow comments when creating topics
+group notifications on android
+
+clear notifications after view
+
+major - schedule notification for event
+
+# web work
+
+improve ux pdf upload - percentage, view image
+
+rename and rearrange pdf groups
+
+## fresh
+
+sub categories pdfs
 
 more control of the forum
 
-failed request reconcilation
-
-refactor admin panel - request fetching errors and message
-
-new screenshots - singup and password
-
 Google Play Registration
+
+# Image Caching
+
+resize uploaded pdf and profile images
+
+get image caching to work properly
+
+refactor cached image and cached thumbnail
+
+# Future
 
 zoomable fullscreen images
 
 Dark Mode
-
-integrate hermes
-
-# Animations
 
 profile image animations
 
 message animations chat
 
 image animations chat
+
+failed request reconcilation
+
+integrate hermes - ehub lite
 
 # Push Notifications Tool
 

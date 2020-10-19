@@ -1,24 +1,27 @@
 import React from "react";
-import Logo from "../../../../assets/icon.png";
-import { TouchableWithoutFeedback, Keyboard, Image } from "react-native";
+import { Spinner, Icon } from "native-base";
+import { TouchableWithoutFeedback, Keyboard } from "react-native";
 import { sendRequestThenDispatch, Store } from "../../../providers/AppProvider";
 import {
   View,
   Text,
   Button,
   Container,
+  Content,
   Item,
   Input,
   Form,
-  Spinner,
-  Icon,
 } from "native-base";
 
 function DetailsPage({ navigation }) {
-  navigation.setOptions({ title: "My Profile" });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: "My Profile" });
+  }, []);
 
   const { signOut } = React.useContext(Store);
 
+  const [bio, setBio] = React.useState("");
+  const [link, setLink] = React.useState("");
   const [last_name, setLastName] = React.useState("");
   const [first_name, setFirstName] = React.useState("");
   const [department, setDepartment] = React.useState("");
@@ -29,7 +32,7 @@ function DetailsPage({ navigation }) {
   return (
     <Container>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{ flex: 1, padding: 15 }}>
+        <Content padder>
           <Form>
             <Item regular style={{ marginTop: 10, borderRadius: 5 }}>
               <Icon name="ios-contact" />
@@ -63,15 +66,37 @@ function DetailsPage({ navigation }) {
                 value={nse_number}
               />
             </Item>
+            <Item regular style={{ marginTop: 15, borderRadius: 5 }}>
+              <Icon name="md-link" />
+              <Input
+                placeholder="Website Link"
+                onChangeText={(text) => setLink(text)}
+                value={link}
+              />
+            </Item>
+            <Item regular style={{ marginTop: 15, borderRadius: 5 }}>
+              <Icon name="ios-analytics" />
+              <Input
+                placeholder="Profile Headline"
+                onChangeText={(text) => setBio(text)}
+                value={bio}
+              />
+            </Item>
           </Form>
 
           {!refreshing && (
             <Button
               full
-              success
               style={{ marginTop: 15 }}
               onPress={() => {
-                const body = { first_name, last_name, department, nse_number };
+                const body = {
+                  first_name,
+                  last_name,
+                  department,
+                  nse_number,
+                  link,
+                  bio,
+                };
 
                 if (
                   first_name.length &&
@@ -87,7 +112,7 @@ function DetailsPage({ navigation }) {
           )}
 
           {refreshing && <Spinner />}
-        </View>
+        </Content>
       </TouchableWithoutFeedback>
     </Container>
   );

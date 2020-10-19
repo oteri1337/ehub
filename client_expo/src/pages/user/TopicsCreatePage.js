@@ -17,7 +17,9 @@ import {
 } from "native-base";
 
 function TopicsCreatePage({ navigation }) {
-  navigation.setOptions({ title: "New Topic" });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: "New Topic" });
+  }, []);
 
   const [title, setTitle] = React.useState("");
   const [icon, setIcon] = React.useState("bulb1");
@@ -38,7 +40,6 @@ function TopicsCreatePage({ navigation }) {
       });
       const url = "/api/topics";
       const response = await send(url, "ADD_TOPIC", body);
-      console.log(response);
       if (!response.errors.length) {
         navigation.navigate("TopicsReadPage", response.data);
       }
@@ -126,7 +127,7 @@ function TopicsCreatePage({ navigation }) {
         </Form>
 
         {!refreshing && (
-          <Button bordered dark full onPress={onPress} style={{ marginTop: 5 }}>
+          <Button full onPress={onPress} style={{ marginTop: 5 }}>
             <Text>Post</Text>
           </Button>
         )}

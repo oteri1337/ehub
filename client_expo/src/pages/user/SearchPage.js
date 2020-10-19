@@ -17,8 +17,6 @@ const BooksPage = ({ navigation }) => {
 
   const { term, refreshing } = state.search;
 
-  console.log(refreshing);
-
   const [list, setList] = React.useState(root);
 
   React.useEffect(() => {
@@ -92,72 +90,77 @@ const UsersPage = ({ navigation }) => {
 function SearchPage({ navigation, route }) {
   const { state, callReducer, send } = getRequestThenDispatch();
 
-  navigation.setOptions({
-    headerStyle: {
-      elevation: 0,
-      shadowOpacity: 0,
-    },
-    headerTitle: () => (
-      <TextInput
-        style={{
-          width: 280,
-          padding: 10,
-          borderRadius: 5,
-          backgroundColor: "#f2f2f2",
-        }}
-        value={state.search.term}
-        placeholder="Search"
-        onSubmitEditing={async () => {
-          const { term } = state.search;
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerStyle: {
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+      headerTitle: () => (
+        <TextInput
+          style={{
+            width: 280,
+            padding: 10,
+            borderRadius: 5,
+            backgroundColor: "#f2f2f2",
+          }}
+          value={state.search.term}
+          placeholder="Search"
+          onSubmitEditing={async () => {
+            const { term } = state.search;
 
-          if (term.length) {
-            callReducer({ dispatch: "UPDATE_SEARCH_REFRESHING", data: true });
+            if (term.length) {
+              callReducer({ dispatch: "UPDATE_SEARCH_REFRESHING", data: true });
 
-            const current = route.state.routes[route.state.index].name;
+              const current = route.state.routes[route.state.index].name;
 
-            if (current == "Users") {
-              await send(`/api/users/search/${term}`, `UPDATE_USERS`);
+              if (current == "Users") {
+                await send(`/api/users/search/${term}`, `UPDATE_USERS`);
+              }
+
+              if (current == "Topics") {
+                await send(`/api/topics/search/${term}`, `UPDATE_TOPICS`);
+              }
+
+              if (current == "Books") {
+                await send(`/api/pdfs/search/${term}`, `UPDATE_PDFS`);
+              }
+
+              callReducer({
+                dispatch: "UPDATE_SEARCH_REFRESHING",
+                data: false,
+              });
+              callReducer({ dispatch: "UPDATE_SEARCH_TERM", data: "" });
             }
-
-            if (current == "Topics") {
-              await send(`/api/topics/search/${term}`, `UPDATE_TOPICS`);
-            }
-
-            if (current == "Books") {
-              await send(`/api/pdfs/search/${term}`, `UPDATE_PDFS`);
-            }
-
-            callReducer({ dispatch: "UPDATE_SEARCH_REFRESHING", data: false });
-            callReducer({ dispatch: "UPDATE_SEARCH_TERM", data: "" });
-          }
-        }}
-        onChangeText={(data) => {
-          callReducer({ dispatch: "UPDATE_SEARCH_TERM", data });
-        }}
-      />
-    ),
-    headerLeft: () => (
-      <Button
-        transparent
-        onPress={() => {
-          navigation.pop();
-        }}
-      >
-        <Icon name="arrow-back" style={{ color: "black" }} />
-      </Button>
-    ),
-    headerRight: () => (
-      <Button transparent onPress={() => {}}>
-        <Icon name="search" type="Feather" style={{ color: "black" }} />
-      </Button>
-    ),
-  });
+          }}
+          onChangeText={(data) => {
+            callReducer({ dispatch: "UPDATE_SEARCH_TERM", data });
+          }}
+        />
+      ),
+      headerLeft: () => (
+        <Button
+          transparent
+          onPress={() => {
+            navigation.pop();
+          }}
+        >
+          <Icon name="arrow-back" style={{ color: "black" }} />
+        </Button>
+      ),
+      headerRight: () => (
+        <Button transparent onPress={() => {}}>
+          <Icon name="search" type="Feather" style={{ color: "black" }} />
+        </Button>
+      ),
+    });
+  }, [state, route]);
 
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Books" component={BooksPage} />
       <Tab.Screen name="Topics" component={TopicsPage} />
       <Tab.Screen name="Users" component={UsersPage} />
+      <Tab.Screen name="Books" component={BooksPage} />
     </Tab.Navigator>
   );
 }

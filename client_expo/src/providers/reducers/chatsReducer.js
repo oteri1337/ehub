@@ -53,15 +53,15 @@ function chatsReducer(state = defaultState, action) {
       const keyo = parseInt(action.data.recvr_id);
       const chato = state.object[keyo];
 
-      let slo = [];
+      let slo = chato.messages;
 
-      if (chato.messages.length == 12) {
-        slo = chato.messages.slice(1, 12);
-      } else if (chato.messages.length > 12) {
-        slo = chato.messages.reverse().slice(0, 11).reverse();
-      } else if (chato.messages.length < 12) {
-        slo = chato.messages;
-      }
+      // if (chato.messages.length == 15) {
+      //   slo = chato.messages.slice(1, 15);
+      // } else if (chato.messages.length > 14) {
+      //   slo = chato.messages.slice(1, 14);
+      // } else if (chato.messages.length < 14) {
+      //   slo = chato.messages;
+      // }
 
       return {
         ...state,
@@ -69,7 +69,7 @@ function chatsReducer(state = defaultState, action) {
           ...state.object,
           [keyo]: {
             ...state.object[keyo],
-            messages: [action.data, ...slo ],
+            messages: [action.data, ...slo],
             next_page_url: `/api/chats/${keyo}?page=2`,
             unread_count: state.object[keyo].unread_count + 1,
           },
@@ -80,21 +80,21 @@ function chatsReducer(state = defaultState, action) {
       const key = parseInt(action.data.user_id);
       const chat = state.object[key];
 
-      let sl = [];
+      // let sl = [];
 
-      const { messages } = chat;
+      // const { messages } = chat;
 
-      if (messages.length == 12) {
-        sl = messages.slice(1, 12);
-      }
+      // if (messages.length == 12) {
+      //   sl = messages.slice(1, 12);
+      // }
 
-      if (messages.length > 12) {
-        sl = messages.reverse().slice(0, 11).reverse();
-      }
+      // if (messages.length > 12) {
+      //   sl = messages.reverse().slice(0, 11).reverse();
+      // }
 
-      if (messages.length < 12) {
-        sl = messages;
-      }
+      // if (messages.length < 12) {
+      //   sl = messages;
+      // }
 
       return {
         ...state,
@@ -102,7 +102,7 @@ function chatsReducer(state = defaultState, action) {
           ...state.object,
           [key]: {
             ...state.object[key],
-            messages: [...sl, action.data],
+            messages: [action.data, ...chat.messages],
             next_page_url: `/api/chats/${key}?page=2`,
             unread_count: state.object[key].unread_count + 1,
           },

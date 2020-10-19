@@ -24,12 +24,11 @@ class TopicSeeder extends AbstractSeed
         $data = [];
         for ($i = 0; $i < 24; $i++) {
             $data[] = [
-                'slug' => $faker->slug,
+                'user_id' => 1,
                 'title' => $faker->name,
+                'icon' => $icon[rand(0, 4)],
                 'data' => $faker->text(500),
                 'color' => $color[rand(0, 3)],
-                'icon' => $icon[rand(0, 4)],
-                'user_id' => rand(1, 5),
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ];

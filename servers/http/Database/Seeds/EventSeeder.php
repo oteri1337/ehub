@@ -20,7 +20,6 @@ class EventSeeder extends AbstractSeed
         $data = [];
         for ($i = 1; $i < 12; $i++) {
             $data[] = [
-                'slug' => $faker->slug,
                 'title' => $faker->name,
                 'data' => $faker->text(500),
                 'image' => 'event' . $i . '.jpg',

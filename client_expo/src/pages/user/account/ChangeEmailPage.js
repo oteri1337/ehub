@@ -5,7 +5,9 @@ import { sendRequestThenDispatch } from "../../../providers/AppProvider";
 import { Container, View, Form, Item, Input, Button, Text } from "native-base";
 
 function ChangeEmailPage({ navigation }) {
-  navigation.setOptions({ title: "Change Email" });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: "Change Email" });
+  }, []);
 
   const { state, refreshing, send } = sendRequestThenDispatch();
 

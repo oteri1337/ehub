@@ -8,6 +8,14 @@ use Server\Database\Models\User;
 class ChatmessageObserver
 {
 
+    public function creating($body)
+    {
+
+        $date = new \DateTime("now", new \DateTimeZone('Africa/Lagos'));
+        $body['date'] = $date->format('M d h:i A');
+        return $body;
+    }
+
     public function created($chatmessage)
     {
         $sendr = User::where("id", $chatmessage->user_id)->first();

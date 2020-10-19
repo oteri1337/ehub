@@ -4,7 +4,10 @@ import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Container, View, Form, Item, Input, Button, Text } from "native-base";
 
 function UpdatePasswordPage({ navigation }) {
-  navigation.setOptions({ title: "Change Password" });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: "Change Password" });
+  }, []);
+
   const [fetching, setFetching] = React.useState(false);
 
   const [password, setPassword] = React.useState("");

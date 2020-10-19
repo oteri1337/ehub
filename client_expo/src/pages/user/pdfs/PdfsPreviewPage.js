@@ -3,15 +3,7 @@ import { Image } from "react-native";
 import { BACKEND_URL } from "../../../../env";
 import * as FileSystem from "expo-file-system";
 import { Store } from "../../../providers/AppProvider";
-import {
-  Container,
-  Content,
-  Button,
-  View,
-  Text,
-  Spinner,
-  Icon,
-} from "native-base";
+import { Container, Content, Button, View, Text, Icon, H1 } from "native-base";
 
 function PdfsPreviewPage({ navigation, route }) {
   const { params } = route;
@@ -26,7 +18,13 @@ function PdfsPreviewPage({ navigation, route }) {
     saved = true;
   }
 
-  navigation.setOptions({ title });
+  React.useLayoutEffect(() => {
+    const size = file_size / 1e6;
+
+    if (size > 9 && !saved) {
+      alert("please download large books before reading for best experience");
+    }
+  }, []);
 
   const uri = `${BACKEND_URL}/uploads/pdfs/${file_name}`;
 
@@ -47,7 +45,7 @@ function PdfsPreviewPage({ navigation, route }) {
 
         const progress = totalBytesExpectedToWrite / totalBytesWritten;
 
-        setpercent(100 / progress);
+        setpercent((100 / progress).toFixed(0));
       });
 
       await dr.downloadAsync(uri, path);
@@ -70,70 +68,106 @@ function PdfsPreviewPage({ navigation, route }) {
     setSaving(false);
   };
 
-  if (saved) {
+  React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <Button transparent onPress={removePdf}>
-          <Icon name="trash" type="Feather" style={{ color: "black" }} />
+      title: "",
+      headerStyle: {
+        shadowColor: "transparent",
+      },
+      headerLeft: () => (
+        <Button transparent onPress={() => navigation.pop()}>
+          <Icon name="x" type="Feather" style={{ color: "black" }} />
         </Button>
       ),
     });
-  } else if (saving) {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button transparent>
-          <Text style={{ color: "black" }}>{percent}%</Text>
-          {/* <Spinner color="black" style={{ marginRight: 10 }} /> */}
-        </Button>
-      ),
-    });
-  } else {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button transparent onPress={savePdf}>
-          <Icon name="save" type="Feather" style={{ color: "black" }} />
-        </Button>
-      ),
-    });
-  }
+
+    if (saved) {
+      navigation.setOptions({
+        headerRight: () => (
+          <Button transparent onPress={removePdf}>
+            <Icon name="trash" type="Feather" style={{ color: "black" }} />
+          </Button>
+        ),
+      });
+    } else if (saving) {
+      navigation.setOptions({
+        headerRight: () => (
+          <Button transparent>
+            <Text style={{ color: "black" }}>{percent}%</Text>
+            {/* <Spinner color="black" style={{ marginRight: 10 }} /> */}
+          </Button>
+        ),
+      });
+    } else {
+      navigation.setOptions({
+        headerRight: () => (
+          <Button transparent onPress={savePdf}>
+            <Icon name="download" type="Feather" style={{ color: "black" }} />
+          </Button>
+        ),
+      });
+    }
+  }, [percent, saving]);
 
   return (
     <Container>
       {/* <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" /> */}
       <Content>
-        <View style={{ backgroundColor: "silver" }}>
+        <View style={{ paddingBottom: 10, paddingTop: 10 }}>
           <Image
+            resizeMode="contain"
             style={{ width: "100%", height: 250, resizeMode: "contain" }}
             source={{ uri: `${BACKEND_URL}/uploads/images/${image_name}` }}
           />
         </View>
-        <View style={{ flexDirection: "row" }}>
+        <H1
+          style={{
+            padding: 15,
+            textAlign: "center",
+            textTransform: "capitalize",
+            paddingBottom: 5,
+            fontWeight: "bold",
+          }}
+        >
+          {title}
+        </H1>
+        <Text style={{ textAlign: "center" }}>{params.file_size_string}</Text>
+
+        <Text
+          style={{
+            padding: 20,
+            paddingTop: 5,
+            paddingBottom: 5,
+            lineHeight: 25,
+            textAlign: "justify",
+          }}
+        >
+          {description}
+        </Text>
+        {/* <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
           <View style={{ flex: 1 }}>
             <Button full transparent>
-              <Icon name="server" type="Feather" style={{ color: "gray" }} />
-              <Text note>{file_size}</Text>
+              <Icon name="server" type="Feather" />
+              <Text>{file_size}</Text>
             </Button>
           </View>
           <View style={{ flex: 1 }}>
             <Button full transparent>
-              <Icon
-                name={saved ? "check-circle" : "circle"}
-                type="Feather"
-                style={{ color: "gray" }}
-              />
-              <Text note>{saved ? "SAVED" : "SERVED"}</Text>
+              <Icon name={saved ? "check-circle" : "circle"} type="Feather" />
+              <Text>{saved ? "SAVED" : "SERVED"}</Text>
             </Button>
           </View>
-        </View>
-        <View style={{ padding: 10 }}>
-          <Button bordered dark full onPress={viewPdf}>
-            <Text>View</Text>
-          </Button>
-          <Text style={{ marginTop: 10, padding: 2, lineHeight: 25 }}>
-            {description}
-          </Text>
-        </View>
+        </View> */}
       </Content>
+      <View style={{ padding: 10, marginTop: 10 }}>
+        <Button full onPress={viewPdf} style={{ borderRadius: 50 }}>
+          <Text>Read Now</Text>
+        </Button>
+      </View>
     </Container>
   );
 }

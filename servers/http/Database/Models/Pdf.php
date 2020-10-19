@@ -16,9 +16,10 @@ class Pdf extends Model
         'slug',
     ];
 
-    public function getFileSizeAttribute($bytes)
+    public function getFileSizeStringAttribute()
     {
-        $mb = $bytes * 1e-6;
+
+        $mb = $this->file_size * 1e-6;
         $mb = number_format($mb, 2);
         return $mb . " MB";
     }

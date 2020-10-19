@@ -20,6 +20,8 @@ class CreateTopicCommentsTable extends ParentMigration
 
             $table->text('data');
 
+            $table->string('date')->nullable();
+
             $table->timestamps();
         });
     }

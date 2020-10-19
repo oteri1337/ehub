@@ -16,7 +16,6 @@ import {
   Right,
   H1,
   View,
-  Thumbnail,
 } from "native-base";
 
 function Li({ text = "", icon = "ios-today", color, to, param = {} }) {
@@ -46,7 +45,9 @@ function Li({ text = "", icon = "ios-today", color, to, param = {} }) {
 }
 
 function AccountPage({ navigation }) {
-  navigation.setOptions({ title: "My Account" });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: "My Account" });
+  }, []);
 
   const { state, signOut } = React.useContext(Store);
 

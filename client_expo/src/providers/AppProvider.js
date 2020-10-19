@@ -1,13 +1,12 @@
 import React from "react";
 import Constants from "expo-constants";
+import reducer from "./reducers/rootReducer";
 import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
 import NetInfo from "@react-native-community/netinfo";
+import { getRequest, sendRequest } from "./functions";
 import { useNavigation } from "@react-navigation/native";
 import { AsyncStorage, Platform, Vibration } from "react-native";
-
-import reducer from "./reducers/rootReducer";
-import { getRequest, sendRequest } from "./functions";
 
 export const Store = React.createContext({});
 
@@ -28,7 +27,6 @@ export default function AppProvider({ children, initialState }) {
   //     const network = await NetInfo.fetch();
 
   //     if (network.isConnected) {
-  //       console.log("connected");
   //       let response = await getRequest("/api/users/auth/status");
   //       if (response.errors.length === 0) {
   //         callReducer({ dispatch: "UPDATE_USER", data: response.data });
@@ -111,8 +109,6 @@ export const getRequestThenDispatch = (starturl = "", startdispatch = "") => {
 
     let fetchResponse = await getRequest(url);
 
-    console.log(url, fetchResponse);
-
     setRefreshing(false);
     //  setResponse(fetchResponse);
 
@@ -134,7 +130,6 @@ export const sendRequestThenDispatch = () => {
     setRefreshing(true);
 
     const fetchResponse = await sendRequest(url, body, method);
-    console.log(fetchResponse);
 
     setRefreshing(false);
 
@@ -179,8 +174,6 @@ export const useNotification = () => {
       try {
         const expo_push_token = await Notifications.getExpoPushTokenAsync();
 
-        console.log("token", expo_push_token);
-
         const url = "/api/users/auth/pushtoken";
 
         const data = { expo_push_token: expo_push_token.data };
@@ -207,28 +200,39 @@ export const useNotification = () => {
     }
   };
 
-  const recvListener = ({ data }) => {
-    // play sound
-    console.log("recvd");
-    // Vibration.vibrate();
-    // if (data.dispatch) {
-    //   callReducer({ dispatch: data.dispatch, data: data.data });
-    // }
-    // navigate to page
-  };
-
   const respListener = ({ notification }) => {
     const { data } = notification.request.content;
-    console.log("respond", data);
     if (data.dispatch == "ADD_MESSAGE_TO_CHAT") {
       navigation.navigate("ChatsReadPage", data.data);
+    }
+  };
+
+  const recvListener = async ({ request }) => {
+    Vibration.vibrate();
+    // play sound
+    const { data } = request.content;
+
+    if (data.dispatch) {
+      // const state = await AsyncStorage.getItem("state");
+
+      // const newstate = reducer(state, data);
+
+      // await AsyncStorage.setItem("state", JSON.stringify(newstate));
+
+      callReducer({ dispatch: data.dispatch, data: data.data });
     }
   };
 
   React.useEffect(() => {
     (async () => {
       registerForPushNotificationsAsync();
-      // Notifications.removeAllNotificationListeners();
+
+      try {
+        // Notifications.removeAllNotificationListeners();
+      } catch (error) {
+        console.log("no notification listeners");
+      }
+
       Notifications.addNotificationReceivedListener(recvListener);
       Notifications.addNotificationResponseReceivedListener(respListener);
       // Notifications.addListener(handleNotification);

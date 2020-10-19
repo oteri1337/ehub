@@ -10,6 +10,7 @@ class Eventcomment extends Model
     protected $fillable = [
         'data',
         'type',
+        'date',
         'user_id',
         'event_id'
     ];
@@ -26,6 +27,10 @@ class Eventcomment extends Model
 
     public function getCreatedAtAttribute($row)
     {
+        if ($this->date) {
+            return $this->date;
+        }
+
         $dateTimeInstance = new \DateTime($row);
         return $dateTimeInstance->format('M d h:i A');
     }

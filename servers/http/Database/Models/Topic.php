@@ -13,7 +13,8 @@ class Topic extends Model
         'slug',
         'title',
         'color',
-        'user_id'
+        'user_id',
+        'comments_count'
     ];
 
     public function user()

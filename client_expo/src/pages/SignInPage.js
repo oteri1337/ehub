@@ -94,18 +94,13 @@ function SignInPage({ navigation }) {
           <View
             style={{
               padding: 15,
+              paddingTop: 0,
+              flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <Text style={{ fontWeight: "bold" }}>
-              Forgot password?{" "}
-              <Text style={s} onPress={() => to("PasswordPage")}>
-                Get Help
-              </Text>
-            </Text>
-            <Text style={{ marginTop: 15, fontWeight: "bold" }}>
-              Don't have an account?{" "}
+            <View style={{ flex: 1 }}>
               <Text
                 style={s}
                 onPress={() => {
@@ -114,7 +109,13 @@ function SignInPage({ navigation }) {
               >
                 Sign Up
               </Text>
-            </Text>
+            </View>
+
+            <View>
+              <Text style={s} onPress={() => to("PasswordPage")}>
+                Reset Password
+              </Text>
+            </View>
           </View>
         </View>
       </TouchableWithoutFeedback>

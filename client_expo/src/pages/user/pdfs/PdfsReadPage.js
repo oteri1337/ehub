@@ -79,7 +79,7 @@ function PdfsReadPage({ navigation, route }) {
 
         const progress = totalBytesExpectedToWrite / totalBytesWritten;
 
-        setpercent(100 / progress);
+        setpercent((100 / progress).toFixed(0));
       });
 
       await dr.downloadAsync(uri, path);

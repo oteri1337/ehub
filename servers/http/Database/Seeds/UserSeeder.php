@@ -24,6 +24,7 @@ class UserSeeder extends AbstractSeed
             'first_name' => "Oteri",
             'last_name' => "Avwunudiogba",
             'photo_profile' => "boy1.jpg",
+            'verified' => 1,
             'expo_push_token' => 'ExponentPushToken[UmcboSPh62DUU2LLouAmCt]',
             'phone_number' => $faker->e164PhoneNumber,
             'bio' => $faker->text,
@@ -46,7 +47,7 @@ class UserSeeder extends AbstractSeed
             'department' => "Petroleum Engineering",
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
-            'expo_push_token' => 'ExponentPushToken[bUuQ1zFDHcdQm7F2SowHDA]'
+            'expo_push_token' => 'ExponentPushToken[2Os-IGCLcG8hRq-FFahk0c]'
         ];
 
         $known[] = [
@@ -62,7 +63,7 @@ class UserSeeder extends AbstractSeed
             'department' => "Marine Engineering",
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
-            'expo_push_token' => 'ExponentPushToken[d4zz0YOd8uDb3uUFVbuRBm]'
+            'expo_push_token' => 'ExponentPushToken[1yQSlEH-rmTwrqxfGlUU9_]'
         ];
 
         $known[] = [
@@ -71,7 +72,7 @@ class UserSeeder extends AbstractSeed
             'verified' => 1,
             'first_name' => "Maxwell",
             'last_name' => "Akpati",
-            'expo_push_token' => 'ExponentPushToken[3_NyKjN5dinDsttyzNcRb2]',
+            'expo_push_token' => 'ExponentPushToken[Qd3rvHN9jD0r9xBSXubMjK]',
             'photo_profile' => "boy3.jpg",
             'department' => "Pharmacy",
             'phone_number' => $faker->e164PhoneNumber,

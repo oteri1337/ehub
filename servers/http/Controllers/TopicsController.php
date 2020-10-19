@@ -177,7 +177,7 @@ class TopicsController extends NewApiController
 
         $topic = $this->model->where('id', $id)->first();
 
-        $topic->update(['slug' => time()]);
+        $topic->update(['comments_count' => $topic->comments_count + 1]);
 
         $topic = $this->lazyLoadRelationships($topic);
 

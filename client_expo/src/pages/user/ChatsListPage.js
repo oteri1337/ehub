@@ -86,15 +86,23 @@ function ChatsListPage({ navigation }) {
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);
   const list = state?.chats;
 
-  React.useEffect(() => {
-    console.log("refresh chats");
-  });
-
-  let { data } = list;
-
   const onRefresh = async () => {
     send("/api/chats", dispatch);
   };
+
+  React.useEffect(() => {
+    let debounceTime = setTimeout(() => {
+      if (!refreshing) {
+        console.log("refresh chats");
+        send("/api/chats", dispatch);
+      }
+    }, 2000);
+    return () => {
+      clearTimeout(debounceTime);
+    };
+  }, [state.chats]);
+
+  let { data } = list;
 
   const onEndReached = async () => {
     if (!refreshing) {
@@ -147,6 +155,7 @@ function ChatsListPage({ navigation }) {
     <Container>
       <List>
         <FlatList
+          style={{ height: "100%" }}
           {...{
             data,
             onRefresh,

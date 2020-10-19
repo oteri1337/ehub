@@ -22,6 +22,8 @@ class CreateChatmessagesTable extends ParentMigration
 
             $table->text('data');
 
+            $table->string('date')->nullable();
+
             $table->timestamps();
         });
     }

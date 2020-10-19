@@ -42,61 +42,73 @@ function CommentReadPage({ route, navigation }) {
     body.chat_id = route.params.chat_id;
   }
 
-  // return (
-  //   <Container>
-  //     <Text>Refactor in progress</Text>
-  //   </Container>
-  // );
-
-  //  console.log(route.params);
-  // const { title, message, update, deleteData } = route.params;
-  // const { id, type } = message;
-
-  navigation.setOptions({
-    title,
-    headerLeft: () => (
-      <Button
-        transparent
-        onPress={() => {
-          navigation.pop();
-        }}
-      >
-        <Icon name="arrow-back" style={{ color: "black" }} />
-      </Button>
-    ),
-    headerRight: () => {
-      if (route.params.chat_id) {
-        return <React.Fragment />;
-      }
-
-      if (title == "Update Topic") {
-        return <React.Fragment />;
-      }
-
-      if (refreshing) {
-        return <Spinner />;
-      }
-
-      if (user_id != state.user.id) {
-        return <React.Fragment />;
-      }
-
-      return (
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title,
+      headerLeft: () => (
         <Button
           transparent
-          onPress={async () => {
-            // let { endpoint, dispatch, body } = deleteData;
-            const response = await send(endpoint, dispatch, body, "DELETE");
-            if (response.errors.length === 0) {
-              navigation.pop();
-            }
+          onPress={() => {
+            navigation.pop();
           }}
         >
-          <Icon name="trash" type="Feather" style={{ color: "black" }} />
+          <Icon name="arrow-back" style={{ color: "black" }} />
         </Button>
-      );
-    },
-  });
+      ),
+      headerRight: () => {
+        if (route.params.chat_id) {
+          return <React.Fragment />;
+        }
+
+        if (title == "Update Topic") {
+          return (
+            <Button
+              transparent
+              onPress={async () => {
+                // let { endpoint, dispatch, body } = deleteData;
+                const response = await send(
+                  endpoint,
+                  "UPDATE_TOPICS",
+                  body,
+                  "DELETE"
+                );
+                if (response.errors.length === 0) {
+                  navigation.navigate("TopicsListPage");
+                  return;
+                }
+              }}
+            >
+              <Icon name="trash" type="Feather" style={{ color: "black" }} />
+            </Button>
+          );
+          return <React.Fragment />;
+        }
+
+        if (refreshing) {
+          return <Spinner />;
+        }
+
+        if (user_id != state.user.id) {
+          return <React.Fragment />;
+        }
+
+        return (
+          <Button
+            transparent
+            onPress={async () => {
+              // let { endpoint, dispatch, body } = deleteData;
+              const response = await send(endpoint, dispatch, body, "DELETE");
+              if (response.errors.length === 0) {
+                navigation.pop();
+              }
+            }}
+          >
+            <Icon name="trash" type="Feather" style={{ color: "black" }} />
+          </Button>
+        );
+      },
+    });
+  }, []);
 
   if (type == 1) {
     const uri = `${BACKEND_URL}/uploads/images/${data}`;
@@ -135,8 +147,6 @@ function CommentReadPage({ route, navigation }) {
       {!refreshing && (
         <Button
           full
-          bordered
-          dark
           style={{ marginTop: 5 }}
           onPress={async () => {
             // let { endpoint, dispatch, body = {} } = update;

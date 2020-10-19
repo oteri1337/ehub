@@ -6,25 +6,30 @@ import MessageListComponent from "../components/MessageListComponent";
 import { sendRequestThenDispatch } from "../../providers/AppProvider";
 
 function ChatsReadPage({ navigation, route }) {
-  const { recvr_id, recvr } = route.params;
+  let id = route.params.recvr_id;
 
   const { state, callReducer, send } = sendRequestThenDispatch();
 
-  const chat = state.chats.object[recvr_id];
+  if (state.user.id == id) {
+    id = route.params.user_id;
+  }
+
+  const chat = state.chats.object[id];
 
   React.useEffect(() => {
     if (chat) {
-      callReducer({ dispatch: "CLEAR_UNREAD", data: chat });
+      if (state.unread) {
+        callReducer({ dispatch: "CLEAR_UNREAD", data: chat });
+      }
     }
     if (Platform.OS != "ios") {
       Notifications.dismissAllNotificationsAsync();
     }
   }, []);
 
-  console.log("chat", chat);
-
   React.useLayoutEffect(() => {
     if (!chat) {
+      const { recvr } = route.params;
       navigation.setOptions({
         title: `${recvr.first_name} ${recvr.last_name}`,
       });
@@ -52,7 +57,7 @@ function ChatsReadPage({ navigation, route }) {
             {
               text: "Recieve",
               onPress: () => {
-                const body = { recvr_id, notifications: 1 };
+                const body = { recvr_id: id, notifications: 1 };
                 send("/api/chats", "UPDATE_CHAT", body, "PATCH");
               },
             },
@@ -73,7 +78,7 @@ function ChatsReadPage({ navigation, route }) {
             {
               text: "Block",
               onPress: () => {
-                const body = { recvr_id, notifications: 2 };
+                const body = { recvr_id: id, notifications: 2 };
                 send("/api/chats", "UPDATE_CHAT", body, "PATCH");
               },
             },
@@ -116,7 +121,7 @@ function ChatsReadPage({ navigation, route }) {
   }, []);
 
   const start = (data) => {
-    const body = { recvr_id, data };
+    const body = { recvr_id: id, data };
     send("/api/chats", "UPDATE_CHATS", body);
   };
 
@@ -152,19 +157,29 @@ function ChatsReadPage({ navigation, route }) {
 
   const onSubmit = (data) => {
     if (data) {
-      const id = Date.now();
-      const opBody = { id, type: 0, recvr_id, data, user_id };
+      const date = Date.now();
+      const opBody = { id: date, type: 0, recvr_id: id, data, user_id };
       callReducer({ dispatch: "ADD_OPTIMISTIC_MESSAGE", data: opBody });
 
-      const body = { id: chat_id, type: 0, recvr_id, data, user_id };
-      send(`/api/chats/${recvr_id}`, "UPDATE_CHAT", body);
+      const body = { id: chat_id, type: 0, recvr_id: id, data, user_id };
+      send(`/api/chats/${id}`, "UPDATE_CHAT", body);
     }
   };
 
   const onImage = (formData) => {
+    const date = Date.now();
+    const opBody = {
+      id: date,
+      type: 0,
+      recvr_id: id,
+      data: "Uploading... ",
+      user_id,
+    };
+    callReducer({ dispatch: "ADD_OPTIMISTIC_MESSAGE", data: opBody });
+
     formData.append("id", chat_id);
-    formData.append("recvr_id", recvr_id);
-    send(`/api/chats/${recvr_id}`, "UPDATE_CHATS", formData);
+    formData.append("recvr_id", id);
+    send(`/api/chats/${id}`, "UPDATE_CHAT", formData);
   };
 
   return (

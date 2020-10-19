@@ -7,7 +7,9 @@ import { Container, View, Button, Text } from "native-base";
 import { sendRequestThenDispatch } from "../../../providers/AppProvider";
 
 function UpdatePhotoPage({ navigation }) {
-  navigation.setOptions({ title: "Change Photo" });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: "Change Photo" });
+  }, []);
 
   const { state, refreshing, send } = sendRequestThenDispatch();
 
@@ -70,7 +72,7 @@ function UpdatePhotoPage({ navigation }) {
 
           {refreshing && (
             <Button bordered full>
-              <Text>Uploading</Text>
+              <Text>Uploading ...</Text>
             </Button>
           )}
         </View>

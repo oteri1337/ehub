@@ -15,7 +15,10 @@ import {
 } from "native-base";
 
 function UpdateProfilePage({ navigation }) {
-  navigation.setOptions({ title: "Update Profile" });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: "Update Profile" });
+  }, []);
+
   const { state, refreshing, send } = sendRequestThenDispatch();
 
   const [bio, setBio] = React.useState(state.user.bio);

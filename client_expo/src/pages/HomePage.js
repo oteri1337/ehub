@@ -184,6 +184,7 @@ function HomePage({ navigation }) {
       </Tab.Navigator>
 
       <Button
+        style={{ backgroundColor: "#007aff" }}
         full
         onPress={() => {
           navigation.navigate("SignInPage");

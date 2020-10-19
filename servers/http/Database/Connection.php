@@ -18,7 +18,7 @@ class Connection
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'strict' => false,
-            'engine' => null
+            'engine' => null,
         ];
 
         $capsule = new \Illuminate\Database\Capsule\Manager;

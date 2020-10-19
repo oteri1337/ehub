@@ -157,7 +157,7 @@ function PasswordPage({ navigation }) {
         </Item>
         {!refreshing && (
           <View style={{ alignSelf: "center" }}>
-            <Button success onPress={onSubmit}>
+            <Button style={{ backgroundColor: "#007aff" }} onPress={onSubmit}>
               <Text padding={20}>SUBMIT</Text>
             </Button>
           </View>

@@ -16,8 +16,6 @@ class CreateTopicsTable extends ParentMigration
 
             $table->string("title");
 
-            $table->string("slug")->unique();
-
             $table->string("next_page_url")->default("");
 
             $table->text("data");

@@ -3,9 +3,7 @@ import { List, Container } from "native-base";
 import UsersList from "../components/UsersListComponent";
 import { getRequestThenDispatch } from "../../providers/AppProvider";
 
-function UsersListPage({ route }) {
-  console.log("users list page rendered");
-
+function UsersListPage() {
   const url = "/api/users";
   const dispatch = "UPDATE_USERS";
   const { state, refreshing, send } = getRequestThenDispatch(url, dispatch);

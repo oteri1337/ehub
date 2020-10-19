@@ -31,28 +31,38 @@ function App() {
   });
 
   React.useEffect(() => {
+    let mouted = true;
+
     const asyncOperation = async () => {
       const network = await NetInfo.fetch();
 
       let persisted = await AsyncStorage.getItem("state");
 
-      persisted = JSON.parse(persisted);
+      if (persisted) {
+        persisted = JSON.parse(persisted);
+      } else {
+        persisted = {};
+      }
 
-      setState(persisted);
-
-      // console.log(persisted);
-
-      // if (network.isConnected) {
-      //   let response = await getRequest("/api/users/auth/status");
-      //   if (response.errors.length === 0) {
-      //     const action = { dispatch: "UPDATE_USER", data: response.data };
-      //     const data = reducer({}, action);
-      //     setState(data);
-      //   }
-      // }
+      if (network.isConnected) {
+        let response = await getRequest("/api/users/auth/status");
+        if (response.errors.length === 0) {
+          const action = { dispatch: "UPDATE_USER", data: response.data };
+          const data = reducer(persisted, action);
+          if (mouted) {
+            setState(data);
+          }
+        }
+      } else {
+        setState(persisted);
+      }
     };
 
     asyncOperation();
+
+    return () => {
+      mouted = false;
+    };
   }, []);
 
   // React.useEffect(() => {
@@ -72,7 +82,9 @@ function App() {
 
   return (
     <AppProvider initialState={state}>
-      <Router />
+      <Root>
+        <Router />
+      </Root>
     </AppProvider>
   );
 }

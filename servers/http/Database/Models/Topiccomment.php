@@ -10,6 +10,7 @@ class Topiccomment extends Model
     protected $fillable = [
         'type',
         'data',
+        'date',
         'user_id',
         'topic_id'
     ];
@@ -26,6 +27,11 @@ class Topiccomment extends Model
 
     public function getCreatedAtAttribute($row)
     {
+
+        if ($this->date) {
+            return $this->date;
+        }
+
         $dateTimeInstance = new \DateTime($row);
         return $dateTimeInstance->format('M d h:i A');
     }

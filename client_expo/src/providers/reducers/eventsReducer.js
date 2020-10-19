@@ -14,7 +14,7 @@ function eventsReducer(state = defaultState, action) {
         object: {
           [action.data.id]: {
             ...action.data,
-            comments: action.data.comments.reverse(),
+            comments: action.data.comments,
           },
         },
       };
@@ -42,19 +42,19 @@ function eventsReducer(state = defaultState, action) {
 
       const { comments } = state.object[slug];
 
-      let sl;
+      // let sl;
 
-      if (comments.length == 12) {
-        sl = comments.slice(1, 12);
-      }
+      // if (comments.length == 12) {
+      //   sl = comments.slice(1, 12);
+      // }
 
-      if (comments.length > 12) {
-        sl = comments.reverse().slice(0, 11).reverse();
-      }
+      // if (comments.length > 12) {
+      //   sl = comments.reverse().slice(0, 11).reverse();
+      // }
 
-      if (comments.length < 12) {
-        sl = comments;
-      }
+      // if (comments.length < 12) {
+      //   sl = comments;
+      // }
 
       return {
         ...state,
@@ -63,7 +63,7 @@ function eventsReducer(state = defaultState, action) {
           [slug]: {
             ...state.object[slug],
             next_page_url: `/api/events/${slug}?page=2`,
-            comments: [...sl, action.data],
+            comments: [action.data, ...comments],
           },
         },
       };

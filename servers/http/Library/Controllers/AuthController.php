@@ -108,6 +108,10 @@ class AuthController extends NewApiController
     public function signOut($request, $response)
     {
 
+        $user = $request->getAttribute("user");
+
+        $user->update(['expo_push_token' => '']);
+
         $key = $_COOKIE[$this->authKey] ?? false;
 
         if ($key) {

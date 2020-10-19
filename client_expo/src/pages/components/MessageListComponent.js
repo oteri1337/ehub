@@ -24,16 +24,19 @@ function ItemPureFunctional({ message }) {
   const navigation = useNavigation();
   const { state } = React.useContext(Store);
 
+  let backgroundColor = "white";
   let marginLeft = 0;
   let marginRight = 25;
 
   if (message.user_id === state.user.id) {
     marginLeft = 25;
     marginRight = 0;
+    backgroundColor = "#e2eefe";
   }
 
   return React.useMemo(() => {
     // user message
+
     if (message.user_id === state.user.id && message.type === 0) {
       return (
         <TouchableWithoutFeedback
@@ -47,7 +50,7 @@ function ItemPureFunctional({ message }) {
             Toast.show({ text: "Copied" });
           }}
         >
-          <View style={{ ...s, marginLeft: 25, backgroundColor: "#e2eefe" }}>
+          <View style={{ ...s, marginLeft: 25, backgroundColor }}>
             <Text>{message.data}</Text>
             <Text note style={{ marginTop: 5 }}>
               {message.created_at}
@@ -67,7 +70,7 @@ function ItemPureFunctional({ message }) {
             // }
           }}
         >
-          <View style={{ ...s, marginLeft, marginRight }}>
+          <View style={{ ...s, marginLeft, marginRight, backgroundColor }}>
             <Image
               resizeMode="contain"
               source={{
@@ -91,7 +94,7 @@ function ItemPureFunctional({ message }) {
             navigation.navigate("CommentsReadPage", message);
           }}
         >
-          <View style={{ ...s, marginRight, marginLeft }}>
+          <View style={{ ...s, marginRight, marginLeft, backgroundColor }}>
             <Text>
               <Icon name="book" type="Feather" /> {message.data}
             </Text>
@@ -103,9 +106,16 @@ function ItemPureFunctional({ message }) {
       );
     }
 
+    console.log("message", message);
+
     // others messagez
     return (
       <TouchableWithoutFeedback
+        onPress={() => {
+          if (!message.chat_id) {
+            navigation.navigate("UsersReadPage", message.user);
+          }
+        }}
         onLongPress={() => {
           Clipboard.setString(message.data);
           Toast.show({ text: "Copied" });
@@ -148,7 +158,6 @@ function MessageListComponent(props) {
   };
 
   const onEndReached = () => {
-    console.log("end reached");
     if (type != "forum") {
       if (!refreshing) {
         if (list?.next_page_url && list.comments_count > 12) {

@@ -8,6 +8,14 @@ use Server\Database\Models\Topic;
 class TopiccommentObserver
 {
 
+    public function creating($body)
+    {
+
+        $date = new \DateTime("now", new \DateTimeZone('Africa/Lagos'));
+        $body['date'] = $date->format('M d h:i A');
+        return $body;
+    }
+
     public function created($comment)
     {
         $topic = Topic::where("id", $comment->topic_id)->with('users')->first();

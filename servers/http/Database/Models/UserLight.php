@@ -10,11 +10,8 @@ class UserLight extends Model
     protected $table = 'users';
 
     protected $hidden = [
-        'link',
-        'bio',
-        'email',
+        'hidden',
         'password',
-        'department',
         'phone_number',
         'push_subscription',
         'created_at',
@@ -23,6 +20,9 @@ class UserLight extends Model
         'verified',
         'topics_count',
         'nse_number',
-        'next_page_url'
+        'token',
+        'next_page_url',
+        'expo_push_token',
+        'web_push_token'
     ];
 }

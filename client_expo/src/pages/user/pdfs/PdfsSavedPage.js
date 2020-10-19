@@ -4,7 +4,9 @@ import PdfsList from "../../components/PdfsListComponent";
 import { Store } from "../../../providers/AppProvider";
 
 function PdfsSavedPage({ navigation }) {
-  navigation.setOptions({ title: "Saved Books" });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: "Saved Books" });
+  }, []);
 
   const { state } = React.useContext(Store);
 

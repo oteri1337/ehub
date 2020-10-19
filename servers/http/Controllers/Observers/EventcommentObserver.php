@@ -8,6 +8,14 @@ use Server\Database\Models\Event;
 class EventcommentObserver
 {
 
+    public function creating($body)
+    {
+
+        $date = new \DateTime("now", new \DateTimeZone('Africa/Lagos'));
+        $body['date'] = $date->format('M d h:i A');
+        return $body;
+    }
+
     public function created($comment)
     {
         $event = Event::where("id", $comment->event_id)->with('users')->first();

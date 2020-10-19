@@ -16,6 +16,7 @@ class ChatsController extends NewApiController
         parent::__construct();
         $this->model = new Chat;
         $this->readBy = "recvr_id";
+        $this->orderBy = "updated_at";
         $this->eagerList = ['recvr', 'messages'];
     }
 

@@ -7,8 +7,6 @@ class SingleTopicComponent extends React.PureComponent {
   render() {
     const { item, navigation, lookup } = this.props;
 
-    console.log("rendering topic ", item.id);
-
     const onPress = () => {
       navigation.navigate("TopicsReadPage", item);
     };

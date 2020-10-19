@@ -14,7 +14,9 @@ import {
 } from "native-base";
 
 function VerificationPage({ navigation }) {
-  navigation.setOptions({ title: "Verification" });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: "Verification" });
+  }, []);
 
   const { signOut } = React.useContext(Store);
   const [token, settoken] = React.useState("");

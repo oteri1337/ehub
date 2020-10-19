@@ -1,20 +1,14 @@
 import React from "react";
 import { Image } from "react-native";
+import { Container } from "native-base";
 import { BACKEND_URL } from "../../../../env";
+import { View, Item, Picker, Button, Text, Spinner } from "native-base";
 import { sendRequestThenDispatch } from "../../../providers/AppProvider";
 
-import {
-  Container,
-  View,
-  Item,
-  Picker,
-  Button,
-  Text,
-  Spinner,
-} from "native-base";
-
 function AvatarPage({ navigation }) {
-  navigation.setOptions({ title: "Select Avatar" });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: "Select Avatar" });
+  }, []);
 
   const [photo_profile, setphoto_profile] = React.useState("boy1.jpg");
 

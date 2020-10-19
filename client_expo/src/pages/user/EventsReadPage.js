@@ -122,67 +122,59 @@ function EventsReadPage({ navigation, route }) {
     );
   };
 
-  navigation.setOptions({
-    title,
-    headerLeft: () => (
-      <Button
-        transparent
-        onPress={() => {
-          navigation.navigate("EventsListPage");
-        }}
-      >
-        <Icon name="arrow-back" style={{ color: "black" }} />
-      </Button>
-    ),
-    headerRight: () => {
-      const notificationsEnabled = event.users?.find(
-        (user) => user.id == state.user.id
-      );
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title,
+      headerLeft: () => (
+        <Button
+          transparent
+          onPress={() => {
+            navigation.navigate("EventsListPage");
+          }}
+        >
+          <Icon name="arrow-back" style={{ color: "black" }} />
+        </Button>
+      ),
+      headerRight: () => {
+        const notificationsEnabled = event.users?.find(
+          (user) => user.id == state.user.id
+        );
 
-      if (notificationsEnabled) {
+        if (notificationsEnabled) {
+          return (
+            <React.Fragment>
+              <Button transparent onPress={disableNotifications}>
+                <Icon
+                  type="Feather"
+                  name="bell-off"
+                  style={{ color: "black" }}
+                />
+              </Button>
+            </React.Fragment>
+          );
+        }
+
         return (
           <React.Fragment>
-            <Button transparent onPress={disableNotifications}>
-              <Icon type="Feather" name="bell-off" style={{ color: "black" }} />
+            <Button transparent onPress={enableNotifications}>
+              <Icon type="Feather" name="bell" style={{ color: "black" }} />
             </Button>
           </React.Fragment>
         );
-      }
+      },
 
-      return (
-        <React.Fragment>
-          <Button transparent onPress={enableNotifications}>
-            <Icon type="Feather" name="bell" style={{ color: "black" }} />
-          </Button>
-        </React.Fragment>
-      );
-    },
-
-    // headerRight: () => (
-    //   <Button
-    //     transparent
-    //     onPress={() => {
-    //       navigation.navigate("EventsListPage");
-    //     }}
-    //   >
-    //     <Icon name="calendar" style={{ color: "black" }} />
-    //   </Button>
-    // ),
-  });
-
-  const deleteTopic = () => {
-    alert("are you sure tou want to delete this topic?");
-  };
-
-  // if (route.params.user_id === state.user.id) {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <Button transparent onPress={deleteTopic}>
-  //         <Icon name="trash" type="Feather" style={{ color: "black" }} />
-  //       </Button>
-  //     ),
-  //   });
-  // }
+      // headerRight: () => (
+      //   <Button
+      //     transparent
+      //     onPress={() => {
+      //       navigation.navigate("EventsListPage");
+      //     }}
+      //   >
+      //     <Icon name="calendar" style={{ color: "black" }} />
+      //   </Button>
+      // ),
+    });
+  }, []);
 
   const onSubmit = (data) => {
     // const body = { id, data };
@@ -206,8 +198,19 @@ function EventsReadPage({ navigation, route }) {
   };
 
   const onImage = (formData) => {
+    const uid = Date.now();
+    let body = {
+      data: "Uploading...",
+      type: 0,
+      id: uid,
+      event_id: id,
+      user_id: state.user.id,
+    };
+
+    callReducer({ dispatch: "ADD_COMMENT_TO_EVENT", data: body });
+
     formData.append("id", id);
-    send("/api/events/comments", "ADD_COMMENT_TO_EVENT", formData);
+    send("/api/events/comments", "UPDATE_EVENT", formData);
     // send("/api/events/comment/image", "ADD_COMMENT_TO_EVENT", formData);
   };
 
