@@ -59,7 +59,7 @@ class SingleEventComponent extends React.PureComponent {
                   type="Feather"
                   style={{ color: "black" }}
                 />
-                <Text style={{ color: "black" }}>2 Days Left</Text>
+                <Text style={{ color: "black" }}>{item.date}</Text>
               </Button>
             </Left>
 

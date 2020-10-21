@@ -13,21 +13,27 @@ function PdfsReadPage({ navigation, route }) {
   const { state, callReducer } = React.useContext(Store);
   const { id, title, file_name } = params;
 
-  navigation.setOptions({
-    title,
-    headerLeft: () => {
-      return (
-        <Button
-          transparent
-          onPress={() => {
-            navigation.pop();
-          }}
-        >
-          <Icon name="arrow-back" type="Ionicons" style={{ color: "black" }} />
-        </Button>
-      );
-    },
-  });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title,
+      headerLeft: () => {
+        return (
+          <Button
+            transparent
+            onPress={() => {
+              navigation.pop();
+            }}
+          >
+            <Icon
+              name="arrow-back"
+              type="Ionicons"
+              style={{ color: "black" }}
+            />
+          </Button>
+        );
+      },
+    });
+  }, []);
 
   const uri = `${BACKEND_URL}/uploads/pdfs/${file_name}`;
 

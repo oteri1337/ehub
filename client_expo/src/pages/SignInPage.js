@@ -35,7 +35,7 @@ function SignInPage({ navigation }) {
     navigation.navigate(page);
   };
 
-  const s = { color: "#0984e3" };
+  const s = { color: "#007aff" };
 
   return (
     <Container>

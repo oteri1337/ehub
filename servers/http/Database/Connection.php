@@ -19,6 +19,7 @@ class Connection
             'collation' => 'utf8mb4_unicode_ci',
             'strict' => false,
             'engine' => null,
+            'timezone' => '-05:00'
         ];
 
         $capsule = new \Illuminate\Database\Capsule\Manager;

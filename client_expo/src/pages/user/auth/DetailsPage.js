@@ -62,6 +62,7 @@ function DetailsPage({ navigation }) {
               <Icon name="md-settings" />
               <Input
                 placeholder="NSE Number"
+                keyboardType="decimal-pad"
                 onChangeText={(text) => setNseNumber(text)}
                 value={nse_number}
               />

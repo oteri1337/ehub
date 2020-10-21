@@ -3,7 +3,16 @@ import { Image } from "react-native";
 import { BACKEND_URL } from "../../../../env";
 import * as FileSystem from "expo-file-system";
 import { Store } from "../../../providers/AppProvider";
-import { Container, Content, Button, View, Text, Icon, H1 } from "native-base";
+import {
+  Container,
+  Content,
+  Button,
+  View,
+  Text,
+  Icon,
+  H1,
+  Header,
+} from "native-base";
 
 function PdfsPreviewPage({ navigation, route }) {
   const { params } = route;
@@ -71,9 +80,7 @@ function PdfsPreviewPage({ navigation, route }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       title: "",
-      headerStyle: {
-        shadowColor: "transparent",
-      },
+      headerTransparent: true,
       headerLeft: () => (
         <Button transparent onPress={() => navigation.pop()}>
           <Icon name="x" type="Feather" style={{ color: "black" }} />
@@ -111,9 +118,10 @@ function PdfsPreviewPage({ navigation, route }) {
 
   return (
     <Container>
+      {/* <Header transparent /> */}
       {/* <StatusBar barStyle="light-content" backgroundColor="#f0f0f0" /> */}
       <Content>
-        <View style={{ paddingBottom: 10, paddingTop: 10 }}>
+        <View style={{ paddingBottom: 10, paddingTop: 10, marginTop: 50 }}>
           <Image
             resizeMode="contain"
             style={{ width: "100%", height: 250, resizeMode: "contain" }}
@@ -163,8 +171,12 @@ function PdfsPreviewPage({ navigation, route }) {
           </View>
         </View> */}
       </Content>
-      <View style={{ padding: 10, marginTop: 10 }}>
-        <Button full onPress={viewPdf} style={{ borderRadius: 50 }}>
+      <View style={{ padding: 10 }}>
+        <Button
+          full
+          onPress={viewPdf}
+          style={{ borderRadius: 50, backgroundColor: "#007aff" }}
+        >
           <Text>Read Now</Text>
         </Button>
       </View>

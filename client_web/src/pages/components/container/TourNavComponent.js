@@ -10,7 +10,7 @@ function NavComponent() {
     <div className="navbar-fixed">
       <nav className={class_name}>
         <a data-target="mobile-demo" className="sidenav-trigger">
-          <i class="material-icons">menu</i>
+          <i className="material-icons">menu</i>
         </a>
         <Link to="/" className="brand-logo hide-on-large-only">
           {PWA_NAME}

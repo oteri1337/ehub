@@ -47,7 +47,7 @@ function EventsListPage() {
         <Link to={`/control/events/${props.id}`} className="props-title">
           {props.title}
         </Link>
-        <p className="grey-text">{props.comments_count} Comments</p>
+        <p className="grey-text">{props.date}</p>
         <div className="secondary-content">
           <SecondaryButtonComponent
             {...{ type, url, dispatch, body, title, beforeSubmit }}

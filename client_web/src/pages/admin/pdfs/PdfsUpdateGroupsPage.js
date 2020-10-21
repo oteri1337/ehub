@@ -29,10 +29,6 @@ function PdfUpdateCategoryPage({ match, location, history }) {
     return { id, label: title, type: "checkbox" };
   });
 
-  const onSuccess = () => {
-    history.goBack();
-  };
-
   const onSubmit = (data) => {
     const groups = Object.keys(data).filter((key) => {
       if (data[key] == true) return true;
@@ -44,6 +40,10 @@ function PdfUpdateCategoryPage({ match, location, history }) {
     };
 
     callBack("/api/pdfs/sync", "NO_DISPATCH", body, onSuccess, "PATCH");
+  };
+
+  const onSuccess = () => {
+    history.goBack();
   };
 
   const pdf = state.pdfs.object[slug];

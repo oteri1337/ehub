@@ -1,5 +1,4 @@
 import React from "react";
-import * as Calendar from "expo-calendar";
 import { Button, Icon, Container, Text } from "native-base";
 import { KeyboardAvoidingView, Platform, Alert } from "react-native";
 import { sendRequestThenDispatch } from "../../providers/AppProvider";
@@ -21,65 +20,6 @@ function EventsReadPage({ navigation, route }) {
   }
 
   const { title, image, comments } = event;
-
-  async function getDefaultCalendarSource() {
-    const calendars = await Calendar.getCalendarsAsync();
-    const defaultCalendars = calendars.filter(
-      (each) => each.source.name === "iCloud"
-    );
-    return defaultCalendars[0].source;
-  }
-
-  async function createCalendar() {
-    const defaultCalendarSource =
-      Platform.OS === "ios"
-        ? await getDefaultCalendarSource()
-        : { isLocalAccount: true, name: "Expo Calendar" };
-    const newCalendarID = await Calendar.createCalendarAsync({
-      title: "Ehub Calendar",
-      color: "blue",
-      entityType: Calendar.EntityTypes.EVENT,
-      sourceId: defaultCalendarSource.id,
-      source: defaultCalendarSource,
-      name: "internalCalendarName",
-      ownerAccount: "personal",
-      accessLevel: Calendar.CalendarAccessLevel.OWNER,
-    });
-    console.log(`Your new calendar ID is: ${newCalendarID}`);
-  }
-
-  // React.useEffect(() => {
-  //   (async () => {
-  //     const { status } = await Calendar.requestCalendarPermissionsAsync();
-  //     // const rp = await Calendar.requestRemindersPermissionsAsync();
-
-  //     // console.log(rp);
-
-  //     if (status == "granted") {
-  //       const calendars = await Calendar.getCalendarsAsync();
-  //       console.log("Here are all your calendars:");
-
-  //       const calendar = calendars.find((c) => c.allowsModifications === true);
-
-  //       console.log(calendar);
-
-  //       //console.log(calendars);
-
-  //       const event = await Calendar.createEventAsync(calendar.id, {
-  //         title: "test",
-  //         startDate: new Date(),
-  //         endDate: new Date(),
-  //       });
-
-  //       console.log(event);
-
-  //       // createCalendar();
-  //       // Calendar.createReminderAsync("A326A0F3-617E-4DA0-97CE-243A35AC06E1", {
-  //       //   title: "test",
-  //       // });
-  //     }
-  //   })();
-  // }, []);
 
   const enableNotifications = () => {
     Alert.alert(
@@ -174,7 +114,7 @@ function EventsReadPage({ navigation, route }) {
       //   </Button>
       // ),
     });
-  }, []);
+  }, [state.events]);
 
   const onSubmit = (data) => {
     // const body = { id, data };

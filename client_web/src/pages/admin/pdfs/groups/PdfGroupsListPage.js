@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import ListComponent from "components/ListComponent";
 import SearchComponent from "components/SearchComponent";
 import { getRequestThenDispatch } from "providers/AppProvider";
@@ -37,10 +38,20 @@ function PdfGroupsListPage() {
     const type = "DELETE";
     const body = { id: props.id };
 
+    const pathname = `/control/pdfgroups/${props.slug}`;
+
+    const beforeSubmit = () => {
+      return confirm(`are you sure you want to delete ${props.title}`);
+    };
+
     return (
       <li className="collection-item" key={props.id}>
-        <SecondaryButtonComponent {...{ url, dispatch, type, body }} />
-        <b>{props.title}</b>
+        <SecondaryButtonComponent
+          {...{ url, dispatch, type, body, beforeSubmit }}
+        />
+        <b>
+          <Link to={{ pathname, props }}>{props.title}</Link>
+        </b>
         <p>{props.slug}</p>
       </li>
     );

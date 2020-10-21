@@ -15,6 +15,8 @@ class PdfgroupsController extends NewApiController
         $this->searchBy = 'title';
         $this->model = new Pdfgroup;
         $this->eagerList = ['data'];
+        $this->orderBy = "updated_at";
+        $this->perPage = 50;
     }
 
     public function createRules($body)

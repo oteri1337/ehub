@@ -93,8 +93,10 @@ function ChatsListPage({ navigation }) {
   React.useEffect(() => {
     let debounceTime = setTimeout(() => {
       if (!refreshing) {
-        console.log("refresh chats");
-        send("/api/chats", dispatch);
+        if (list.data.length <= 12) {
+          console.log("refresh chats");
+          send("/api/chats", dispatch);
+        }
       }
     }, 2000);
     return () => {

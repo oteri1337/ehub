@@ -29,20 +29,20 @@ function EventsCreatePage({ history }) {
       id: "data",
       type: "textarea",
     },
-    {
-      id: "type",
-      type: "select",
-      options: [
-        {
-          value: 1,
-          label: "News",
-        },
-        {
-          value: 2,
-          label: "Event",
-        },
-      ],
-    },
+    // {
+    //   id: "type",
+    //   type: "select",
+    //   options: [
+    //     {
+    //       value: 1,
+    //       label: "News",
+    //     },
+    //     {
+    //       value: 2,
+    //       label: "Event",
+    //     },
+    //   ],
+    // },
     {
       id: "date",
       type: "date",

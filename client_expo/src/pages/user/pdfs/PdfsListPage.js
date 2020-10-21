@@ -4,19 +4,21 @@ import { Container, List, Button, Icon } from "native-base";
 import { getRequestThenDispatch } from "../../../providers/AppProvider";
 
 function PdfsListPage({ navigation }) {
-  navigation.setOptions({
-    title: "All Books",
-    headerRight: () => (
-      <Button
-        transparent
-        onPress={() => {
-          navigation.navigate("SearchPage");
-        }}
-      >
-        <Icon name="search" type="Feather" style={{ color: "black" }} />
-      </Button>
-    ),
-  });
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "All Books",
+      headerRight: () => (
+        <Button
+          transparent
+          onPress={() => {
+            navigation.navigate("SearchPage");
+          }}
+        >
+          <Icon name="search" type="Feather" style={{ color: "black" }} />
+        </Button>
+      ),
+    });
+  }, []);
 
   const url = "/api/pdfs";
   const dispatch = "UPDATE_PDFS";

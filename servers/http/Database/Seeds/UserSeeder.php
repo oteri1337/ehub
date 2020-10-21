@@ -28,7 +28,7 @@ class UserSeeder extends AbstractSeed
             'expo_push_token' => 'ExponentPushToken[UmcboSPh62DUU2LLouAmCt]',
             'phone_number' => $faker->e164PhoneNumber,
             'bio' => $faker->text,
-            'link' => $faker->url,
+            'link' => 'https://oteri.herokuapp.com',
             'department' => "Physics",
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
@@ -110,6 +110,7 @@ class UserSeeder extends AbstractSeed
             $data[] = [
                 'email' => $faker->email,
                 'password' => sha1("password2"),
+                'nse_number' => rand(111111111, 999999999),
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
                 'phone_number' => $faker->e164PhoneNumber,

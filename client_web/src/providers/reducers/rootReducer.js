@@ -5,7 +5,8 @@ import usersReducer from "./usersReducer";
 import pdfsReducer from "./pdfsReducer";
 import eventsReducer from "./eventsReducer";
 import topicsReducer from "./topicsReducer";
-import pdfgropusReducer from "./pdfgroupsReducer";
+import pdfgroupsReducer from "./pdfgroupsReducer";
+import pdfparentgroupsReducer from "./pdfparentgroupsReducer";
 
 function rootReducer(state = {}, action) {
   if (action.dispatch == "UPDATE_STATE") {
@@ -23,7 +24,8 @@ function rootReducer(state = {}, action) {
     users: usersReducer(state.users, action),
     events: eventsReducer(state.events, action),
     topics: topicsReducer(state.topics, action),
-    pdfgroups: pdfgropusReducer(state.pdfgroups, action),
+    pdfgroups: pdfgroupsReducer(state.pdfgroups, action),
+    pdfparentgroups: pdfparentgroupsReducer(state.pdfparentgroups, action),
   };
 }
 

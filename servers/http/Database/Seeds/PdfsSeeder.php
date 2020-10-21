@@ -25,7 +25,7 @@ class PdfsSeeder extends AbstractSeed
             $data[] = [
                 'slug' => $faker->email,
                 'title' => $faker->catchPhrase,
-                'description' => $faker->text(460),
+                'description' => $faker->text(660),
                 'image_name' => 'book' . $i . '.jpg',
                 'file_name' => $books[rand(0, 4)],
                 'file_size' => 1000000,

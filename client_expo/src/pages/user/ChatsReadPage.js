@@ -7,8 +7,8 @@ import { sendRequestThenDispatch } from "../../providers/AppProvider";
 
 function ChatsReadPage({ navigation, route }) {
   let id = route.params.recvr_id;
-
   const { state, callReducer, send } = sendRequestThenDispatch();
+  const user_id = state.user.id;
 
   if (state.user.id == id) {
     id = route.params.user_id;
@@ -118,16 +118,28 @@ function ChatsReadPage({ navigation, route }) {
         },
       });
     }
-  }, []);
+  }, [state.chats]);
+
+  const [opMessages, setData] = React.useState([]);
 
   const start = (data) => {
+    const type = 0;
+    const date = Date.now();
+    const opMessage = { id: date, user_id, type, data };
+    setData([...opMessages, opMessage]);
+
     const body = { recvr_id: id, data };
     send("/api/chats", "UPDATE_CHATS", body);
   };
 
   const startWithImage = (formData) => {
+    const type = 0;
+    const date = Date.now();
+    const opMessage = { id: date, user_id, type, data: "Uploading..." };
+    setData([...opMessages, opMessage]);
+
     formData.append("id", chat_id);
-    formData.append("recvr_id", recvr_id);
+    formData.append("recvr_id", id);
     send("/api/chats", "UPDATE_CHATS", formData);
   };
 
@@ -145,15 +157,17 @@ function ChatsReadPage({ navigation, route }) {
         style={{ flex: 1 }}
         keyboardVerticalOffset={60}
       >
-        <MessageListComponent onSubmit={start} onImage={startWithImage} />
+        <MessageListComponent
+          onSubmit={start}
+          onImage={startWithImage}
+          data={opMessages}
+        />
         {/* <MessageFormComponent onSubmit={start} onImage={startWithImage} /> */}
       </KeyboardAvoidingView>
     );
   }
 
   const { chat_id, messages } = chat;
-
-  const user_id = state.user.id;
 
   const onSubmit = (data) => {
     if (data) {

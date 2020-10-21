@@ -5,11 +5,13 @@ import { getRequestThenDispatch } from "../../../../providers/AppProvider";
 
 function PdfgroupPage({ navigation, route }) {
   const { slug, title } = route.params;
-  navigation.setOptions({ title });
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title });
+  }, []);
+
   const { send, refreshing, state } = getRequestThenDispatch();
   const { pdfs, next_page_url } = state.pdfgroups.object[slug];
-
-  console.log(pdfs);
 
   const list = { data: pdfs };
 

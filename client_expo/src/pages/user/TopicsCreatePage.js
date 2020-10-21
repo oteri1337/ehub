@@ -127,7 +127,11 @@ function TopicsCreatePage({ navigation }) {
         </Form>
 
         {!refreshing && (
-          <Button full onPress={onPress} style={{ marginTop: 5 }}>
+          <Button
+            full
+            onPress={onPress}
+            style={{ marginTop: 5, backgroundColor: "#007aff" }}
+          >
             <Text>Post</Text>
           </Button>
         )}

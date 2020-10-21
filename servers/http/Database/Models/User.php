@@ -19,6 +19,7 @@ class User extends Model
         'password',
         'last_name',
         'first_name',
+        'nse_number',
         'department',
         'phone_number',
         'web_push_token',

@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { Button, Icon, View, Text } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,6 +8,7 @@ import ChatsListPage from "../pages/user/ChatsListPage";
 import UsersListPage from "../pages/user/UsersListPage";
 import TopicsListPage from "../pages/user/TopicsListPage";
 import EventsListPage from "../pages/user/EventsListPage";
+import PdfsHomePage from "../pages/user/pdfs/PdfsHomePage";
 import PdfgroupsPage from "../pages/user/pdfs/groups/PdfgroupsPage";
 
 function IconWithBadge({ name, badgeCount, color, size }) {
@@ -60,10 +60,10 @@ function TabNavigator({ navigation, route }) {
             <Button
               transparent
               onPress={() => {
-                navigation.navigate("PdfsListPage");
+                navigation.openDrawer();
               }}
             >
-              <Icon name="server" type="Feather" style={{ color: "black" }} />
+              <Icon name="menu" type="Feather" style={{ color: "black" }} />
             </Button>
           );
         }
@@ -93,18 +93,18 @@ function TabNavigator({ navigation, route }) {
           );
         }
 
-        if (current == "PdfgroupsPage") {
-          return (
-            <Button
-              transparent
-              onPress={() => {
-                navigation.navigate("PdfsSavedPage");
-              }}
-            >
-              <Icon name="save" type="Feather" style={{ color: "black" }} />
-            </Button>
-          );
-        }
+        // if (current == "PdfgroupsPage") {
+        //   return (
+        //     <Button
+        //       transparent
+        //       onPress={() => {
+        //         navigation.navigate("PdfsSavedPage");
+        //       }}
+        //     >
+        // <Icon name="save" type="Feather" style={{ color: "black" }} />
+        //     </Button>
+        //   );
+        // }
 
         return (
           <Button
@@ -158,38 +158,15 @@ function TabNavigator({ navigation, route }) {
 
   const initialRouteName = "EventsListPage";
 
+  // prettier-ignore
+
   return (
-    // <Navigator {...{ tabBarOptions, screenOptions, initialRouteName }}>
     <Navigator {...{ tabBarOptions, initialRouteName, screenOptions }}>
-      <Screen
-        name="UsersListPage"
-        component={UsersListPage}
-        options={{ title: "Community" }}
-      />
-
-      <Screen
-        name="EventsListPage"
-        component={EventsListPage}
-        options={{ title: "Home" }}
-      />
-
-      <Screen
-        name="TopicsListPage"
-        component={TopicsListPage}
-        options={{ title: "Forum" }}
-      />
-
-      <Screen
-        name="PdfgroupsPage"
-        component={PdfgroupsPage}
-        options={{ title: "Library" }}
-      />
-
-      <Screen
-        name="ChatsListPage"
-        component={ChatsListPage}
-        options={{ title: "Messages" }}
-      />
+      <Screen name="UsersListPage" component={UsersListPage} options={{ title: "Community" }} />
+      <Screen name="EventsListPage" component={EventsListPage} options={{ title: "Home" }} />
+      <Screen name="TopicsListPage" component={TopicsListPage} options={{ title: "Forum" }} />
+      <Screen name="PdfgroupsPage"  component={PdfgroupsPage} options={{ title: "Library" }}/>
+      <Screen name="ChatsListPage"  component={ChatsListPage} options={{ title: "Messages" }}/>
     </Navigator>
   );
 }

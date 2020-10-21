@@ -8,7 +8,7 @@ function pdfGroupsReducer(state = defaultState, action) {
       return {
         ...state,
         object: {
-          [action.data.id]: action.data,
+          [action.data.slug]: action.data,
         },
       };
     case "UPDATE_PDFGROUPS_PAGE":

@@ -39,7 +39,7 @@ function PdfsPage() {
       <li key={props.id} className="collection-item avatar">
         <img src={`/uploads/images/${props.image_name}`} className="circle" />
         <Link to={`/control/pdfs/${props.slug}`}>{props.title}</Link>
-        <p className="grey-text">{props.file_size}</p>
+        <p className="grey-text">{props.file_size_string}</p>
         <SecondaryButton
           {...{ type, url, dispatch, body, title, beforeSubmit }}
         />

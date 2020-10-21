@@ -17,6 +17,7 @@ class EventSeeder extends AbstractSeed
     {
 
         $faker = Faker\Factory::create();
+
         $data = [];
         for ($i = 1; $i < 12; $i++) {
             $data[] = [

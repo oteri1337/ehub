@@ -17,10 +17,19 @@ import AdminPasswordPage from "../pages/admin/auth/AdminPasswordPage";
 import AdminAccountPage from "../pages/admin/auth/AdminAccountPage";
 import AdminPasswordLoggedPage from "../pages/admin/auth/AdminPasswordLoggedPage";
 
+import TopicsListPage from "../pages/admin/topics/TopicsListPage";
+import TopicsReadPage from "../pages/admin/topics/TopicsReadPage";
+
 import UsersListPage from "../pages/admin/users/UsersListPage";
 import UsersReadPage from "../pages/admin/users/UsersReadPage";
 import UsersSendPushPage from "../pages/admin/users/message/SendPushPage";
 import UsersSendEmailPage from "../pages/admin/users/message/SendEmailPage";
+
+import EventsListPage from "../pages/admin/events/EventsListPage";
+import EventsReadPage from "../pages/admin/events/EventsReadPage";
+import EventsCreatePage from "../pages/admin/events/EventsCreatePage";
+import EventsUpdatePage from "../pages/admin/events/EventsUpdatePage";
+import EventsUpdateImagePage from "../pages/admin/events/EventsUpdateImagePage";
 
 import PdfsHomePage from "../pages/admin/pdfs/PdfsHomePage";
 import PdfsListPage from "../pages/admin/pdfs/PdfsListPage";
@@ -33,15 +42,11 @@ import PdfsUpdateGroupsPage from "../pages/admin/pdfs/PdfsUpdateGroupsPage";
 
 import PdfGroupsListPage from "../pages/admin/pdfs/groups/PdfGroupsListPage";
 import PdfGroupsCreatePage from "../pages/admin/pdfs/groups/PdfGroupsCreatePage";
+import PdfGroupsUpdatePage from "../pages/admin/pdfs/groups/PdfGroupsUpdatePage";
 
-import EventsListPage from "../pages/admin/events/EventsListPage";
-import EventsReadPage from "../pages/admin/events/EventsReadPage";
-import EventsCreatePage from "../pages/admin/events/EventsCreatePage";
-import EventsUpdatePage from "../pages/admin/events/EventsUpdatePage";
-import EventsUpdateImagePage from "../pages/admin/events/EventsUpdateImagePage";
-
-import TopicsListPage from "../pages/admin/topics/TopicsListPage";
-import TopicsReadPage from "../pages/admin/topics/TopicsReadPage";
+import PdfParentGroupsListPage from "../pages/admin/pdfs/pdfparentgroups/PdfparentGroupsListPage";
+import PdfParentGroupsCreatePage from "../pages/admin/pdfs/pdfparentgroups/PdfparentGroupsCreatePage";
+import PdfParentGroupsUpdatePage from "../pages/admin/pdfs/pdfparentgroups/PdfparentGroupsUpdatePage";
 
 function Routes() {
   // prettier-ignore
@@ -86,6 +91,11 @@ function Routes() {
 
         <AdminRoute exact path="/control/pdfgroups/list.html" component={PdfGroupsListPage} />
         <AdminRoute exact path="/control/pdfgroups/create.html" component={PdfGroupsCreatePage} />
+        <AdminRoute exact path="/control/pdfgroups/:slug" component={PdfGroupsUpdatePage} />
+
+        <AdminRoute exact path="/control/pdfparentgroups/list.html" component={PdfParentGroupsListPage} />
+        <AdminRoute exact path="/control/pdfparentgroups/create.html" component={PdfParentGroupsCreatePage} />
+        <AdminRoute exact path="/control/pdfparentgroups/:slug" component={PdfParentGroupsUpdatePage} />
 
         <Route component={ErrorPage} />
       </Switch>

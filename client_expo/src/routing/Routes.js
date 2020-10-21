@@ -1,10 +1,9 @@
 import React from "react";
 import { Platform } from "react-native";
 import { Store } from "../providers/AppProvider";
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { CardStyleInterpolators } from "@react-navigation/stack";
 
 import HomePage from "../pages/HomePage";
 import SignInPage from "../pages/SignInPage";
@@ -23,6 +22,7 @@ import ChangePasswordPage from "../pages/user/account/UpdatePasswordPage";
 import UpdateProfilePage from "../pages/user/account/UpdateProfilePage";
 
 import TabRoutes from "./TabRoutes";
+import DrawerContent from "./DrawerContent";
 
 import SearchPage from "../pages/user/SearchPage";
 
@@ -42,12 +42,10 @@ import TopicsCreatePage from "../pages/user/TopicsCreatePage";
 import EventsReadPage from "../pages/user/EventsReadPage";
 import CommentsReadPage from "../pages/user/CommentsReadPage";
 
-const Stack = createStackNavigator();
-const { Navigator, Screen } = Stack;
+const { Navigator, Screen } = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-function Routes() {
-  const { state } = React.useContext(Store);
-
+function MainApp() {
   let modalNav = {
     cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
   };
@@ -55,6 +53,43 @@ function Routes() {
   if (Platform.OS == "ios") {
     modalNav = {};
   }
+
+  // prettier-ignore
+  return (
+    <Navigator>
+      <Screen name="eHUB" component={TabRoutes} />
+
+      <Screen name="AccountPage" component={AccountPage} options={{ ...modalNav }} />
+      <Screen name="ChangePhotoPage" component={ChangePhotoPage} options={{ ...modalNav }}/>
+      <Screen name="ChangeEmailPage" component={ChangeEmailPage} options={{ ...modalNav }} />
+      <Screen name="ChangePasswordPage" component={ChangePasswordPage} options={{ ...modalNav }}/>
+      <Screen name="UpdateProfilePage" component={UpdateProfilePage} options={{ ...modalNav }} />
+
+      <Screen name="SearchPage" component={SearchPage} />
+
+      <Screen name="UsersReadPage" component={UsersReadPage} />
+      <Screen name="ChatsReadPage" component={ChatsReadPage} />
+
+      <Screen name="PdfsListPage" component={PdfsListPage} />
+      <Screen name="PdfsReadPage" component={PdfsReadPage} />
+      <Screen name="PdfsSavedPage" component={PdfsSavedPage} />
+      <Screen name="PdfsPreviewPage" component={PdfsPreviewPage} />
+      <Screen name="PdfsCommentPage" component={PdfsCommentPage} />
+      <Screen name="PdfGroupPage" component={PdfgroupPage} />
+
+      <Screen name="TopicsReadPage" component={TopicsReadPage} />
+      <Screen name="TopicsCreatePage" component={TopicsCreatePage} />
+
+      <Screen name="EventsReadPage" component={EventsReadPage} />
+
+      <Screen name="CommentsReadPage" component={CommentsReadPage} />
+      <Screen name="FullImagePage" component={FullImagePage} />
+    </Navigator>
+  );
+}
+
+function Routes() {
+  const { state } = React.useContext(Store);
 
   // prettier-ignore
   if (state.user ?? false) {
@@ -77,37 +112,9 @@ function Routes() {
       </Navigator>
     }
 
-
-    return <Navigator>
-        <Screen name="TabRoutes" component={TabRoutes} />
-
-        <Screen name="AccountPage" component={AccountPage} options={{...modalNav}} initialParams={{test: 1}} />
-        <Screen name="ChangeEmailPage" component={ChangeEmailPage} options={{...modalNav}} />
-        <Screen name="ChangePhotoPage" component={ChangePhotoPage} options={{...modalNav}} />
-        <Screen name="ChangePasswordPage" component={ChangePasswordPage} options={{...modalNav}} />
-        <Screen name="UpdateProfilePage" component={UpdateProfilePage} options={{...modalNav}} />
-
-        <Screen name="SearchPage" component={SearchPage}/>
-
-        <Screen name="UsersReadPage" component={UsersReadPage} />
-        <Screen name="ChatsReadPage" component={ChatsReadPage} />
-
-        <Screen name="PdfsListPage" component={PdfsListPage} />
-        <Screen name="PdfsReadPage" component={PdfsReadPage}/>
-        <Screen name="PdfsSavedPage" component={PdfsSavedPage}/>
-        <Screen name="PdfsPreviewPage" component={PdfsPreviewPage} />
-        <Screen name="PdfsCommentPage" component={PdfsCommentPage} />
-        <Screen name="PdfGroupPage" component={PdfgroupPage} />
-
-        <Screen name="TopicsReadPage" component={TopicsReadPage}  />
-        <Screen name="TopicsCreatePage" component={TopicsCreatePage} />
-
-        <Screen name="EventsReadPage" component={EventsReadPage} />
-
-        <Screen name="CommentsReadPage" component={CommentsReadPage} />
-        <Screen name="FullImagePage" component={FullImagePage} />
-
-    </Navigator>
+    return <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+      <Drawer.Screen name="Library" component={MainApp}/>
+    </Drawer.Navigator>
   }
 
   return (

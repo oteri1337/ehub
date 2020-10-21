@@ -33,9 +33,7 @@ class EventsController extends NewApiController
     public function beforeCreate($body)
     {
 
-        $body["slug"] = $this->slugify($body["title"]);
-
-        return $this->filter($body, ['title', 'data', 'slug', 'user_id', 'type', 'date']);
+        return $this->filter($body, ['title', 'data', 'user_id', 'type', 'date']);
     }
 
     public function lazyLoadRelationships($row)

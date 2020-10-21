@@ -1,44 +1,20 @@
 # Todos
 
-## done similar
+# done similar
 
-refresh profile users read page
-
-new screenshots - singup, password and chats read page
-
-department dropdown select
-
-display nse number
-
-test pagination chats
-
-notification takes you to page in app for forum and events
+sub categories pdfs
 
 improve login page on small devices
 
-start chat optimistic
+# other phone
+
+notification takes you to page in app for forum and events
 
 unread messages forum
 
 group notifications on android
 
 clear notifications after view
-
-major - schedule notification for event
-
-# web work
-
-improve ux pdf upload - percentage, view image
-
-rename and rearrange pdf groups
-
-## fresh
-
-sub categories pdfs
-
-more control of the forum
-
-Google Play Registration
 
 # Image Caching
 
@@ -50,19 +26,17 @@ refactor cached image and cached thumbnail
 
 # Future
 
+improve ux pdf upload - percentage, view image
+
+Google Play Registration
+
 zoomable fullscreen images
 
 Dark Mode
 
-profile image animations
-
-message animations chat
-
-image animations chat
-
-failed request reconcilation
-
 integrate hermes - ehub lite
+
+more control of the forum
 
 # Push Notifications Tool
 

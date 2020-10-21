@@ -3,21 +3,8 @@ import Logo from "../../assets/icon.png";
 import Text from "./components/TextComponent";
 import { sendRequestThenDispatch } from "../providers/AppProvider";
 import { Keyboard, Image, TouchableWithoutFeedback } from "react-native";
-import {
-  View,
-  Header,
-  Form,
-  Item,
-  Input,
-  Icon,
-  Button,
-  Left,
-  Body,
-  Right,
-  Content,
-  Container,
-  Spinner,
-} from "native-base";
+import { View, Form, Item, Input, Icon, Button, Body } from "native-base";
+import { Container, Content, Header, Left, Spinner, Right } from "native-base";
 
 function SignUpPage({ navigation }) {
   const { send, refreshing } = sendRequestThenDispatch();

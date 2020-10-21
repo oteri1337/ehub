@@ -45,20 +45,20 @@ function ScreenshotsPage() {
                 <img src={s5} style={{ maxHeight: "80vh" }} />
               </div>
               <div className="col l3 s12 app-my-3">
-                <img src={s16} style={{ maxHeight: "80vh" }} />
-              </div>
-              <div className="col l3 s12 app-my-3">
-                <img src={s8} style={{ maxHeight: "80vh" }} />
-              </div>
-              <div className="col l3 s12 app-my-3">
-                <img src={s9} style={{ maxHeight: "80vh" }} />
-              </div>
-
-              <div className="col l3 s12 app-my-3">
                 <img src={s6} style={{ maxHeight: "80vh" }} />
               </div>
               <div className="col l3 s12 app-my-3">
                 <img src={s7} style={{ maxHeight: "80vh" }} />
+              </div>
+              <div className="col l3 s12 app-my-3">
+                <img src={s8} style={{ maxHeight: "80vh" }} />
+              </div>
+
+              <div className="col l3 s12 app-my-3">
+                <img src={s9} style={{ maxHeight: "80vh" }} />
+              </div>
+              <div className="col l3 s12 app-my-3">
+                <img src={s10} style={{ maxHeight: "80vh" }} />
               </div>
               <div className="col l3 s12 app-my-3">
                 <img src={s11} style={{ maxHeight: "80vh" }} />
@@ -77,7 +77,7 @@ function ScreenshotsPage() {
                 <img src={s15} style={{ maxHeight: "80vh" }} />
               </div>
               <div className="col l3 s12 app-my-3">
-                <img src={s10} style={{ maxHeight: "80vh" }} />
+                <img src={s16} style={{ maxHeight: "80vh" }} />
               </div>
             </div>
           </center>

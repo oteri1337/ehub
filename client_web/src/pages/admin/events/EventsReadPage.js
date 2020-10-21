@@ -58,7 +58,8 @@ function TopicsReadPage({ match }) {
                 className="responsive-img"
               />
 
-              <div></div>
+              <p>{data.date}</p>
+              <pre> {data.data}</pre>
             </center>
           </div>
           <div className="col l7 s12">
@@ -72,14 +73,11 @@ function TopicsReadPage({ match }) {
             >
               Update Image
             </Link>
-            <br />
-            <br />
             <Link to={`/control/events/${data.id}/update`} className="btn">
               Update Data
             </Link>
             <br />
             <br />
-            <pre> {data.data}</pre>
             <table className="striped">
               <tbody>{renderRow}</tbody>
             </table>

@@ -29,6 +29,16 @@ function PDfsPage() {
             <b>Pdf Groups</b>
           </Link>
         </li>
+
+        <li className="collection-item">
+          <Link
+            to="/control/pdfparentgroups/list.html"
+            className="app-list-link"
+          >
+            <span className="material-icons notranslate">archive</span>
+            <b>Pdf Parent Groups</b>
+          </Link>
+        </li>
       </ul>
     </AdminContainerComponent>
   );
