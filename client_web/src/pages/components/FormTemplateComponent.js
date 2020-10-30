@@ -60,7 +60,14 @@ function FormTemplateComponent(props) {
           <div className="file-field input-field">
             <div className="btn btn-secondary">
               <span>{f.label || `select ${f.id}`}</span>
-              <input type="file" ref={f.ref} id={f.id} name={f.id} required />
+              <input
+                type="file"
+                accept={f.accept || ".jpg,.png,.jpeg"}
+                ref={f.ref}
+                id={f.id}
+                name={f.id}
+                required
+              />
             </div>
             <div className="file-path-wrapper">
               <input className="file-path validate" type="text" />

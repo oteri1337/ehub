@@ -13,6 +13,8 @@ class CreatePdfparentgroupsTable extends ParentMigration
 
             $table->string('title');
 
+            $table->string('icon')->nullable();
+
             $table->string('slug')->unique();
 
             $table->timestamps();

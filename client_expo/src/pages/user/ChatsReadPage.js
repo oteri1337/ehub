@@ -3,10 +3,14 @@ import { Notifications } from "expo";
 import { Button, Icon } from "native-base";
 import { KeyboardAvoidingView, Platform, Alert } from "react-native";
 import MessageListComponent from "../components/MessageListComponent";
-import { sendRequestThenDispatch } from "../../providers/AppProvider";
+import {
+  sendRequestThenDispatch,
+  getRequestThenDispatch,
+} from "../../providers/AppProvider";
 
 function ChatsReadPage({ navigation, route }) {
   let id = route.params.recvr_id;
+  const get = getRequestThenDispatch();
   const { state, callReducer, send } = sendRequestThenDispatch();
   const user_id = state.user.id;
 
@@ -40,6 +44,7 @@ function ChatsReadPage({ navigation, route }) {
         <Button
           transparent
           onPress={() => {
+            get.send("/api/chats", "UPDATE_CHATS");
             navigation.pop();
           }}
         >

@@ -8,7 +8,7 @@ function UncontrolledFormComponent(props) {
   let formObjects = props.formObjects || [];
   let initialState = props.initialState || {};
 
-  formObjects.forEach(formObject => {
+  formObjects.forEach((formObject) => {
     if (formObject.type == "select") {
       formObject.value = formObject.options[0].value;
     }
@@ -17,7 +17,7 @@ function UncontrolledFormComponent(props) {
 
   return (
     <form
-      onSubmit={event =>
+      onSubmit={(event) =>
         getFormData(event, formObjects, props.callback, initialState)
       }
       encType="multipart/form-data"
@@ -27,6 +27,7 @@ function UncontrolledFormComponent(props) {
         text={props.text || "Submit"}
         fetching={props.fetching || false}
         className={props.className}
+        progress={props.progress}
       />
       <MessageComponent
         errors={props.errors || []}

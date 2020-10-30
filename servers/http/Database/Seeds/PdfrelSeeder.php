@@ -9,7 +9,7 @@ class PdfrelSeeder extends AbstractSeed
     {
         $data = [];
 
-        for ($j = 1; $j <= 5; $j++) {
+        for ($j = 1; $j <= 25; $j++) {
             for ($i = 1; $i <= 18; $i++) {
                 $data[] =
                     [

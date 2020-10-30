@@ -64,38 +64,49 @@ function AppProvider({ children, initialState }) {
 
 export function sendFormRequestThenDispatch() {
   const { state, callReducer } = React.useContext(Store);
-  const [request, setRequest] = React.useState({
-    fetching: false,
-    errors: [],
-    message: "",
-  });
+  const [fetching, setFetching] = React.useState(false);
+  const [progress, setProgress] = React.useState("0%");
+  const [response, setResponse] = React.useState({ errors: [], message: "" });
 
-  const callBack = async (url, dispatch, body, onSuccess, type = "POST") => {
+  const callBack = async (url, dispatch, body, onSuccess) => {
     onSuccess = onSuccess || function () {};
-    setRequest({
-      fetching: true,
-      errors: [],
-      message: "",
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open("POST", url);
+
+    xhr.withCredentials = true;
+
+    setFetching(true);
+
+    xhr.upload.addEventListener("progress", (e) => {
+      if (e.lengthComputable) {
+        let pro = ((e.loaded / e.total) * 100).toFixed(2) + "%";
+
+        setProgress(pro);
+      }
     });
-    const { errors, data, message, jsError } = await sendFormRequest(
-      url,
-      body,
-      type
-    );
-    setRequest({
-      fetching: false,
-      errors,
-      message,
+
+    xhr.addEventListener("readystatechange", ({ target }) => {
+      if (target.response && target.readyState == 4) {
+        const data = JSON.parse(target.response);
+        setResponse(data);
+        setFetching(false);
+        if (data.errors.length === 0) {
+          callReducer({ dispatch, data });
+          onSuccess(data);
+        }
+      }
     });
-    if (errors.length === 0) {
-      callReducer({ dispatch, data });
-      onSuccess(data);
-    }
+
+    xhr.send(body);
   };
 
   return {
     state,
-    request,
+    progress,
+    response,
+    fetching,
     callBack,
   };
 }

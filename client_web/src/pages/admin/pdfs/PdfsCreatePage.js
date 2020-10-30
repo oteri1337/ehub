@@ -1,10 +1,16 @@
 import React from "react";
+import Form from "components/UncontrolledFormComponent";
 import { sendFormRequestThenDispatch } from "providers/AppProvider";
-import UncontrolledFormComponent from "components/UncontrolledFormComponent";
 import AdminContainerComponent from "components/container/AdminContainerComponent";
 
 function PdfsCreatePage(props) {
-  const { request, callBack } = sendFormRequestThenDispatch();
+  const {
+    response,
+    callBack,
+    fetching,
+    progress,
+  } = sendFormRequestThenDispatch();
+  const { errors, message } = response;
 
   const nav = [
     {
@@ -24,10 +30,11 @@ function PdfsCreatePage(props) {
     },
   ];
 
-  const formArray = [
+  const formObjects = [
     {
       id: "image",
       type: "file",
+      accept: ".jpg,.png,.jpg",
     },
     {
       id: "title",
@@ -39,6 +46,7 @@ function PdfsCreatePage(props) {
     {
       id: "file",
       type: "file",
+      accept: ".pdf",
     },
   ];
 
@@ -46,25 +54,27 @@ function PdfsCreatePage(props) {
     props.history.push("/control/pdfs/list.html");
   };
 
-  const onSubmit = async (body) => {
+  const callback = async (body) => {
     callBack("/api/pdfs", "UPDATE_SONG", body, onSuccess);
   };
+
+  const text = "Upload";
 
   return (
     <AdminContainerComponent bread={nav}>
       <div className="card-panel">
-        <div className="row">
-          <div className="col l8 s12">
-            <UncontrolledFormComponent
-              formObjects={formArray}
-              callback={onSubmit}
-              fetching={request.fetching}
-              errors={request.errors}
-              message={request.message}
-              text="Upload"
-            />
-          </div>
-          {/* <div className="col l4 s12">Image Preview Goes Here</div> */}
+        <div className="container">
+          <Form
+            {...{
+              formObjects,
+              callback,
+              fetching,
+              text,
+              errors,
+              message,
+              progress,
+            }}
+          />
         </div>
       </div>
     </AdminContainerComponent>

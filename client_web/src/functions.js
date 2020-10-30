@@ -1,10 +1,3 @@
-export const format = (currency, amount) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency || "USD"
-  }).format(amount);
-};
-
 function urlBase64ToUint8Array(base64String) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding)
@@ -20,7 +13,7 @@ function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
-export const registerWorker = async function() {
+export const registerWorker = async function () {
   if (location.protocol == "http:") {
     console.log("cannot register service worker on onsecure protocol");
     return;
@@ -49,7 +42,7 @@ export const registerWorker = async function() {
   }
 };
 
-export const getPushSubscription = async function() {
+export const getPushSubscription = async function () {
   if (location.protocol == "http:") {
     console.log("cannot register push on onsecure protocol");
     return;
@@ -73,7 +66,7 @@ export const getPushSubscription = async function() {
       try {
         subscription = await reg.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(VAPID_KEY)
+          applicationServerKey: urlBase64ToUint8Array(VAPID_KEY),
         });
       } catch (errors) {
         console.log("failed to subscribe for push notifications", errors);
@@ -87,45 +80,9 @@ export const getPushSubscription = async function() {
   return subscription;
 };
 
-export const showAddToHomeScreenIos = async () => {
-  const installed = localStorage.getItem("installed");
-  const standalone = window.matchMedia("(display-mode: standalone)").matches;
-  const { userAgent } = navigator;
-
-  if (!standalone && !installed) {
-    if (userAgent.includes("iPhone") && userAgent.includes("Safari")) {
-      if (!navigator?.serviceWorker?.controller) {
-        console.log("no service worker");
-        return;
-      }
-      const showToast = () => {
-        M.toast({
-          html: `To install this app click the share icon <span class="icon-share-01"></span>`,
-          displayLength: 10000
-        });
-        M.toast({
-          html: `scroll down then click <b>ADD TO HOMESCREEN</b>`,
-          displayLength: 10000
-        });
-      };
-      if (userAgent.includes("iPad") && userAgent.includes("Safari")) {
-        M.toast({
-          html: `to install this app click the share icon <span class="icon-share-01"></span> then click on Add To Home Screen`,
-          displayLength: 10000
-        });
-      }
-      setTimeout(showToast, 10000);
-    }
-  }
-
-  if (standalone) {
-    localStorage.setItem("installed", "true");
-  }
-};
-
 export const ERROR_OBJECT = {
   errors: ["server error"],
-  data: {}
+  data: {},
 };
 
 export async function getRequest(url) {
@@ -150,8 +107,8 @@ export async function sendRequest(url, body, type = "POST") {
       body: JSON.stringify(body),
       credentials: "include",
       headers: {
-        "content-type": "application/json"
-      }
+        "content-type": "application/json",
+      },
     });
     response = await response.json();
   } catch (e) {
@@ -161,35 +118,40 @@ export async function sendRequest(url, body, type = "POST") {
   return response;
 }
 
-export async function sendFormRequest(url, body, type = "POST") {
+export async function sendFormRequest(url, body) {
+  // const xhr = new XMLHttpRequest();
+  // xhr.open("POST", url);
+  // xhr.addEventListener("progress", (e) => {
+  //   console.log("progress", e);
+  // });
+  // xhr.setRequestHeader("Content-Type", "multipart/form-data");
+  // xhr.send(url);
   let response;
-
   try {
     response = await fetch(url, {
       method: type,
       body: body,
-      credentials: "include"
+      credentials: "include",
     });
     response = await response.json();
   } catch (e) {
     response = { ...ERROR_OBJECT, jsError: e };
   }
-
   return response;
 }
 
-export const requestUpload = async function(endpoint, formData) {
+export const requestUpload = async function (endpoint, formData) {
   try {
     let response = await fetch(endpoint, {
       method: "POST",
       body: formData,
-      credentials: "include"
+      credentials: "include",
     });
     return (response = await response.json());
   } catch (error) {
     let data = {
       errors: ["Server Error"],
-      data: {}
+      data: {},
     };
     return data;
   }
@@ -210,7 +172,7 @@ export const getFormData = (event, formObjects = [], callback, is = []) => {
 
   const formdata = new FormData();
 
-  formObjects.forEach(formObject => {
+  formObjects.forEach((formObject) => {
     if (formObject.type == "file") {
       formdata.append(formObject.id, formObject.ref.current.files[0]);
     } else if (formObject.type == "select") {
@@ -221,41 +183,12 @@ export const getFormData = (event, formObjects = [], callback, is = []) => {
   });
 
   if (is.length) {
-    is.forEach(i => {
+    is.forEach((i) => {
       formdata.append(i.key, i.value);
     });
   }
 
-  const callBack = callback || function() {};
+  const callBack = callback || function () {};
 
   callBack(formdata);
-};
-
-export const changeLanguage = language => {
-  document.cookie = `googtrans=/en/${language}; path=/; domain=.${location.hostname};`;
-  document.cookie = `googtrans=/en/${language}; path=/;`;
-  location.reload();
-};
-
-export const detectLanguage = () => {
-  const cookiesString = document.cookie;
-  const cookiesArray = cookiesString.split(";");
-  const translateCookie = cookiesArray.find(i => i.startsWith(" googtrans="));
-
-  switch (translateCookie) {
-    case " googtrans=/en/es":
-      return "ES";
-    case " googtrans=/en/fr":
-      return "FR";
-    case " googtrans=/en/pt":
-      return "PT";
-    case " googtrans=/en/ru":
-      return "RU";
-    case " googtrans=/en/tr":
-      return "TR";
-    case " googtrans=/en/zh-CN":
-      return "ZH";
-    default:
-      return "EN";
-  }
 };

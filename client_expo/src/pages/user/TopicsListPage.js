@@ -13,19 +13,19 @@ function TopicsListPage() {
     send(url, dispatch);
   };
 
-  React.useEffect(() => {
-    let debounceTime = setTimeout(() => {
-      if (!refreshing) {
-        if (list.data.length <= 12) {
-          console.log("refresh topics");
-          send(url, dispatch);
-        }
-      }
-    }, 4000);
-    return () => {
-      clearTimeout(debounceTime);
-    };
-  }, [list]);
+  // React.useEffect(() => {
+  //   let debounceTime = setTimeout(() => {
+  //     if (!refreshing) {
+  //       if (list.data.length <= 12) {
+  //         console.log("refresh topics");
+  //         send(url, dispatch);
+  //       }
+  //     }
+  //   }, 4000);
+  //   return () => {
+  //     clearTimeout(debounceTime);
+  //   };
+  // }, [list]);
 
   const onEndReached = () => {
     if (!refreshing) {

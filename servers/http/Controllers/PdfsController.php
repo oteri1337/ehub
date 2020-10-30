@@ -66,7 +66,7 @@ class PdfsController extends NewApiController
 
         $body['description'] = nl2br($body['description']);
 
-        return $this->filter($body, ['by', 'stars', 'title', 'description']);
+        return $this->filter($body, ['title', 'description']);
     }
 
 

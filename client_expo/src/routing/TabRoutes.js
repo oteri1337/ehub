@@ -9,6 +9,7 @@ import UsersListPage from "../pages/user/UsersListPage";
 import TopicsListPage from "../pages/user/TopicsListPage";
 import EventsListPage from "../pages/user/EventsListPage";
 import PdfsHomePage from "../pages/user/pdfs/PdfsHomePage";
+import PdfsParentPage from "../pages/user/pdfs/PdfsParentPage";
 import PdfgroupsPage from "../pages/user/pdfs/groups/PdfgroupsPage";
 
 function IconWithBadge({ name, badgeCount, color, size }) {
@@ -165,7 +166,7 @@ function TabNavigator({ navigation, route }) {
       <Screen name="UsersListPage" component={UsersListPage} options={{ title: "Community" }} />
       <Screen name="EventsListPage" component={EventsListPage} options={{ title: "Home" }} />
       <Screen name="TopicsListPage" component={TopicsListPage} options={{ title: "Forum" }} />
-      <Screen name="PdfgroupsPage"  component={PdfgroupsPage} options={{ title: "Library" }}/>
+      <Screen name="PdfgroupsPage"  component={PdfsParentPage} options={{ title: "Library" }}/>
       <Screen name="ChatsListPage"  component={ChatsListPage} options={{ title: "Messages" }}/>
     </Navigator>
   );

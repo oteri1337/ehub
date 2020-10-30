@@ -18,35 +18,40 @@ class PdfparentgroupsSeeder extends AbstractSeed
 
         $data = [
             [
-                'title'         => "Petroleum Engineering",
-                'slug'      => "pet",
+                'title'         => "Marine Engineering",
+                'slug'      => "mar",
+                'icon' => 'anchor',
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
                 'title'         => "Chemical Engineering",
                 'slug'      => "chem",
+                'icon' => "droplet",
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
-                'title'         => "Marine Engineering",
-                'slug'      => "mar",
+                'title'         => "Electrical Engineering",
+                'icon' => 'cpu',
+                'slug'      => "elect",
+                'created_at'    => date('Y-m-d H:i:s'),
+                'updated_at'    => date('Y-m-d H:i:s'),
+            ],
+            [
+                'title'         => "Petroleum Engineering",
+                'slug'      => "pet",
+                'icon' => 'thermometer',
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
                 'title'         => "Mechanical Engineering",
                 'slug'      => "mech",
+                'icon'  => 'settings',
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
-            ],
-            [
-                'title'         => "Electrical Engineering",
-                'slug'      => "elect",
-                'created_at'    => date('Y-m-d H:i:s'),
-                'updated_at'    => date('Y-m-d H:i:s'),
-            ],
+            ]
         ];
 
         $this->table('pdfparentgroups')->insert($data)->save();

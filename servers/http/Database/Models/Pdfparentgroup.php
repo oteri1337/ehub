@@ -19,7 +19,7 @@ class Pdfparentgroup extends Model
 
     public function groups()
     {
-        return $this->belongsToMany(PdfgroupLight::class, "pdfgroup_pdfparentgroup", null, "pdfgroup_id");
+        return $this->belongsToMany(Pdfgroup::class, "pdfgroup_pdfparentgroup", null, "pdfgroup_id");
     }
 
     // public function data()

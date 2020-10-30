@@ -1,11 +1,23 @@
 import React from "react";
-import { Container, Text } from "native-base";
+import { Container, Text, Button, Icon } from "native-base";
 import PdfsList from "../../components/PdfsListComponent";
 import { Store } from "../../../providers/AppProvider";
 
 function PdfsSavedPage({ navigation }) {
   React.useLayoutEffect(() => {
-    navigation.setOptions({ title: "Saved Books" });
+    navigation.setOptions({
+      title: "Saved Books",
+      headerLeft: () => (
+        <Button
+          transparent
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        >
+          <Icon name="menu" type="Feather" style={{ color: "black" }} />
+        </Button>
+      ),
+    });
   }, []);
 
   const { state } = React.useContext(Store);

@@ -2,13 +2,13 @@
 
 # done similar
 
-sub categories pdfs
+complete sub categories pdfs
+
+notification takes you to page in app for forum and events
 
 improve login page on small devices
 
 # other phone
-
-notification takes you to page in app for forum and events
 
 unread messages forum
 
@@ -26,11 +26,7 @@ refactor cached image and cached thumbnail
 
 # Future
 
-improve ux pdf upload - percentage, view image
-
 Google Play Registration
-
-zoomable fullscreen images
 
 Dark Mode
 

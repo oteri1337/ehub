@@ -7,6 +7,16 @@ function PdfsListPage({ navigation }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       title: "All Books",
+      headerLeft: () => (
+        <Button
+          transparent
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        >
+          <Icon name="menu" type="Feather" style={{ color: "black" }} />
+        </Button>
+      ),
       headerRight: () => (
         <Button
           transparent

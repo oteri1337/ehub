@@ -1,11 +1,15 @@
 import React from "react";
-import { Button, Icon, Container, Spinner, Text } from "native-base";
+import { Button, Icon, Container, Text } from "native-base";
 import { KeyboardAvoidingView, Platform, Alert } from "react-native";
-import { sendRequestThenDispatch } from "../../providers/AppProvider";
+import {
+  sendRequestThenDispatch,
+  getRequestThenDispatch,
+} from "../../providers/AppProvider";
 import MessageListComponent from "../components/MessageListComponent";
 
 function TopicsReadPage({ navigation, route }) {
   const { id } = route.params;
+  const get = getRequestThenDispatch();
   const { state, send, callReducer } = sendRequestThenDispatch();
 
   React.useLayoutEffect(() => {
@@ -60,6 +64,7 @@ function TopicsReadPage({ navigation, route }) {
             <Button
               transparent
               onPress={() => {
+                get.send("/api/topics", "UPDATE_TOPICS");
                 navigation.navigate("TopicsListPage");
               }}
             >

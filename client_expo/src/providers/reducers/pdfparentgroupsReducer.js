@@ -1,8 +1,8 @@
 const defaultState = { data: [], object: {}, search_keys: {} };
 
-function pdfGroupsReducer(state = defaultState, action) {
+function pdfParentGroupsReducer(state = defaultState, action) {
   switch (action.dispatch) {
-    case "UPDATE_PDFGROUPS":
+    case "UPDATE_PDFPARENTGROUPS":
       if (JSON.stringify(state) === JSON.stringify(action.data)) {
         return state;
       } else {
@@ -13,4 +13,4 @@ function pdfGroupsReducer(state = defaultState, action) {
   }
 }
 
-export default pdfGroupsReducer;
+export default pdfParentGroupsReducer;

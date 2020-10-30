@@ -7,6 +7,9 @@ function SubmitComponent(props) {
     return (
       <center>
         <br />
+        {props.progress}
+        <br />
+        <br />
         <div id="fetching" className="preloader-wrapper active">
           <div className="spinner-layer spinner-blue-only">
             <div className="circle-clipper left">

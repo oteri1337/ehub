@@ -4,6 +4,7 @@ import Text from "../components/TextComponent";
 import { FlatList, Platform } from "react-native";
 import CachedThumbnail from "../components/CachedThumbnail";
 import { getRequestThenDispatch } from "../../providers/AppProvider";
+
 import {
   List,
   View,
@@ -14,6 +15,7 @@ import {
   ListItem,
   Container,
 } from "native-base";
+import { useFocusEffect } from "@react-navigation/native";
 
 class ItemPureComponent extends React.PureComponent {
   render() {
@@ -90,19 +92,20 @@ function ChatsListPage({ navigation }) {
     send("/api/chats", dispatch);
   };
 
-  React.useEffect(() => {
-    let debounceTime = setTimeout(() => {
-      if (!refreshing) {
-        if (list.data.length <= 12) {
-          console.log("refresh chats");
-          send("/api/chats", dispatch);
-        }
-      }
-    }, 2000);
-    return () => {
-      clearTimeout(debounceTime);
-    };
-  }, [state.chats]);
+  // useFocusEffect(() => {
+  //   let debounceTime = setTimeout(() => {
+  //     if (!refreshing) {
+  //       if (list.data.length <= 12) {
+  //         console.log("focused");
+  //         console.log("refresh chats");
+  //         send("/api/chats", dispatch);
+  //       }
+  //     }
+  //   }, 2000);
+  //   return () => {
+  //     clearTimeout(debounceTime);
+  //   };
+  // }, []);
 
   let { data } = list;
 

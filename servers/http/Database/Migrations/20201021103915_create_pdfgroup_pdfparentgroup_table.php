@@ -11,9 +11,9 @@ class CreatePdfgroupPdfparentgroupTable extends ParentMigration
         $this->schema->create('pdfgroup_pdfparentgroup', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('pdfgroup_id');
-
             $table->integer('pdfparentgroup_id');
+
+            $table->integer('pdfgroup_id');
 
             $table->timestamps();
         });
