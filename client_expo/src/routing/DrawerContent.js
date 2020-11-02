@@ -85,6 +85,14 @@ function DrawerContent(props) {
             <Icon name="folder-plus" style={{ fontSize: 20 }} type="Feather" />
           )}
         />
+        <DrawerItem
+          labelStyle={{ fontSize: 13, color: "black", marginLeft: -10 }}
+          label="Search Books"
+          onPress={() => props.navigation.navigate("SearchPage")}
+          icon={() => (
+            <Icon name="search" style={{ fontSize: 20 }} type="Feather" />
+          )}
+        />
         {renderParentGroups()}
       </DrawerContentScrollView>
     </Container>

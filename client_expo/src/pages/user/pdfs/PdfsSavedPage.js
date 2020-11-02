@@ -17,6 +17,16 @@ function PdfsSavedPage({ navigation }) {
           <Icon name="menu" type="Feather" style={{ color: "black" }} />
         </Button>
       ),
+      headerRight: () => (
+        <Button
+          transparent
+          onPress={() => {
+            navigation.navigate("AccountPage");
+          }}
+        >
+          <Icon name="user" type="Feather" style={{ color: "black" }} />
+        </Button>
+      ),
     });
   }, []);
 

@@ -21,10 +21,10 @@ function PdfsListPage({ navigation }) {
         <Button
           transparent
           onPress={() => {
-            navigation.navigate("SearchPage");
+            navigation.navigate("AccountPage");
           }}
         >
-          <Icon name="search" type="Feather" style={{ color: "black" }} />
+          <Icon name="user" type="Feather" style={{ color: "black" }} />
         </Button>
       ),
     });

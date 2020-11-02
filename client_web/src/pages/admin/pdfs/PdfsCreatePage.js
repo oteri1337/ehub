@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "components/UncontrolledFormComponent";
-import { sendFormRequestThenDispatch } from "providers/AppProvider";
+import { sendUploadRequestThenDispatch } from "providers/AppProvider";
 import AdminContainerComponent from "components/container/AdminContainerComponent";
 
 function PdfsCreatePage(props) {
@@ -9,7 +9,7 @@ function PdfsCreatePage(props) {
     callBack,
     fetching,
     progress,
-  } = sendFormRequestThenDispatch();
+  } = sendUploadRequestThenDispatch();
   const { errors, message } = response;
 
   const nav = [

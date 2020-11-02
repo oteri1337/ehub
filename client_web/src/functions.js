@@ -129,12 +129,13 @@ export async function sendFormRequest(url, body) {
   let response;
   try {
     response = await fetch(url, {
-      method: type,
+      method: "POST",
       body: body,
       credentials: "include",
     });
     response = await response.json();
   } catch (e) {
+    console.log("fetch error");
     response = { ...ERROR_OBJECT, jsError: e };
   }
   return response;

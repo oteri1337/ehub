@@ -2,6 +2,8 @@
 
 # done similar
 
+image caching chat
+
 complete sub categories pdfs
 
 notification takes you to page in app for forum and events

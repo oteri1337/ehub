@@ -15,7 +15,7 @@ import s11 from "../../assets/images/s11.jpeg";
 import s12 from "../../assets/images/s12.jpeg";
 
 import s13 from "../../assets/images/s13.jpeg";
-import s14 from "../../assets/images/s14.jpeg";
+import s14 from "../../assets/images/s14n.jpeg";
 import s15 from "../../assets/images/s15.jpeg";
 import s16 from "../../assets/images/s16.jpeg";
 

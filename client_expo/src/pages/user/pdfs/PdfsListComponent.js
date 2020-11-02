@@ -1,6 +1,7 @@
 import React from "react";
+import { View } from "native-base";
 import { BACKEND_URL } from "../../../../env";
-import { View, Thumbnail } from "native-base";
+import Thumbnail from "../../components/CachedThumbnail";
 import { FlatList, TouchableHighlight } from "react-native";
 
 function PdfsListComponent({ data }) {

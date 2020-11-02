@@ -62,7 +62,7 @@ function AppProvider({ children, initialState }) {
   return <Store.Provider value={value}>{children}</Store.Provider>;
 }
 
-export function sendFormRequestThenDispatch() {
+export function sendUploadRequestThenDispatch() {
   const { state, callReducer } = React.useContext(Store);
   const [fetching, setFetching] = React.useState(false);
   const [progress, setProgress] = React.useState("0%");
@@ -107,6 +107,39 @@ export function sendFormRequestThenDispatch() {
     progress,
     response,
     fetching,
+    callBack,
+  };
+}
+
+export function sendFormRequestThenDispatch() {
+  const { state, callReducer } = React.useContext(Store);
+  const [request, setRequest] = React.useState({
+    fetching: false,
+    errors: [],
+    message: "",
+  });
+
+  const callBack = async (url, dispatch, body, onSuccess, type = "POST") => {
+    onSuccess = onSuccess || function () {};
+    setRequest({
+      fetching: true,
+      errors: [],
+      message: "",
+    });
+    const { errors, data, message, jsError } = await sendFormRequest(url, body);
+    setRequest({
+      fetching: false,
+      errors,
+      message,
+    });
+    if (errors.length === 0) {
+      callReducer({ dispatch, data });
+      onSuccess(data);
+    }
+  };
+  return {
+    state,
+    request,
     callBack,
   };
 }

@@ -10,6 +10,7 @@ import TopicsListPage from "../pages/user/TopicsListPage";
 import EventsListPage from "../pages/user/EventsListPage";
 import PdfsHomePage from "../pages/user/pdfs/PdfsHomePage";
 import PdfsParentPage from "../pages/user/pdfs/PdfsParentPage";
+import PdfsListPage from "../pages//user/pdfs/PdfsListComponent";
 import PdfgroupsPage from "../pages/user/pdfs/groups/PdfgroupsPage";
 
 function IconWithBadge({ name, badgeCount, color, size }) {

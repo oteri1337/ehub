@@ -20,6 +20,7 @@ import { Ionicons, Feather, AntDesign } from "@expo/vector-icons";
 
 function App() {
   const [state, setState] = React.useState({});
+  const [done, setDone] = React.useState(false);
   const [loaded] = Font.useFonts({
     Roboto: require("native-base/Fonts/Roboto.ttf"),
     Concert: require("./assets/Concert/ConcertOne-Regular.ttf"),
@@ -40,6 +41,12 @@ function App() {
 
       if (persisted) {
         persisted = JSON.parse(persisted);
+        console.log("network", network.isConnected);
+        console.log("persisted", persisted);
+
+        if (Object.keys(persisted).length) {
+          setState(persisted);
+        }
       } else {
         persisted = {};
       }
@@ -53,9 +60,9 @@ function App() {
             setState(data);
           }
         }
-      } else {
-        setState(persisted);
       }
+
+      setDone(true);
     };
 
     asyncOperation();
@@ -76,7 +83,7 @@ function App() {
     return <AppLoading />;
   }
 
-  if (Object.keys(state).length === 0) {
+  if (Object.keys(state).length === 0 || !done) {
     return <AppLoading />;
   }
 
