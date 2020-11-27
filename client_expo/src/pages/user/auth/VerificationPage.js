@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "../../../../assets/icon.png";
-import { TouchableWithoutFeedback, Keyboard, Image } from "react-native";
+import { Image, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { sendRequestThenDispatch, Store } from "../../../providers/AppProvider";
 import {
   View,
@@ -22,6 +22,26 @@ function VerificationPage({ navigation }) {
   const [token, settoken] = React.useState("");
   const { state, refreshing, send } = sendRequestThenDispatch();
   const { email, verified } = state.user;
+
+  const [kshown, setKshown] = React.useState(false);
+
+  const shownListener = () => {
+    setKshown(true);
+  };
+
+  const hiddenListenr = () => {
+    setKshown(false);
+  };
+
+  React.useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", shownListener);
+    Keyboard.addListener("keyboardDidHide", hiddenListenr);
+
+    return () => {
+      Keyboard.removeListener("keyboardDidShow", shownListener);
+      Keyboard.removeListener("keyboardDidHide", hiddenListenr);
+    };
+  }, []);
 
   return (
     <Container>
@@ -49,7 +69,7 @@ function VerificationPage({ navigation }) {
             {!refreshing && (
               <Button
                 full
-                style={{ marginTop: 15 }}
+                style={{ marginTop: 15, backgroundColor: "#0984e3" }}
                 onPress={() => {
                   send("/api/users/auth/verify", "UPDATE_USER", { token });
                 }}
@@ -62,7 +82,11 @@ function VerificationPage({ navigation }) {
               <Button
                 full
                 bordered
-                style={{ marginTop: 10 }}
+                style={{
+                  marginTop: 10,
+                  color: "#0984e3",
+                  borderColor: "#0984e3",
+                }}
                 onPress={() => {
                   send("/api/users/auth/token", "", { email });
                 }}
@@ -74,11 +98,13 @@ function VerificationPage({ navigation }) {
             {refreshing && <Spinner />}
           </View>
 
-          <View style={{ flex: 1 }}>
-            <Button danger bordered onPress={signOut}>
-              <Text>Sign Out</Text>
-            </Button>
-          </View>
+          {!kshown && (
+            <View style={{ flex: 1 }}>
+              <Button danger bordered onPress={signOut}>
+                <Text>Sign Out</Text>
+              </Button>
+            </View>
+          )}
         </View>
       </TouchableWithoutFeedback>
     </Container>

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import ErrorPage from "../../tour/ErrorPage";
 import { getRequestThenDispatch } from "providers/AppProvider";
 import ContainerComponent from "components/container/AdminContainerComponent";
@@ -50,6 +51,14 @@ function TopicsReadPage({ match }) {
     <ContainerComponent bread={nav}>
       <div className="card-panel">
         <p> {data.data}</p>
+        <Link
+          to={{ pathname: `/control/topics/${data.id}/update`, data }}
+          className="btn"
+        >
+          Update
+        </Link>
+        <br />
+        <br />
         <table className="striped">
           <tbody>{renderRow}</tbody>
         </table>

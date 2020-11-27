@@ -6,10 +6,8 @@ import chatsReducer from "./chatsReducer";
 import topicsReducer from "./topicsReducer";
 import eventsReducer from "./eventsReducer";
 import searchReducer from "./searchReducer";
-import unreadReducer from "./unreadReducer";
 import fetchingReducer from "./fetchingReducer";
 import pdfgroupsReducer from "./pdfgroupsReducer";
-import pdfparentgroupsReducer from "./pdfparentgroupsReducer";
 import pdfParentGroupsReducer from "./pdfparentgroupsReducer";
 
 function rootReducer(state = {}, action) {
@@ -31,7 +29,6 @@ function rootReducer(state = {}, action) {
     topics: topicsReducer(state.topics, action),
     events: eventsReducer(state.events, action),
     search: searchReducer(state.search, action),
-    unread: unreadReducer(state.unread, action),
     fetching: fetchingReducer(state.fetching, action),
     pdfgroups: pdfgroupsReducer(state.pdfgroups, action),
     pdfparentgroups: pdfParentGroupsReducer(state.pdfparentgroups, action),

@@ -47,6 +47,10 @@ function Li({ text = "", icon = "ios-today", color, to, param = {} }) {
 function AccountPage({ navigation }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({ title: "My Account" });
+
+    return () => {
+      console.log("un mounting");
+    };
   }, []);
 
   const { state, signOut } = React.useContext(Store);

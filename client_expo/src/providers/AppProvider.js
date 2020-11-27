@@ -151,7 +151,7 @@ export const sendRequestThenDispatch = () => {
 
 export const useNotification = () => {
   const navigation = useNavigation();
-  const { callReducer } = React.useContext(Store);
+  const { callReducer, send } = getRequestThenDispatch();
 
   const registerForPushNotificationsAsync = async () => {
     if (Constants.isDevice) {
@@ -200,27 +200,41 @@ export const useNotification = () => {
     }
   };
 
-  const respListener = ({ notification }) => {
+  const respL = ({ notification }) => {
     const { data } = notification.request.content;
+
     if (data.dispatch == "ADD_MESSAGE_TO_CHAT") {
+      callReducer({ dispatch: data.dispatch, data: data.data });
       navigation.navigate("ChatsReadPage", data.data);
+      send("/api/chats", "UPDATE_CHATS");
+      // navigation.navigate("ChatsListPage");
     }
+
+    if (data.dispatch == "ADD_COMMENT_TO_TOPIC") {
+      callReducer({ dispatch: data.dispatch, data: data.data });
+      navigation.navigate("TopicsReadPage", { id: data.data.topic_id });
+      send("/api/topics", "UPDATE_TOPICS");
+      // navigation.navigate("TopicsListPage");
+    }
+
+    if (data.dispatch == "ADD_COMMENT_TO_EVENT") {
+      // navigation.navigate("EventsListPage");
+      callReducer({ dispatch: data.dispatch, data: data.data });
+      navigation.navigate("EventsReadPage", { id: data.data.event_id });
+      send("/api/events", "UPDATE_EVENTS");
+    }
+
+    Notifications.dismissAllNotificationsAsync();
   };
 
-  const recvListener = async ({ request }) => {
-    Vibration.vibrate();
-    // play sound
+  const recvL = async ({ request }) => {
     const { data } = request.content;
-
     if (data.dispatch) {
-      // const state = await AsyncStorage.getItem("state");
-
-      // const newstate = reducer(state, data);
-
-      // await AsyncStorage.setItem("state", JSON.stringify(newstate));
-
       callReducer({ dispatch: data.dispatch, data: data.data });
     }
+
+    Vibration.vibrate();
+    // play sound
   };
 
   React.useEffect(() => {
@@ -229,13 +243,22 @@ export const useNotification = () => {
 
       try {
         // Notifications.removeAllNotificationListeners();
-      } catch (error) {
-        console.log("no notification listeners");
-      }
+      } catch (e) {}
 
-      Notifications.addNotificationReceivedListener(recvListener);
-      Notifications.addNotificationResponseReceivedListener(respListener);
-      // Notifications.addListener(handleNotification);
+      console.log("adding listenrs");
+      Notifications.addNotificationReceivedListener(recvL);
+      Notifications.addNotificationResponseReceivedListener(respL);
+
+      return () => {
+        console.log("removing listeners");
+        // s1.remove();
+        // s2.remove();
+        // Notifications.removeAllNotificationListeners();
+      };
     })();
+
+    return () => {
+      console.log("removing listeners 2");
+    };
   }, []);
 };

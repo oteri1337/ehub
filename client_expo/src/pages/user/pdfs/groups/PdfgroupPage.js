@@ -4,14 +4,15 @@ import PdfsList from "../../../components/PdfsListComponent";
 import { getRequestThenDispatch } from "../../../../providers/AppProvider";
 
 function PdfgroupPage({ navigation, route }) {
-  const { slug, title } = route.params;
+  const data = route.params;
+  const { send, refreshing, state, callReducer } = getRequestThenDispatch();
 
   React.useLayoutEffect(() => {
-    navigation.setOptions({ title });
+    navigation.setOptions({ title: data.title });
+    callReducer({ dispatch: "UPDATE_PDFGROUP", data });
   }, []);
 
-  const { send, refreshing, state } = getRequestThenDispatch();
-  const { pdfs, next_page_url } = state.pdfgroups.object[slug];
+  const { pdfs, next_page_url } = state.pdfgroups.object[data.slug];
 
   const list = { data: pdfs };
 
@@ -28,7 +29,6 @@ function PdfgroupPage({ navigation, route }) {
     <Container>
       <List>
         <PdfsList {...{ list, refreshing, onEndReached }} />
-        {/* <PdfsList {...{ list, onRefresh, refreshing, onEndReached }} /> */}
       </List>
     </Container>
   );

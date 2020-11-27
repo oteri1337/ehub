@@ -53,7 +53,7 @@ class TopicsController extends NewApiController
     public function beforeUpdate($body)
     {
 
-        return $this->filter($body, ['data']);
+        return $this->filter($body, ['data', 'allow_comments']);
     }
 
     public function modifyList($list)
@@ -120,6 +120,12 @@ class TopicsController extends NewApiController
 
         if (!$parent) {
             $this->data['errors'] = ['Not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        if ($parent->allow_comments == "no") {
+            $this->data['errors'] = ['comments are disabled for this topic'];
             $response->getBody()->write(json_encode($this->data));
             return $response->withHeader('Content-Type', 'application/json');
         }

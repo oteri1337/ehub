@@ -38,11 +38,33 @@ function PdfGroupUpdatePage({ location, match, history }) {
     {
       id: "title",
     },
+    {
+      id: "icon",
+      type: "select",
+      options: [
+        {
+          value: "droplet",
+        },
+        {
+          value: "anchor",
+        },
+        {
+          value: "cpu",
+        },
+        {
+          value: "thermometer",
+        },
+        {
+          value: "settings",
+        },
+      ],
+    },
   ];
 
   const initialState = {
     id: data?.id,
     title: data?.title,
+    icon: data?.icon,
   };
 
   const onSuccess = () => {
@@ -69,7 +91,10 @@ function PdfGroupUpdatePage({ location, match, history }) {
             text,
           }}
         />
-        <PdfParentGroupUpdatComponent slug={slug} allSelected={data.groups} />
+        <PdfParentGroupUpdatComponent
+          slug={slug}
+          allSelected={data.pdfgroups}
+        />
       </div>
     </AdminContainerComponent>
   );

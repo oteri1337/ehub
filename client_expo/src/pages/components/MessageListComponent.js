@@ -106,8 +106,6 @@ function ItemPureFunctional({ message }) {
       );
     }
 
-    console.log("message", message);
-
     // others messagez
     return (
       <TouchableWithoutFeedback

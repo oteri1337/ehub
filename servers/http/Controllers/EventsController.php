@@ -58,7 +58,7 @@ class EventsController extends NewApiController
 
             $li->comments_count = $li->comments->count();
 
-            $comments = array_reverse($li->comments->slice(0, 12)->toArray());
+            $comments = $li->comments->slice(0, 12)->toArray();
 
             unset($li->comments);
 
@@ -96,6 +96,12 @@ class EventsController extends NewApiController
 
         if (!$parent) {
             $this->data['errors'] = ['Not found'];
+            $response->getBody()->write(json_encode($this->data));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        if ($parent->allow_comments == "no") {
+            $this->data['errors'] = ['comments are disabled for this event'];
             $response->getBody()->write(json_encode($this->data));
             return $response->withHeader('Content-Type', 'application/json');
         }

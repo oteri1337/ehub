@@ -14,7 +14,7 @@ class PdfgroupsController extends NewApiController
         $this->readBy = 'slug';
         $this->searchBy = 'title';
         $this->model = new Pdfgroup;
-        $this->eagerList = ['data'];
+        $this->eagerList = ['pdfs'];
         $this->orderBy = "updated_at";
         $this->perPage = 50;
     }
@@ -40,13 +40,13 @@ class PdfgroupsController extends NewApiController
 
         foreach ($list as $li) {
 
-            $li->pdfs_count = $li->data->count();
+            // $li->pdfs_count = $li->pdfs->count();
 
-            $data = $li->data->slice(0, 12);
+            $pdfs = $li->pdfs->slice(0, 12);
 
-            unset($li->data);
+            unset($li->pdfs);
 
-            $li->data = $data;
+            $li->pdfs = $pdfs;
         }
 
         return $list;

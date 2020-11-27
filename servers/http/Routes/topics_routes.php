@@ -25,7 +25,7 @@ $app->get('/api/topics', TopicsController::class . ':list');
 
 $app->post('/api/topics', TopicsController::class . ':create')->add($user_logged_in);
 
-$app->patch('/api/topics', TopicsController::class . ':update')->add($user_logged_in);
+$app->patch('/api/topics', TopicsController::class . ':update');
 
 $app->delete('/api/topics', TopicsController::class . ':delete')->add($user_logged_in);
 

@@ -3,7 +3,7 @@ import PDFReader from "rn-pdf-reader-js";
 import { BACKEND_URL } from "../../../../env";
 import * as FileSystem from "expo-file-system";
 import { Store } from "../../../providers/AppProvider";
-import { Spinner, Button, Icon, View, Text } from "native-base";
+import { Spinner, Button, Icon, View, Text, Container } from "native-base";
 
 function PdfsReadPage({ navigation, route }) {
   const { params } = route;
@@ -95,76 +95,78 @@ function PdfsReadPage({ navigation, route }) {
     setSaving(false);
   };
 
-  if (saved) {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button transparent onPress={removePdf}>
-          <Icon name="trash" type="Feather" style={{ color: "black" }} />
-        </Button>
-      ),
-    });
-  } else if (saving) {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button transparent>
-          <Text style={{ color: "black" }}>{percent}%</Text>
-          {/* <Spinner color="black" style={{ marginRight: 10 }} /> */}
-        </Button>
-      ),
-    });
-  } else {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button transparent onPress={savePdf}>
-          <Icon name="save" type="Feather" style={{ color: "black" }} />
-        </Button>
-      ),
-    });
-  }
+  React.useLayoutEffect(() => {
+    if (saved) {
+      navigation.setOptions({
+        headerRight: () => (
+          <Button transparent onPress={removePdf}>
+            <Icon name="trash" type="Feather" style={{ color: "black" }} />
+          </Button>
+        ),
+      });
+    } else if (saving) {
+      navigation.setOptions({
+        headerRight: () => (
+          <Button transparent>
+            <Text style={{ color: "black" }}>{percent}%</Text>
+            {/* <Spinner color="black" style={{ marginRight: 10 }} /> */}
+          </Button>
+        ),
+      });
+    } else {
+      navigation.setOptions({
+        headerRight: () => (
+          <Button transparent onPress={savePdf}>
+            <Icon name="save" type="Feather" style={{ color: "black" }} />
+          </Button>
+        ),
+      });
+    }
+  }, [saved]);
 
   if (saved) {
     if (base64.length) {
       return (
-        <React.Fragment>
+        <Container>
           <PDFReader
             source={{
               uri: base64,
             }}
           />
-        </React.Fragment>
+        </Container>
       );
     }
 
     return (
-      <React.Fragment>
+      <Container>
         <View style={{ flex: 1, justifyContent: "center" }}>
           <Spinner color="black" />
           <Text style={{ textAlign: "center" }}>Loading From FileSystem</Text>
         </View>
-      </React.Fragment>
+      </Container>
     );
   }
 
   if (base64.length) {
     return (
-      <React.Fragment>
+      <Container>
         <PDFReader
           source={{
             uri: base64,
           }}
         />
-      </React.Fragment>
+      </Container>
     );
   }
 
   return (
-    <React.Fragment>
+    <Container>
       <PDFReader
         source={{
           uri,
         }}
       />
-    </React.Fragment>
+    </Container>
   );
 }
 

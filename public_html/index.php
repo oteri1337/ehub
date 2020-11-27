@@ -1,5 +1,6 @@
 <?php
 
+sleep(1);
 
 define("PDF_DIR", __DIR__ . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . "pdfs" . DIRECTORY_SEPARATOR);
 

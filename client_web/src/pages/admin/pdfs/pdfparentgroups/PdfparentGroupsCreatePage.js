@@ -29,6 +29,27 @@ function PdfGroupsCreatePage({ history }) {
     {
       id: "title",
     },
+    {
+      id: "icon",
+      type: "select",
+      options: [
+        {
+          value: "droplet",
+        },
+        {
+          value: "anchor",
+        },
+        {
+          value: "cpu",
+        },
+        {
+          value: "thermometer",
+        },
+        {
+          value: "settings",
+        },
+      ],
+    },
   ];
 
   const onSuccess = () => {
@@ -39,10 +60,16 @@ function PdfGroupsCreatePage({ history }) {
     callBack("/api/pdfparentgroups", "UPDATE_PDFPARENTGROUP", body, onSuccess);
   };
 
+  const initialState = {
+    icon: "droplet",
+  };
+
   return (
     <AdminContainerComponent bread={nav}>
       <div className="card-panel">
-        <Form {...{ formArray, onSubmit, fetching, errors, message }} />
+        <Form
+          {...{ formArray, onSubmit, fetching, errors, message, initialState }}
+        />
       </div>
     </AdminContainerComponent>
   );

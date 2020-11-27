@@ -26,14 +26,25 @@ function ListComponent(props) {
   const dispatch = props.dispatch || "";
   const callback =
     props.callback ||
-    function(props) {
+    function (props) {
       return <ListDefaultComponent {...props} key={props.id} />;
     };
 
   const list_items = data.map(callback);
 
+  const renderSpinner = () => {
+    if (fetching) {
+      return (
+        <div className="progress">
+          <div className="indeterminate"></div>
+        </div>
+      );
+    }
+  };
+
   return (
     <React.Fragment>
+      {renderSpinner()}
       <ul className="collection">{list_items}</ul>
       <PaginationComponent list={list} dispatch={dispatch + "_PAGE"} />
     </React.Fragment>

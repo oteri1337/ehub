@@ -29,12 +29,9 @@ import SearchPage from "../pages/user/SearchPage";
 import UsersReadPage from "../pages/user/UsersReadPage";
 import ChatsReadPage from "../pages/user/ChatsReadPage";
 
-import PdfsListPage from "../pages/user/pdfs/PdfsListPage";
 import PdfsReadPage from "../pages/user/pdfs/PdfsReadPage";
-import PdfsSavedPage from "../pages/user/pdfs/PdfsSavedPage";
+import PdfGroupPage from "../pages/user/pdfs/groups/PdfgroupPage";
 import PdfsPreviewPage from "../pages/user/pdfs/PdfsPreviewPage";
-import PdfsCommentPage from "../pages/user/pdfs/PdfsCommentPage";
-import PdfgroupPage from "../pages/user/pdfs/groups/PdfgroupPage";
 
 import TopicsReadPage from "../pages/user/TopicsReadPage";
 import TopicsCreatePage from "../pages/user/TopicsCreatePage";
@@ -70,12 +67,9 @@ function MainApp() {
       <Screen name="UsersReadPage" component={UsersReadPage} />
       <Screen name="ChatsReadPage" component={ChatsReadPage} />
 
-      <Screen name="PdfsListPage" component={PdfsListPage} />
       <Screen name="PdfsReadPage" component={PdfsReadPage} />
-      <Screen name="PdfsSavedPage" component={PdfsSavedPage} />
+      <Screen name="PdfGroupPage" component={PdfGroupPage} />
       <Screen name="PdfsPreviewPage" component={PdfsPreviewPage} />
-      <Screen name="PdfsCommentPage" component={PdfsCommentPage} />
-      <Screen name="PdfGroupPage" component={PdfgroupPage} />
 
       <Screen name="TopicsReadPage" component={TopicsReadPage} />
       <Screen name="TopicsCreatePage" component={TopicsCreatePage} />

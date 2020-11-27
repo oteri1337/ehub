@@ -18,6 +18,26 @@ function SignInPage({ navigation }) {
   const { send, refreshing } = sendRequestThenDispatch();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [kshown, setKshown] = React.useState(false);
+  const [secureText, setSecureText] = React.useState(true);
+
+  const shownListener = () => {
+    setKshown(true);
+  };
+
+  const hiddenListenr = () => {
+    setKshown(false);
+  };
+
+  React.useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", shownListener);
+    Keyboard.addListener("keyboardDidHide", hiddenListenr);
+
+    return () => {
+      Keyboard.removeListener("keyboardDidShow", shownListener);
+      Keyboard.removeListener("keyboardDidHide", hiddenListenr);
+    };
+  }, []);
 
   const onSubmit = () => {
     if (email.length && password.length) {
@@ -44,12 +64,12 @@ function SignInPage({ navigation }) {
         <View style={{ flex: 1 }}>
           <View
             style={{
-              flex: 1.1,
+              flex: 0.9,
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <Image style={{ height: 150, width: 95 }} source={Logo} />
+            <Image style={{ height: 100, width: 95 }} source={Logo} />
           </View>
           <View style={{ flex: 2, padding: 15 }}>
             <Item regular style={{ borderRadius: 5 }}>
@@ -75,8 +95,14 @@ function SignInPage({ navigation }) {
                 placeholder="Password"
                 autoCompleteType="off"
                 value={password}
-                secureTextEntry={true}
+                secureTextEntry={secureText}
                 onChangeText={(text) => setPassword(text)}
+              />
+              <Icon
+                name="eye"
+                onPress={() => {
+                  setSecureText(!secureText);
+                }}
               />
             </Item>
             {!refreshing && (
@@ -91,32 +117,34 @@ function SignInPage({ navigation }) {
             )}
             {refreshing && <Spinner />}
           </View>
-          <View
-            style={{
-              padding: 15,
-              paddingTop: 0,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <Text
-                style={s}
-                onPress={() => {
-                  to("SignUpPage");
-                }}
-              >
-                Sign Up
-              </Text>
-            </View>
+          {!kshown && (
+            <View
+              style={{
+                padding: 15,
+                paddingTop: 0,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={s}
+                  onPress={() => {
+                    to("SignUpPage");
+                  }}
+                >
+                  Sign Up
+                </Text>
+              </View>
 
-            <View>
-              <Text style={s} onPress={() => to("PasswordPage")}>
-                Reset Password
-              </Text>
+              <View>
+                <Text style={s} onPress={() => to("PasswordPage")}>
+                  Reset Password
+                </Text>
+              </View>
             </View>
-          </View>
+          )}
         </View>
       </TouchableWithoutFeedback>
     </Container>

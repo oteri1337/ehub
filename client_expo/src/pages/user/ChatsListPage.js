@@ -15,7 +15,6 @@ import {
   ListItem,
   Container,
 } from "native-base";
-import { useFocusEffect } from "@react-navigation/native";
 
 class ItemPureComponent extends React.PureComponent {
   render() {
@@ -91,21 +90,6 @@ function ChatsListPage({ navigation }) {
   const onRefresh = async () => {
     send("/api/chats", dispatch);
   };
-
-  // useFocusEffect(() => {
-  //   let debounceTime = setTimeout(() => {
-  //     if (!refreshing) {
-  //       if (list.data.length <= 12) {
-  //         console.log("focused");
-  //         console.log("refresh chats");
-  //         send("/api/chats", dispatch);
-  //       }
-  //     }
-  //   }, 2000);
-  //   return () => {
-  //     clearTimeout(debounceTime);
-  //   };
-  // }, []);
 
   let { data } = list;
 

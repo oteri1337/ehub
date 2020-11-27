@@ -16,6 +16,16 @@ function pdfGroupsReducer(state = defaultState, action) {
         pdfs: [...state.data[index].pdfs, ...action.data.pdfs],
       };
       return state;
+    case "UPDATE_PDFGROUP":
+      return {
+        ...state,
+        object: {
+          ...state.object,
+          [action.data.slug]: {
+            ...action.data,
+          },
+        },
+      };
     case "UPDATE_PDFGROUP_OBJECT":
       return {
         ...state,

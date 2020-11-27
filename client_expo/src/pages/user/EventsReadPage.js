@@ -102,24 +102,10 @@ function EventsReadPage({ navigation, route }) {
           </React.Fragment>
         );
       },
-
-      // headerRight: () => (
-      //   <Button
-      //     transparent
-      //     onPress={() => {
-      //       navigation.navigate("EventsListPage");
-      //     }}
-      //   >
-      //     <Icon name="calendar" style={{ color: "black" }} />
-      //   </Button>
-      // ),
     });
   }, [state.events]);
 
   const onSubmit = (data) => {
-    // const body = { id, data };
-    // send("/api/events/comments", "ADD_COMMENT_TO_EVENT", body);
-
     const uid = Date.now();
     let body = {
       data,
@@ -129,7 +115,9 @@ function EventsReadPage({ navigation, route }) {
       user_id: state.user.id,
     };
 
-    callReducer({ dispatch: "ADD_COMMENT_TO_EVENT", data: body });
+    if (event.allow_comments == "yes") {
+      callReducer({ dispatch: "ADD_COMMENT_TO_EVENT", data: body });
+    }
 
     const newbody = { ...body };
     newbody.id = id;
@@ -151,7 +139,6 @@ function EventsReadPage({ navigation, route }) {
 
     formData.append("id", id);
     send("/api/events/comments", "UPDATE_EVENT", formData);
-    // send("/api/events/comment/image", "ADD_COMMENT_TO_EVENT", formData);
   };
 
   let avoid = false;

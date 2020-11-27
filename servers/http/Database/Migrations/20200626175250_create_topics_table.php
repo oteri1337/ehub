@@ -26,7 +26,7 @@ class CreateTopicsTable extends ParentMigration
 
             $table->integer('comments_count')->default(0);
 
-            $table->boolean('allow_comments')->default(1);
+            $table->enum('allow_comments', ['yes', 'no'])->default('yes');
 
             $table->timestamps();
         });

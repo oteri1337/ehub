@@ -30,6 +30,8 @@ class CreateEventsTable extends ParentMigration
 
             $table->string("next_page_url")->default("");
 
+            $table->enum('allow_comments', ['yes', 'no'])->default('yes');
+
             $table->timestamps();
         });
     }

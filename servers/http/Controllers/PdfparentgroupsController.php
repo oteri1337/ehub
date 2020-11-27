@@ -13,9 +13,29 @@ class PdfparentgroupsController extends NewApiController
         parent::__construct();
         $this->readBy = 'slug';
         $this->searchBy = 'title';
-        $this->eagerList = ['groups'];
+        $this->eagerList = ['pdfgroups'];
         $this->model = new Pdfparentgroup;
         $this->orderBy = "updated_at";
+    }
+
+    public function modifyList($pdfparents)
+    {
+
+        foreach ($pdfparents as $pdfparent) {
+
+            $pdfgroups = $pdfparent->pdfgroups;
+
+            foreach ($pdfgroups as $pdfgroup) {
+
+                $pdfs = $pdfgroup->pdfs->slice(0, 12);
+
+                unset($pdfgroup->pdfs);
+
+                $pdfgroup->pdfs = $pdfs;
+            }
+        }
+
+        return $pdfparents;
     }
 
     public function createRules($body)
@@ -31,13 +51,13 @@ class PdfparentgroupsController extends NewApiController
     {
         $body["slug"] = $this->slugify($body["title"]);
 
-        return $this->filter($body, ['title', 'slug']);
+        return $this->filter($body, ['title', 'slug', 'icon']);
     }
 
     public function lazyLoadRelationships($row)
     {
 
-        $row->groups;
+        $row->pdfgroups;
 
         return $row;
     }
@@ -56,7 +76,7 @@ class PdfparentgroupsController extends NewApiController
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        $data = $row->groups()->sync($groups);
+        $data = $row->pdfgroups()->sync($groups);
         $this->data['data'] = $data;
         $this->data['message'] = "Updated Successfully";
         $response->getBody()->write(json_encode($this->data));

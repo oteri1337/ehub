@@ -13,7 +13,8 @@ class Event extends Model
         'data',
         'image',
         'type',
-        'date'
+        'date',
+        'allow_comments'
     ];
 
 

@@ -14,7 +14,8 @@ class Topic extends Model
         'title',
         'color',
         'user_id',
-        'comments_count'
+        'comments_count',
+        'allow_comments'
     ];
 
     public function user()

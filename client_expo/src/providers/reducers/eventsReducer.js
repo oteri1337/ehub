@@ -4,8 +4,10 @@ function eventsReducer(state = defaultState, action) {
   switch (action.dispatch) {
     case "UPDATE_EVENTS":
       if (JSON.stringify(state) === JSON.stringify(action.data)) {
+        console.log("ma");
         return state;
       } else {
+        console.log("mb");
         return action.data;
       }
     case "UPDATE_EVENT":

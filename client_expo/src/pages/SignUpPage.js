@@ -81,7 +81,10 @@ function SignUpPage({ navigation }) {
               {!refreshing && (
                 <View style={{ alignSelf: "center" }}>
                   <Button onPress={onSubmit}>
-                    <Text padding={20} style={{ color: "white" }}>
+                    <Text
+                      padding={20}
+                      style={{ color: "white", backgroundColor: "#0984e3" }}
+                    >
                       Sign Up
                     </Text>
                   </Button>

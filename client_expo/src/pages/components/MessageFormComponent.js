@@ -4,7 +4,6 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import { View, Textarea, Button, Icon, ActionSheet } from "native-base";
-import { readDirectoryAsync } from "expo-file-system";
 
 var BUTTONS = ["Image", "Document", "Cancel"];
 var DESTRUCTIVE_INDEX = 1;
@@ -13,25 +12,12 @@ var CANCEL_INDEX = 2;
 function MessageFormComponent(props) {
   const { onSubmit, onImage, onMessageHook } = props;
 
-  // onImage =
-  //   onImage ||
-  //   function (formData) {
-  //     console.log("upload image", formData);
-  //   };
-
-  // onMessageHook =
-  //   onMessageHook ||
-  //   function () {
-  //     console.log("on message hook");
-  //   };
-
   const [message, setMessage] = React.useState("");
 
   const onPress = () => {
     onSubmit(message);
     onMessageHook();
     setMessage("");
-    // Keyboard.dismiss();
   };
 
   const uploadPhoto = async () => {

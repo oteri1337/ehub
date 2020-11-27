@@ -16,16 +16,16 @@ function PdfParentGroupsUpdateComponent({ slug, allSelected }) {
 
   const allGroups = state.pdfgroups.data;
 
-  const allSelectedIdArray = allSelected.map((obj) => obj.id);
+  const allSelectedIdArray = allSelected?.map((obj) => obj.id);
 
   const initialState = {};
 
-  allSelectedIdArray.forEach((id) => {
+  allSelectedIdArray?.forEach((id) => {
     initialState[id] = true;
   });
 
   let formArray = allGroups.map(({ id, title }) => {
-    if (allSelectedIdArray.indexOf(id) >= 0) {
+    if (allSelectedIdArray?.indexOf(id) >= 0) {
       return { id, label: title, type: "checkbox", checked: true };
     }
 

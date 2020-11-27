@@ -2,6 +2,19 @@ import axios from "axios";
 import React from "react";
 import { BACKEND_URL } from "../../env";
 
+export function removeDuplicateObjects(arrayOfObjects, anObject) {
+  const newArray = arrayOfObjects.map((obj) => {
+    if (obj.id != anObject.id) {
+      return obj;
+    }
+    return false;
+  });
+
+  console.log("sbhs", newArray);
+
+  return newArray;
+}
+
 export function debounceHook(f, delay, user = " ") {
   console.log("debounce is being setup for ", user);
   console.log(" ");

@@ -58,6 +58,18 @@ function EventsUpdatePage({ match, history }) {
       id: "date",
       type: "date",
     },
+    {
+      id: "allow_comments",
+      type: "select",
+      options: [
+        {
+          value: "yes",
+        },
+        {
+          value: "no",
+        },
+      ],
+    },
   ];
 
   const onSuccess = () => {

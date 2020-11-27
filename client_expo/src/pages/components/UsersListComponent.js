@@ -17,6 +17,10 @@ class SingleUserComponent extends React.PureComponent {
 
     const uri = `${BACKEND_URL}/uploads/images/${item.photo_profile}`;
 
+    if (item.first_name.length === 0) {
+      return <React.Fragment />;
+    }
+
     return (
       <ListItem thumbnail onPress={onPress}>
         <Left>

@@ -30,7 +30,7 @@ const dispatch = "UPDATE_PDFGROUPS";
 const to = "/control/pdfgroups/create.html";
 
 function PdfGroupsListPage() {
-  const { state } = getRequestThenDispatch(url, dispatch);
+  const { state, fetching } = getRequestThenDispatch(url, dispatch);
 
   const list = state.pdfgroups;
 
@@ -60,7 +60,7 @@ function PdfGroupsListPage() {
   return (
     <AdminContainerComponent bread={nav}>
       <SearchComponent {...{ url, dispatch, list }} />
-      <ListComponent {...{ list, dispatch, callback }} />
+      <ListComponent {...{ list, dispatch, callback, fetching }} />
       <FloatingButtonComponent {...{ title, to }} />
     </AdminContainerComponent>
   );

@@ -45,9 +45,7 @@ function PdfsSavedPage({ navigation }) {
   if (list.data.length === 0) {
     return (
       <Container style={{ justifyContent: "center" }}>
-        <Text style={{ textAlign: "center" }}>
-          You can save books for offline use
-        </Text>
+        <Text style={{ textAlign: "center" }}>You Have No Saved Books Yet</Text>
       </Container>
     );
   }

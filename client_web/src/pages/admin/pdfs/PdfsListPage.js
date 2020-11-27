@@ -10,7 +10,7 @@ import AdminContainerComponent from "components/container/AdminContainerComponen
 function PdfsPage() {
   const url = "/api/pdfs";
   const dispatch = "UPDATE_PDFS";
-  const { state } = getRequestThenDispatch(url, dispatch);
+  const { state, fetching } = getRequestThenDispatch(url, dispatch);
 
   const nav = [
     {
@@ -59,6 +59,7 @@ function PdfsPage() {
         list={state.pdfs}
         dispatch={`${dispatch}`}
         callback={callback}
+        fetching={fetching}
       />
       <FloatingButtonComponent title="Add Pdf" to="/control/pdfs/create.html" />
     </AdminContainerComponent>

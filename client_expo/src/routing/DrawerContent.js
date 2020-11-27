@@ -13,13 +13,11 @@ import {
 } from "native-base";
 import { BACKEND_URL } from "../../env";
 import { getRequestThenDispatch } from "../providers/AppProvider";
-import {
-  DrawerContentScrollView,
-  DrawerItem,
-  DrawerItemList,
-} from "@react-navigation/drawer";
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 
 function DrawerContent(props) {
+  const activeStyle = { backgroundColor: "#9fcdfb", color: "#045cbd" };
+
   const url = "/api/pdfparentgroups";
   const { state } = getRequestThenDispatch(url, "UPDATE_PDFPARENTGROUPS");
   const { first_name, last_name, email, photo_profile } = state.user;
@@ -37,7 +35,7 @@ function DrawerContent(props) {
             color: "black",
             marginLeft: -10,
           }}
-          onPress={() => props.navigation.navigate("PdfgroupsPage", g)}
+          onPress={() => props.navigation.navigate("PdfsParentPage", g)}
           icon={() => (
             <Icon name={g.icon} type="Feather" style={{ fontSize: 20 }} />
           )}
@@ -63,18 +61,13 @@ function DrawerContent(props) {
         </ListItem>
       </List>
       <DrawerContentScrollView {...props}>
-        {/* <DrawerItemList {...props} /> */}
         <DrawerItem
           label="All Books"
-          style={{ backgroundColor: "#9fcdfb" }}
-          labelStyle={{ fontSize: 13, color: "#045cbd", marginLeft: -10 }}
+          style={{}}
+          labelStyle={{ fontSize: 13, marginLeft: -10 }}
           onPress={() => props.navigation.navigate("PdfsListPage")}
           icon={() => (
-            <Icon
-              type="Feather"
-              style={{ color: "#045cbd", fontSize: 20 }}
-              name="folder"
-            />
+            <Icon type="Feather" style={{ fontSize: 20 }} name="folder" />
           )}
         />
         <DrawerItem

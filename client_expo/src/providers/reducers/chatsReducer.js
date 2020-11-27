@@ -1,3 +1,4 @@
+import { removeDuplicateObjects } from "../functions";
 const defaultState = { data: [], object: {}, search_keys: {} };
 
 function chatsReducer(state = defaultState, action) {
@@ -14,6 +15,25 @@ function chatsReducer(state = defaultState, action) {
         data: [...state.data, ...action.data.data],
         object: { ...state.object, ...action.data.object },
       };
+
+    case "ADD_MESSAGE_TO_CHAT":
+      const key = parseInt(action.data.user_id);
+      const chat = state.object[key];
+
+      return {
+        ...state,
+        object: {
+          ...state.object,
+          [key]: {
+            ...state.object[key],
+            messages: [action.data, ...chat.messages],
+            //messsages: removeDuplicateObjects(chat.messages, action.data),
+            next_page_url: `/api/chats/${key}?page=2`,
+            unread_count: state.object[key].unread_count + 1,
+          },
+        },
+      };
+
     case "UPDATE_CHAT_MESSAGES_PAGE":
       return {
         ...state,
@@ -72,39 +92,6 @@ function chatsReducer(state = defaultState, action) {
             messages: [action.data, ...slo],
             next_page_url: `/api/chats/${keyo}?page=2`,
             unread_count: state.object[keyo].unread_count + 1,
-          },
-        },
-      };
-
-    case "ADD_MESSAGE_TO_CHAT":
-      const key = parseInt(action.data.user_id);
-      const chat = state.object[key];
-
-      // let sl = [];
-
-      // const { messages } = chat;
-
-      // if (messages.length == 12) {
-      //   sl = messages.slice(1, 12);
-      // }
-
-      // if (messages.length > 12) {
-      //   sl = messages.reverse().slice(0, 11).reverse();
-      // }
-
-      // if (messages.length < 12) {
-      //   sl = messages;
-      // }
-
-      return {
-        ...state,
-        object: {
-          ...state.object,
-          [key]: {
-            ...state.object[key],
-            messages: [action.data, ...chat.messages],
-            next_page_url: `/api/chats/${key}?page=2`,
-            unread_count: state.object[key].unread_count + 1,
           },
         },
       };

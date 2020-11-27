@@ -11,7 +11,7 @@ function NewsListPage() {
 
   const dispatch = "UPDATE_TOPICS";
 
-  const { state } = getRequestThenDispatch(url, dispatch);
+  const { state, fetching } = getRequestThenDispatch(url, dispatch);
 
   const list = state.topics;
 
@@ -55,7 +55,7 @@ function NewsListPage() {
   return (
     <AdminContainerComponent bread={nav}>
       <SearchComponent {...{ url, dispatch, search_keys }} />
-      <ListComponent {...{ list, dispatch, callback }} />
+      <ListComponent {...{ list, dispatch, callback, fetching }} />
     </AdminContainerComponent>
   );
 }

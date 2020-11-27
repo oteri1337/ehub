@@ -1,17 +1,12 @@
 import React from "react";
+import LibraryRoutes from "./LibraryRoutes";
 import { Feather } from "@expo/vector-icons";
-import { Button, Icon, View, Text } from "native-base";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import { Store } from "../providers/AppProvider";
 import ChatsListPage from "../pages/user/ChatsListPage";
 import UsersListPage from "../pages/user/UsersListPage";
 import TopicsListPage from "../pages/user/TopicsListPage";
 import EventsListPage from "../pages/user/EventsListPage";
-import PdfsHomePage from "../pages/user/pdfs/PdfsHomePage";
-import PdfsParentPage from "../pages/user/pdfs/PdfsParentPage";
-import PdfsListPage from "../pages//user/pdfs/PdfsListComponent";
-import PdfgroupsPage from "../pages/user/pdfs/groups/PdfgroupsPage";
+import { Button, Icon, View, Text } from "native-base";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 function IconWithBadge({ name, badgeCount, color, size }) {
   return (
@@ -45,8 +40,6 @@ const Tab = createBottomTabNavigator();
 const { Screen, Navigator } = Tab;
 
 function TabNavigator({ navigation, route }) {
-  const { state } = React.useContext(Store);
-
   React.useLayoutEffect(() => {
     let current = "";
 
@@ -57,7 +50,7 @@ function TabNavigator({ navigation, route }) {
     navigation.setOptions({
       title: "eHUB",
       headerLeft: () => {
-        if (current == "PdfgroupsPage") {
+        if (current == "LibraryPage") {
           return (
             <Button
               transparent
@@ -95,7 +88,7 @@ function TabNavigator({ navigation, route }) {
           );
         }
 
-        // if (current == "PdfgroupsPage") {
+        // if (current == "LibraryPage") {
         //   return (
         //     <Button
         //       transparent
@@ -127,7 +120,7 @@ function TabNavigator({ navigation, route }) {
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === "PdfgroupsPage") {
+        if (route.name === "LibraryPage") {
           iconName = focused ? "archive" : "archive";
         } else if (route.name === "TopicsListPage") {
           iconName = focused ? "compass" : "compass";
@@ -167,7 +160,7 @@ function TabNavigator({ navigation, route }) {
       <Screen name="UsersListPage" component={UsersListPage} options={{ title: "Community" }} />
       <Screen name="EventsListPage" component={EventsListPage} options={{ title: "Home" }} />
       <Screen name="TopicsListPage" component={TopicsListPage} options={{ title: "Forum" }} />
-      <Screen name="PdfgroupsPage"  component={PdfsParentPage} options={{ title: "Library" }}/>
+      <Screen name="LibraryPage"  component={LibraryRoutes} options={{ title: "Library" }}/>
       <Screen name="ChatsListPage"  component={ChatsListPage} options={{ title: "Messages" }}/>
     </Navigator>
   );

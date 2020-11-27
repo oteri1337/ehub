@@ -19,6 +19,7 @@ import AdminPasswordLoggedPage from "../pages/admin/auth/AdminPasswordLoggedPage
 
 import TopicsListPage from "../pages/admin/topics/TopicsListPage";
 import TopicsReadPage from "../pages/admin/topics/TopicsReadPage";
+import TopicsUpdatePage from "../pages/admin/topics/TopicsUpdatePage";
 
 import UsersListPage from "../pages/admin/users/UsersListPage";
 import UsersReadPage from "../pages/admin/users/UsersReadPage";
@@ -74,6 +75,7 @@ function Routes() {
 
         <AdminRoute exact path="/control/topics/list.html" component={TopicsListPage} />
         <AdminRoute exact path="/control/topics/:id" component={TopicsReadPage} />
+        <AdminRoute exact path="/control/topics/:id/update" component={TopicsUpdatePage} />
 
         <AdminRoute exact path="/control/users/list.html" component={UsersListPage} />
         <AdminRoute exact path="/control/users/:id" component={UsersReadPage} />

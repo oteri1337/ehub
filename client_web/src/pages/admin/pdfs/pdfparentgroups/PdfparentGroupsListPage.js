@@ -30,7 +30,7 @@ const dispatch = "UPDATE_PDFPARENTGROUPS";
 const to = "/control/pdfparentgroups/create.html";
 
 function PdfGroupsListPage() {
-  const { state } = getRequestThenDispatch(url, dispatch);
+  const { state, fetching } = getRequestThenDispatch(url, dispatch);
 
   const list = state.pdfparentgroups;
 
@@ -50,9 +50,9 @@ function PdfGroupsListPage() {
           {...{ url, dispatch, type, body, beforeSubmit }}
         />
         <b>
-          <Link to={{ pathname, props }}>{props.title}</Link>
+          <Link to={{ pathname, props }}> {props.title}</Link>
         </b>
-        <p>{props.slug}</p>
+        <p>{props.icon}</p>
       </li>
     );
   };
@@ -60,7 +60,7 @@ function PdfGroupsListPage() {
   return (
     <AdminContainerComponent bread={nav}>
       <SearchComponent {...{ url, dispatch, list }} />
-      <ListComponent {...{ list, dispatch, callback }} />
+      <ListComponent {...{ list, dispatch, callback, fetching }} />
       <FloatingButtonComponent {...{ title, to }} />
     </AdminContainerComponent>
   );

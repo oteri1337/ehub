@@ -10,19 +10,9 @@ function AdminListComponent(props) {
   const endpoint = props.endpoint || "";
   const dispatch = props.dispatch || "";
 
-  const { state } = getRequestThenDispatch(endpoint, dispatch);
-
-  // console.log(state.users.object[1]);
+  const { state, fetching } = getRequestThenDispatch(endpoint, dispatch);
 
   const list = state[props.list] || [];
-
-  //   console.log(
-  //     list.data.sort((a, b) => {
-  //       if (a.id > b.id) return 1;
-  //       if (a.id < b.id) return -1;
-  //       return 0;
-  //     })
-  //   );
 
   const nav = props.nav || [];
   const to = props.to || false;
@@ -41,7 +31,12 @@ function AdminListComponent(props) {
         label="Search"
         data={list.search_keys}
       />
-      <ListComponent list={list} dispatch={`${dispatch}`} callback={callback} />
+      <ListComponent
+        list={list}
+        dispatch={`${dispatch}`}
+        callback={callback}
+        fetching={fetching}
+      />
       {to ? (
         <FloatingButtonComponent title={props.title} to={to} />
       ) : (

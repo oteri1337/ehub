@@ -1,5 +1,5 @@
 import React from "react";
-import { Notifications } from "expo";
+// import { Notifications } from "expo";
 import { Button, Icon } from "native-base";
 import { KeyboardAvoidingView, Platform, Alert } from "react-native";
 import MessageListComponent from "../components/MessageListComponent";
@@ -20,15 +20,19 @@ function ChatsReadPage({ navigation, route }) {
 
   const chat = state.chats.object[id];
 
+  // React.useEffect(() => {
+  //   if (chat) {
+  //     if (state.unread) {
+  //       callReducer({ dispatch: "CLEAR_UNREAD", data: chat });
+  //     }
+  //   }
+  //   if (Platform.OS != "ios") {
+  //     Notifications.dismissAllNotificationsAsync();
+  //   }
+  // }, []);
+
   React.useEffect(() => {
-    if (chat) {
-      if (state.unread) {
-        callReducer({ dispatch: "CLEAR_UNREAD", data: chat });
-      }
-    }
-    if (Platform.OS != "ios") {
-      Notifications.dismissAllNotificationsAsync();
-    }
+    callReducer({ dispatch: "CLEAR_CHAT_UNREAD", data: id });
   }, []);
 
   React.useLayoutEffect(() => {

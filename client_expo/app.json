@@ -24,6 +24,12 @@
     "android": {
       "package": "com.abokiui.ehub",
       "googleServicesFile": "./google-services.json"
+    },
+    "notification": {
+      "color": "#ffffff",
+      "androidMode": "collapse",
+      "icon": "./assets/icon.png",
+      "androidCollapsedTitle": "New Messages"
     }
   }
 }

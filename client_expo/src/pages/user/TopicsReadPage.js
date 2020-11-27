@@ -12,6 +12,10 @@ function TopicsReadPage({ navigation, route }) {
   const get = getRequestThenDispatch();
   const { state, send, callReducer } = sendRequestThenDispatch();
 
+  React.useEffect(() => {
+    callReducer({ dispatch: "CLEAR_TOPIC_UNREAD", data: id });
+  }, []);
+
   React.useLayoutEffect(() => {
     if (id) {
       const topic = state.topics.object[id];
@@ -114,7 +118,6 @@ function TopicsReadPage({ navigation, route }) {
   const topic = state.topics.object[id];
 
   if (!topic) {
-    console.log("topic not found", id);
     return (
       <Container>
         <Text>Topic Not Found</Text>
@@ -122,7 +125,7 @@ function TopicsReadPage({ navigation, route }) {
     );
   }
 
-  const { comments } = topic;
+  const { comments, allow_comments } = topic;
 
   const onSubmit = (data) => {
     const uid = Date.now();
@@ -134,7 +137,9 @@ function TopicsReadPage({ navigation, route }) {
       user_id: state.user.id,
     };
 
-    callReducer({ dispatch: "ADD_COMMENT_TO_TOPIC", data: body });
+    if (allow_comments == "yes") {
+      callReducer({ dispatch: "ADD_COMMENT_TO_TOPIC", data: body });
+    }
 
     const newbody = { ...body };
     newbody.id = id;

@@ -144,7 +144,7 @@ function PdfsPreviewPage({ navigation, route }) {
         <Text
           style={{
             padding: 20,
-            paddingTop: 5,
+            paddingTop: 10,
             paddingBottom: 5,
             lineHeight: 25,
             textAlign: "justify",
@@ -152,24 +152,6 @@ function PdfsPreviewPage({ navigation, route }) {
         >
           {description}
         </Text>
-        {/* <View
-          style={{
-            flexDirection: "row",
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Button full transparent>
-              <Icon name="server" type="Feather" />
-              <Text>{file_size}</Text>
-            </Button>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Button full transparent>
-              <Icon name={saved ? "check-circle" : "circle"} type="Feather" />
-              <Text>{saved ? "SAVED" : "SERVED"}</Text>
-            </Button>
-          </View>
-        </View> */}
       </Content>
       <View style={{ padding: 10 }}>
         <Button

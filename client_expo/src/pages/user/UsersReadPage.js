@@ -3,9 +3,9 @@ import { Container } from "native-base";
 import * as Linking from "expo-linking";
 import { BACKEND_URL } from "../../../env";
 import { TouchableWithoutFeedback } from "react-native";
-import { Button, View, Text, Icon, Thumbnail } from "native-base";
 import TopicsListComponent from "../components/TopicsListComponent";
 import { getRequestThenDispatch } from "../../providers/AppProvider";
+import { Button, View, Text, Icon, Thumbnail, H1 } from "native-base";
 
 function UsersReadPage({ navigation, route }) {
   const { id } = route.params;
@@ -36,7 +36,7 @@ function UsersReadPage({ navigation, route }) {
 
   const onPress = () => {
     navigation.navigate("ChatsReadPage", {
-      recvr: params,
+      recvr: route.params,
       recvr_id: id,
     });
   };
@@ -58,10 +58,56 @@ function UsersReadPage({ navigation, route }) {
     navigation.navigate("FullImagePage", { title, uri });
   };
 
+  const renderNseNumber = () => {
+    if (nse_number.length) {
+      return (
+        <View style={{ flexDirection: "row", marginBottom: 10 }}>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Icon
+              name="settings"
+              type="Feather"
+              style={{ color: "black", fontSize: 20 }}
+            />
+          </View>
+          <View style={{ flex: 4 }}>
+            <Text onPress={open} style={{ color: "black" }}>
+              {nse_number}
+            </Text>
+          </View>
+        </View>
+      );
+    }
+
+    return <React.Fragment />;
+  };
+
+  const renderLink = () => {
+    if (link.length) {
+      return (
+        <View style={{ flexDirection: "row", marginBottom: 10 }}>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Icon
+              name="link-2"
+              type="Feather"
+              style={{ color: "black", fontSize: 20 }}
+            />
+          </View>
+          <View style={{ flex: 4 }}>
+            <Text onPress={open} style={{ color: "black" }}>
+              {link.substring(0, 35)}
+            </Text>
+          </View>
+        </View>
+      );
+    }
+
+    return <React.Fragment />;
+  };
+
   const ListHeaderComponent = () => {
     return (
       <React.Fragment>
-        <View style={{ flexDirection: "row", marginTop: 5 }}>
+        <View style={{ flexDirection: "row", marginTop: 5, marginBottom: 10 }}>
           <View style={{ flex: 1, alignItems: "center" }}>
             <TouchableWithoutFeedback onPress={imagePressed}>
               <Thumbnail large source={{ uri }} />
@@ -82,11 +128,13 @@ function UsersReadPage({ navigation, route }) {
             {renderMessageButton()}
           </View>
         </View>
+
+        {renderNseNumber()}
+
         <View
           style={{
             flexDirection: "row",
             marginBottom: 10,
-            marginTop: 10,
           }}
         >
           <View style={{ flex: 1, alignItems: "center" }}>
@@ -104,21 +152,6 @@ function UsersReadPage({ navigation, route }) {
         <View style={{ flexDirection: "row", marginBottom: 10 }}>
           <View style={{ flex: 1, alignItems: "center" }}>
             <Icon
-              name="tag"
-              type="Feather"
-              style={{ color: "black", fontSize: 20 }}
-            />
-          </View>
-          <View style={{ flex: 4 }}>
-            <Text onPress={open} style={{ color: "black" }}>
-              {nse_number}
-            </Text>
-          </View>
-        </View>
-
-        <View style={{ flexDirection: "row", marginBottom: 10 }}>
-          <View style={{ flex: 1, alignItems: "center" }}>
-            <Icon
               name="mail"
               type="Feather"
               style={{ color: "black", fontSize: 20 }}
@@ -129,20 +162,7 @@ function UsersReadPage({ navigation, route }) {
           </View>
         </View>
 
-        <View style={{ flexDirection: "row", marginBottom: 10 }}>
-          <View style={{ flex: 1, alignItems: "center" }}>
-            <Icon
-              name="link-2"
-              type="Feather"
-              style={{ color: "black", fontSize: 20 }}
-            />
-          </View>
-          <View style={{ flex: 4 }}>
-            <Text onPress={open} style={{ color: "black" }}>
-              {link.substring(0, 35)}
-            </Text>
-          </View>
-        </View>
+        {renderLink()}
 
         <Text
           style={{
@@ -157,6 +177,25 @@ function UsersReadPage({ navigation, route }) {
       </React.Fragment>
     );
   };
+
+  if (topics.length === 0) {
+    return (
+      <Container>
+        {ListHeaderComponent()}
+
+        <View style={{ marginTop: 50 }}>
+          <Icon
+            name="stop-circle"
+            type="Feather"
+            style={{ fontSize: 40, textAlign: "center", color: "#696969" }}
+          />
+          <H1 style={{ textAlign: "center", marginTop: 5, color: "#696969" }}>
+            No Posts Yet
+          </H1>
+        </View>
+      </Container>
+    );
+  }
 
   return (
     <Container>

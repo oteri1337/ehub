@@ -5,7 +5,7 @@ import MessageComponent from "./MessageComponent";
 function FormComponent(props) {
   const [state, setState] = React.useState({});
   const initialState = props.initialState || {};
-  const onChangeCallBack = props.onChangeCallBack || function() {};
+  const onChangeCallBack = props.onChangeCallBack || function () {};
 
   React.useEffect(() => {
     setState({ ...state, ...initialState });
@@ -24,7 +24,7 @@ function FormComponent(props) {
     onChangeCallBack(newState);
   };
 
-  const createForm = formObject => {
+  const createForm = (formObject) => {
     if (formObject.type === "component") {
       return formObject.component;
     }
@@ -108,7 +108,7 @@ function FormComponent(props) {
 
     // select
     if (formObject.type === "select") {
-      const options = formObject.options.map(option => {
+      const options = formObject.options.map((option) => {
         return (
           <option key={option.value} value={option.value}>
             {option.label || option.value}
@@ -123,6 +123,7 @@ function FormComponent(props) {
             id={formObject.id}
             onChange={onChange}
             className="browser-default"
+            defaultValue={initialState[formObject.id]}
           >
             {options}
           </select>
@@ -251,7 +252,7 @@ function FormComponent(props) {
   const formArray = props.formArray || [];
   const elements = formArray.map(createForm);
 
-  const onSubmit = event => {
+  const onSubmit = (event) => {
     event.preventDefault();
     props.onSubmit(state);
   };

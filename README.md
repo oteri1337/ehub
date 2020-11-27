@@ -1,44 +1,20 @@
-# Todos
+# Norde
 
-# done similar
+server side unread chat system
 
-image caching chat
+client side unread chat system - - not 100%
 
-complete sub categories pdfs
+client side unread topics system - not 100% but easier to implement
 
-notification takes you to page in app for forum and events
+client side unread events systems - not 100% but easier to implement
 
-improve login page on small devices
-
-# other phone
-
-unread messages forum
-
-group notifications on android
-
-clear notifications after view
-
-# Image Caching
-
-resize uploaded pdf and profile images
-
-get image caching to work properly
-
-refactor cached image and cached thumbnail
-
-# Future
+speed up app startup
 
 Google Play Registration
 
-Dark Mode
+get image caching to work properly
 
-integrate hermes - ehub lite
-
-more control of the forum
-
-# Push Notifications Tool
-
-https://expo.io/notifications
+get image caching to work properly and work in chat
 
 # Project Setup
 
@@ -67,3 +43,13 @@ Then go to localhost:1025 on your browser and check if it loads
 Connect your android device or emulator and go to 10.0.2.2:1025 and check if it loads
 
 if everything is working congratulations, branch of and start coding.
+
+# Future
+
+Dark Mode
+
+use file path in saved reducer
+
+active tab indicator sidebar
+
+integrate hermes - ehub lite
