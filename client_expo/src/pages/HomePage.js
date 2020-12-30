@@ -16,7 +16,7 @@ function TabA() {
   const item = {
     id: 1,
     text: "READ BOOKS",
-    desc: `Save books for offline use, read anywhere,
+    desc: `save books for offline use, read anywhere,
     even without an internet connection`,
     image: require("../../assets/books.png"),
   };
@@ -27,7 +27,7 @@ function TabA() {
       <H1
         style={{
           textAlign: "center",
-          fontFamily: "Patrick",
+          // fontFamily: "Patrick",
         }}
       >
         {item.text}
@@ -37,7 +37,7 @@ function TabA() {
           marginTop: 5,
           fontSize: 20,
           textAlign: "center",
-          fontFamily: "Patrick",
+          // fontFamily: "Patrick",
         }}
       >
         {item.desc}
@@ -56,7 +56,7 @@ function TabB() {
   const item = {
     id: 2,
     text: "CHAT USERS",
-    desc: `Connect with friends and colleagues, one-on-one conversation with community members.`,
+    desc: `connect with friends and colleagues, one-on-one conversation with community members.`,
     image: require("../../assets/chat.png"),
   };
 
@@ -66,7 +66,7 @@ function TabB() {
       <H1
         style={{
           textAlign: "center",
-          fontFamily: "Patrick",
+          // fontFamily: "Patrick",
         }}
       >
         {item.text}
@@ -77,7 +77,7 @@ function TabB() {
           marginTop: 5,
           fontSize: 20,
           textAlign: "center",
-          fontFamily: "Patrick",
+          // fontFamily: "Patrick",
         }}
       >
         {item.desc}
@@ -96,7 +96,7 @@ function TabC() {
   const item = {
     id: 3,
     text: "JOIN FORUMS",
-    desc: `Use the discussion forums to share ideas or brainstorm on issues and ideas`,
+    desc: `use the discussion forums to share ideas or brainstorm on issues and ideas`,
     image: require("../../assets/forum.png"),
   };
 
@@ -106,7 +106,7 @@ function TabC() {
       <H1
         style={{
           textAlign: "center",
-          fontFamily: "Patrick",
+          // fontFamily: "Patrick",
         }}
       >
         {item.text}
@@ -117,7 +117,7 @@ function TabC() {
           padding: 10,
           textAlign: "center",
           fontSize: 20,
-          fontFamily: "Patrick",
+          // fontFamily: "Patrick",
         }}
       >
         {item.desc}
@@ -146,7 +146,7 @@ function TabD() {
       <H1
         style={{
           textAlign: "center",
-          fontFamily: "Patrick",
+          // fontFamily: "Patrick",
         }}
       >
         {item.text}
@@ -158,7 +158,7 @@ function TabD() {
           marginTop: 5,
           fontSize: 20,
           textAlign: "center",
-          fontFamily: "Patrick",
+          // fontFamily: "Patrick",
         }}
       >
         {item.desc}
@@ -190,7 +190,7 @@ function HomePage({ navigation }) {
           navigation.navigate("SignInPage");
         }}
       >
-        <Text style={{ fontFamily: "Concert" }}>GET STARTED</Text>
+        <Text>GET STARTED</Text>
       </Button>
     </Container>
   );

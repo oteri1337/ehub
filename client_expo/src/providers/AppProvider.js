@@ -6,12 +6,44 @@ import * as Notifications from "expo-notifications";
 import NetInfo from "@react-native-community/netinfo";
 import { getRequest, sendRequest } from "./functions";
 import { useNavigation } from "@react-navigation/native";
-import { AsyncStorage, Platform, Vibration } from "react-native";
+import { Platform, Vibration, View } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Store = React.createContext({});
 
-export default function AppProvider({ children, initialState }) {
-  const [state, callReducer] = React.useReducer(reducer, initialState || {});
+export default function AppProvider({ children, initialState={} }) {
+
+  const [state, callReducer] = React.useReducer(reducer, {});
+
+
+
+  React.useEffect(() =>  {
+
+    // if (Object.keys(initialState).length) {
+    //   callReducer({dispatch: "UPDATE_STATE", data: initialState});
+    // }
+
+    const loadPersisted = async () => {
+
+      let data = await AsyncStorage.getItem("state");
+
+
+      if (data) {
+
+        data = JSON.parse(data);
+
+        console.log("ap", data);
+
+        callReducer({dispatch: "UPDATE_STATE", data});
+
+      }
+
+    }
+
+    loadPersisted();
+
+  }, []);
+
 
   React.useEffect(() => {
     // let debounceTime = setTimeout(() => {
@@ -245,12 +277,10 @@ export const useNotification = () => {
         // Notifications.removeAllNotificationListeners();
       } catch (e) {}
 
-      console.log("adding listenrs");
       Notifications.addNotificationReceivedListener(recvL);
       Notifications.addNotificationResponseReceivedListener(respL);
 
       return () => {
-        console.log("removing listeners");
         // s1.remove();
         // s2.remove();
         // Notifications.removeAllNotificationListeners();

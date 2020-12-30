@@ -71,8 +71,8 @@ function SignInPage({ navigation }) {
           >
             <Image style={{ height: 100, width: 95 }} source={Logo} />
           </View>
-          <View style={{ flex: 2, padding: 15 }}>
-            <Item regular style={{ borderRadius: 5 }}>
+          <View style={{ flex: 2, padding: 15,alignItems: "center" }}>
+            <Item regular style={{ borderRadius: 5, maxWidth:500 }}>
               <Icon name="ios-mail" />
               <Input
                 value={email}
@@ -88,6 +88,7 @@ function SignInPage({ navigation }) {
               style={{
                 marginTop: 20,
                 borderRadius: 5,
+                maxWidth:500
               }}
             >
               <Icon name="ios-lock" />

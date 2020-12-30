@@ -1,14 +1,15 @@
 import React from "react";
-import { AppLoading } from "expo";
-import * as Font from "expo-font";
+// import {AppLoading } from "expo";
 import { Root } from "native-base";
 import Router from "./src/routing/Router";
-import { AsyncStorage } from "react-native";
 import AppProvider from "./src/providers/AppProvider";
-import NetInfo from "@react-native-community/netinfo";
-import { getRequest } from "./src/providers/functions";
-import reducer from "./src/providers/reducers/rootReducer";
-import { Ionicons, Feather, AntDesign } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import * as Font from "expo-font";
+// import { AsyncStorage } from "react-native";
+// import NetInfo from "@react-native-community/netinfo";
+// import { getRequest } from "./src/providers/functions";
+// import reducer from "./src/providers/reducers/rootReducer";
+// import { Ionicons, Feather, AntDesign } from "@expo/vector-icons";
 
 // import * as Sentry from "sentry-expo";
 // Sentry.init({
@@ -19,58 +20,81 @@ import { Ionicons, Feather, AntDesign } from "@expo/vector-icons";
 // });
 
 function App() {
-  const [state, setState] = React.useState({});
-  const [done, setDone] = React.useState(false);
-  const [loaded] = Font.useFonts({
-    Roboto: require("native-base/Fonts/Roboto.ttf"),
-    Concert: require("./assets/Concert/ConcertOne-Regular.ttf"),
-    Patrick: require("./assets/Patrick/PatrickHand-Regular.ttf"),
-    Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-    ...Feather.font,
-    ...Ionicons.font,
-    ...AntDesign.font,
-  });
 
+  // const [state, setState] = React.useState({});
+
+  // // load async storaga state
   React.useEffect(() => {
-    let mouted = true;
 
-    const asyncOperation = async () => {
-      const network = await NetInfo.fetch();
-
+    const loadPersisted = async () => {
       let persisted = await AsyncStorage.getItem("state");
 
+
       if (persisted) {
+
         persisted = JSON.parse(persisted);
-        console.log("network", network.isConnected);
-        console.log("persisted", persisted);
 
-        if (Object.keys(persisted).length) {
-          setState(persisted);
-        }
-      } else {
-        persisted = {};
+        console.log("p",persisted);
+
+        // setState(persisted);
       }
 
-      if (network.isConnected) {
-        let response = await getRequest("/api/users/auth/status");
-        if (response.errors.length === 0) {
-          const action = { dispatch: "UPDATE_USER", data: response.data };
-          const data = reducer(persisted, action);
-          if (mouted) {
-            setState(data);
-          }
-        }
-      }
+    }
 
-      setDone(true);
-    };
+    loadPersisted();
 
-    asyncOperation();
-
-    return () => {
-      mouted = false;
-    };
   }, []);
+
+  // const [loaded] = Font.useFonts({
+  //   Roboto: require("native-base/Fonts/Roboto.ttf"),
+  //   Concert: require("./assets/Concert/ConcertOne-Regular.ttf"),
+  //   Patrick: require("./assets/Patrick/PatrickHand-Regular.ttf"),
+  //   Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+  //   ...Feather.font,
+  //   ...Ionicons.font,
+  //   ...AntDesign.font,
+  // });
+
+  // React.useEffect(() => {
+  //   let mouted = true;
+
+  //   const asyncOperation = async () => {
+  //     const network = await NetInfo.fetch();
+
+  //     let persisted = await AsyncStorage.getItem("state");
+
+  //     if (persisted) {
+  //       persisted = JSON.parse(persisted);
+  //       console.log("network", network.isConnected);
+  //       console.log("persisted", persisted);
+
+  //       if (Object.keys(persisted).length) {
+  //         setState(persisted);
+  //       }
+  //     } else {
+  //       persisted = {};
+  //     }
+
+  //     if (network.isConnected) {
+  //       let response = await getRequest("/api/users/auth/status");
+  //       if (response.errors.length === 0) {
+  //         const action = { dispatch: "UPDATE_USER", data: response.data };
+  //         const data = reducer(persisted, action);
+  //         if (mouted) {
+  //           setState(data);
+  //         }
+  //       }
+  //     }
+
+  //     setDone(true);
+  //   };
+
+  //   asyncOperation();
+
+  //   return () => {
+  //     mouted = false;
+  //   };
+  // }, []);
 
   // React.useEffect(() => {
   //   (async () => {
@@ -79,16 +103,13 @@ function App() {
   //   })();
   // }, []);
 
-  if (!loaded) {
-    return <AppLoading />;
-  }
-
-  if (Object.keys(state).length === 0 || !done) {
-    return <AppLoading />;
-  }
+  // // if (Object.keys(state).length === 0 || !done) {
+  // //   return <AppLoading />;
+  // // }
+  // console.log("init", state);
 
   return (
-    <AppProvider initialState={state}>
+    <AppProvider>
       <Root>
         <Router />
       </Root>
