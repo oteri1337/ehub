@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, List } from "native-base";
+import { Container, List, Spinner } from "native-base";
 import PdfsList from "../../../components/PdfsListComponent";
 import { getRequestThenDispatch } from "../../../../providers/AppProvider";
 
@@ -12,7 +12,15 @@ function PdfgroupPage({ navigation, route }) {
     callReducer({ dispatch: "UPDATE_PDFGROUP", data });
   }, []);
 
-  const { pdfs, next_page_url } = state.pdfgroups.object[data.slug];
+  const group = state.pdfgroups?.object[data.slug];
+
+  if (!group) {
+    return <Container>
+      <Spinner/>
+    </Container>
+  }
+
+  const { pdfs, next_page_url } = group;
 
   const list = { data: pdfs };
 
@@ -24,6 +32,8 @@ function PdfgroupPage({ navigation, route }) {
       }
     }
   };
+
+
 
   return (
     <Container>

@@ -2,7 +2,7 @@ import React from "react";
 import CachedImage from "./CachedImage";
 import { BACKEND_URL } from "../../../env";
 import { useNavigation } from "@react-navigation/native";
-import { FlatList, Image, TouchableWithoutFeedback } from "react-native";
+import { FlatList, TouchableWithoutFeedback, Dimensions } from "react-native";
 import {
   Text,
   Left,
@@ -31,6 +31,9 @@ class SingleEventComponent extends React.PureComponent {
     //   comments = lookup.comments.length;
     // }
 
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+
     return (
       <TouchableWithoutFeedback onPress={onPress}>
         <Card>
@@ -47,7 +50,7 @@ class SingleEventComponent extends React.PureComponent {
           <CardItem cardBody>
             <CachedImage
               source={{ uri }}
-              style={{ height: 200, width: null, flex: 1 }}
+              style={{ height: windowHeight/3, width: null, flex: 1 }}
             />
           </CardItem>
           <CardItem>

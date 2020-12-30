@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-native";
+import { Image,Dimensions } from "react-native";
 import { BACKEND_URL } from "../../../../env";
 import * as FileSystem from "expo-file-system";
 import { Store } from "../../../providers/AppProvider";
@@ -11,7 +11,6 @@ import {
   Text,
   Icon,
   H1,
-  Header,
 } from "native-base";
 
 function PdfsPreviewPage({ navigation, route }) {
@@ -20,6 +19,9 @@ function PdfsPreviewPage({ navigation, route }) {
   const [saving, setSaving] = React.useState(false);
   const { state, callReducer } = React.useContext(Store);
   const { id, title, description, image_name, file_size, file_name } = params;
+
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
 
   let saved = false;
 
@@ -124,13 +126,13 @@ function PdfsPreviewPage({ navigation, route }) {
         <View style={{ paddingBottom: 10, paddingTop: 10, marginTop: 50 }}>
           <Image
             resizeMode="contain"
-            style={{ width: "100%", height: 250, resizeMode: "contain" }}
+            style={{ width: "100%", height: windowHeight/2.5, resizeMode: "contain" }}
             source={{ uri: `${BACKEND_URL}/uploads/images/${image_name}` }}
           />
         </View>
         <H1
           style={{
-            padding: 15,
+            padding: 20,
             textAlign: "center",
             textTransform: "capitalize",
             paddingBottom: 5,

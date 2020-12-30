@@ -8,7 +8,7 @@ const { Navigator, Screen } = createStackNavigator();
 
 function LibraryRoutes() {
   return (
-    <Navigator>
+    <Navigator headerMode="none">
       <Screen name="PdfsListPage" component={PdfsListPage} />
       <Screen name="PdfsSavedPage" component={PdfsSavedPage} />
       <Screen name="PdfsParentPage" component={PdfsParentPage} />

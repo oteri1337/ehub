@@ -8,6 +8,23 @@ import EventsListPage from "../pages/user/EventsListPage";
 import { Button, Icon, View, Text } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+
+// function getHeaderTitle(route) {
+  // If the focused route is not found, we need to assume it's the initial screen
+  // This can happen during if there hasn't been any navigation inside the screen
+  // In our case, it's "Feed" as that's the first screen inside the navigator
+
+//   switch (routeName) {
+//     case 'Feed':
+//       return 'News feed';
+//     case 'Profile':
+//       return 'My profile';
+//     case 'Account':
+//       return 'My account';
+//   }
+// }
+
 function IconWithBadge({ name, badgeCount, color, size }) {
   return (
     <View style={{ width: 24, height: 24, margin: 5 }}>
@@ -41,11 +58,13 @@ const { Screen, Navigator } = Tab;
 
 function TabNavigator({ navigation, route }) {
   React.useLayoutEffect(() => {
-    let current = "";
+    // let current = "";
 
-    if (route.state) {
-      current = route.state.routes[route.state.index].name;
-    }
+    const current = getFocusedRouteNameFromRoute(route) ?? '';
+    
+    // if (route?.state) {
+    //   current = route?.state.routes[route.state.index].name;
+    // }
 
     navigation.setOptions({
       title: "eHUB",

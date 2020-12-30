@@ -46,7 +46,7 @@ class SingleTopicComponent extends React.PureComponent {
         <Body>
           <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
           <Text note style={{ fontWeight: "300" }}>
-            {item.data?.replace(/\s/g, " ").substring(0, 68)}
+            {item.data?.replace(/\s/g, " ").substring(0, 130)}
           </Text>
           <Text note style={{ marginTop: 3 }}>
             {comments} Comments

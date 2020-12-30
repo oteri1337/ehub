@@ -1,31 +1,34 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, Dimensions } from "react-native";
 import { BACKEND_URL } from "../../../env";
 import CachedThumbnail from "./CachedThumbnail";
-import { TouchableHighlight } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { View, Spinner, Thumbnail, Text } from "native-base";
+import { View, Spinner, Text } from "native-base";
 
 class SingleTopicComponent extends React.PureComponent {
   render() {
     const { item, navigation } = this.props;
 
-    console.log("rendering pdf", item.id);
+    // console.log("rendering pdf", item.id);
 
     const onPress = () => {
       navigation.navigate("PdfsPreviewPage", item);
     };
 
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+
     return (
-      <TouchableHighlight key={item.id} onPress={onPress}>
-        <View>
-          <Text style={{ marginLeft: 5 }}>{item.title.substring(0, 22)}</Text>
+      <TouchableOpacity key={item.id} onPress={onPress}>
+        <View style={{width: windowWidth/ 1.9, marginBottom: 30}}>
+          <Text style={{ fontSize: 18,marginBottom: 2, textAlign: "center" }}>{item.title.substring(0, 34)}</Text>
 
           <View
-            style={{ margin: 1, backgroundColor: "silver", marginBottom: 10 }}
+            style={{ margin: 1, marginBottom: 10 }}
           >
             <CachedThumbnail
-              style={{ width: 180, height: 280 }}
+              style={{ width: windowWidth/2, height: windowHeight/2.3 }}
               square
               source={{
                 uri: `${BACKEND_URL}/uploads/images/${item.image_name}`,
@@ -33,7 +36,7 @@ class SingleTopicComponent extends React.PureComponent {
             />
           </View>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 }
