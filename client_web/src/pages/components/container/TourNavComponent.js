@@ -27,6 +27,9 @@ function NavComponent() {
           <li>
             <Link to="/screenshots.html">Screenshots</Link>
           </li>
+          <li>
+            <Link to="/privacy-policy.html">Privacy Policy</Link>
+          </li>
           <ThemeChangerNavComponent />
         </ul>
         <ul className="right hide-on-med-and-down">

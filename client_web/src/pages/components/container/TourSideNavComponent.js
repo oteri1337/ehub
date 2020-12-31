@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Logo from "images/logo.png";
+import { Link } from "react-router-dom";
 import ThemeChangerSideNavComponent from "./ThemeChangerSideNavComponent";
 
 function SideNavComponent() {
@@ -54,6 +54,14 @@ function SideNavComponent() {
                       phone_iphone
                     </span>
                     Screenshots
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/privacy-policy.html" className="sidenav-close">
+                    <span className="material-icons notranslate">
+                      privacy_tip
+                    </span>
+                    Privacy Policy
                   </Link>
                 </li>
               </ul>

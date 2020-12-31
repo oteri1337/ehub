@@ -9,6 +9,7 @@ import ErrorPage from "../pages/tour/ErrorPage";
 import SignInPage from "../pages/tour/auth/SignInPage";
 import DeveloperPage from "../pages/tour/DeveloperPage";
 import ScreenshotsPage from "../pages/tour/ScreeenshotsPage";
+import PrivacyPolicyPage from "../pages/tour/PrivacyPolicyPage";
 
 import AdminHomePage from "../pages/admin/AdminHomePage";
 import AdminSigninPage from "../pages/admin/AdminSignInPage";
@@ -57,6 +58,7 @@ function Routes() {
         <Route exact path="/index.html" component={HomePage} />
         <Route exact path="/signin.html" component={SignInPage} />
         <Route exact path="/developer.html" component={DeveloperPage} />
+        <Route exact path="/privacy-policy.html" component={PrivacyPolicyPage} />
         <Route exact path="/screenshots.html" component={ScreenshotsPage} />
 
         <GuestAdminRoute exact path="/control/signin.html" component={AdminSigninPage} />        

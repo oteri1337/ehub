@@ -182,8 +182,13 @@ function HomePage() {
             eHUB works on all major platforms, enabling you to work seamlessly
             across your mobile device, and tablets.
           </p>
-          <img src={apple} className="app-px-1" />{" "}
-          <img src={play} className="app-px-1" />
+          <a href={APK_LINK}>
+            <img src={apple} className="app-px-1" />
+          </a>
+          {" "}
+          <a href={IPA_LINK}>
+            <img src={play} className="app-px-1" />
+          </a>
         </center>
       </section>
       <section className="center app-py-3">
