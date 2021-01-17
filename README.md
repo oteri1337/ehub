@@ -1,5 +1,7 @@
 # Todo
 
+update app sdk
+
 update google play listing
 
 splash screen
