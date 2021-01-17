@@ -1,20 +1,30 @@
-# Norde
+# Todo
 
-server side unread chat system
+splash screen
 
-client side unread chat system - - not 100%
-
-client side unread topics system - not 100% but easier to implement
-
-client side unread events systems - not 100% but easier to implement
-
-speed up app startup
-
-Google Play Registration
+get auth state splash screen
 
 get image caching to work properly
 
 get image caching to work properly and work in chat
+
+use file path in saved reducer
+
+active tab indicator sidebar
+
+Dark Mode
+
+server side unread chat system
+
+client side unread chat system - - limited by expo
+
+client side unread topics system - limited by expo but easier to implement
+
+client side unread events systems - limited by expo but easier to implement
+
+ehub native
+
+ehub hermes
 
 # Project Setup
 
@@ -43,13 +53,3 @@ Then go to localhost:1025 on your browser and check if it loads
 Connect your android device or emulator and go to 10.0.2.2:1025 and check if it loads
 
 if everything is working congratulations, branch of and start coding.
-
-# Future
-
-Dark Mode
-
-use file path in saved reducer
-
-active tab indicator sidebar
-
-integrate hermes - ehub lite
