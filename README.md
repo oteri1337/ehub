@@ -1,5 +1,7 @@
 # Todo
 
+update google play listing
+
 splash screen
 
 get auth state splash screen
