@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
-    "app-manifest-webpack-plugin": "^1.2.0",
+    "app-manifest-webpack-plugin": "^1.2.2",
     "babel-loader": "^8.0.6",
     "babel-preset-react-app": "^9.1.1",
     "css-loader": "^3.4.2",
