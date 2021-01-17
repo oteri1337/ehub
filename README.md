@@ -6,6 +6,8 @@ splash screen
 
 get auth state splash screen
 
+fix github issues
+
 get image caching to work properly
 
 get image caching to work properly and work in chat
