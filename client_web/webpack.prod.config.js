@@ -1,8 +1,8 @@
 const path = require("path");
 const webpack = require("webpack");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const AppManifestWebpackPlugin = require("app-manifest-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const AppManifestWebpackPlugin = require("app-manifest-webpack-plugin");
 
 function rp(apath) {
   return path.resolve(__dirname, apath);
@@ -94,19 +94,19 @@ const entryOne = {
       template: "./src/assets/index.html",
       filename: "index.html",
     }),
-    new AppManifestWebpackPlugin({
-      logo: "../logo.png",
-      output: "/assets/pwa/",
-      config: {
-        appName: process.env.PWA_NAME,
-        version: 1,
-        start_url: "/",
-        background: "#fff",
-        theme_color: "#fff",
-        display: "standalone",
-        orientation: "portrait",
-      },
-    }),
+    // new AppManifestWebpackPlugin({
+    //   logo: "../logo.png",
+    //   output: "/assets/pwa/",
+    //   config: {
+    //     appName: process.env.PWA_NAME,
+    //     version: 1,
+    //     start_url: "/",
+    //     background: "#fff",
+    //     theme_color: "#fff",
+    //     display: "standalone",
+    //     orientation: "portrait",
+    //   },
+    // }),
   ],
 };
 
