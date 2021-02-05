@@ -1,5 +1,11 @@
 # Todo
 
+random default image
+
+remove shorthash
+
+remove axios
+
 update google play listing
 
 splash screen

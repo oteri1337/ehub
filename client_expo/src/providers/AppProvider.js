@@ -1,49 +1,37 @@
 import React from "react";
 import Constants from "expo-constants";
+import { Vibration } from "react-native";
 import reducer from "./reducers/rootReducer";
-import * as Permissions from "expo-permissions";
 import * as Notifications from "expo-notifications";
-import NetInfo from "@react-native-community/netinfo";
 import { getRequest, sendRequest } from "./functions";
 import { useNavigation } from "@react-navigation/native";
-import { Platform, Vibration, View } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NOTIFICATIONS, getAsync, askAsync } from "expo-permissions";
 
 export const Store = React.createContext({});
 
-export default function AppProvider({ children, initialState={} }) {
-
+export default function AppProvider({ children, initialState = {} }) {
   const [state, callReducer] = React.useReducer(reducer, {});
 
-
-
-  React.useEffect(() =>  {
-
+  React.useEffect(() => {
     // if (Object.keys(initialState).length) {
     //   callReducer({dispatch: "UPDATE_STATE", data: initialState});
     // }
 
     const loadPersisted = async () => {
-
       let data = await AsyncStorage.getItem("state");
 
-
       if (data) {
-
         data = JSON.parse(data);
 
         console.log("ap", data);
 
-        callReducer({dispatch: "UPDATE_STATE", data});
-
+        callReducer({ dispatch: "UPDATE_STATE", data });
       }
-
-    }
+    };
 
     loadPersisted();
-
   }, []);
-
 
   React.useEffect(() => {
     // let debounceTime = setTimeout(() => {
@@ -187,14 +175,10 @@ export const useNotification = () => {
 
   const registerForPushNotificationsAsync = async () => {
     if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(
-        Permissions.NOTIFICATIONS
-      );
+      const { status: existingStatus } = await getAsync(NOTIFICATIONS);
       let finalStatus = existingStatus;
       if (existingStatus !== "granted") {
-        const { status } = await Permissions.askAsync(
-          Permissions.NOTIFICATIONS
-        );
+        const { status } = await askAsync(NOTIFICATIONS);
         finalStatus = status;
       }
       if (finalStatus !== "granted") {

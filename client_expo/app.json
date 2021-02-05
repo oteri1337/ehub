@@ -19,10 +19,11 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ehubcore.ehub"
+      "bundleIdentifier": "com.abokiui.ehub"
     },
     "android": {
-      "package": "com.ehubcore.ehub",
+      "versionCode": 2,
+      "package": "com.abokiui.ehub",
       "googleServicesFile": "./google-services.json",
       "permissions": [
         "CAMERA",
