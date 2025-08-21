@@ -1,0 +1,228 @@
+body {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  word-break: break-word;
+  top: 0px !important;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-weight: 400;
+}
+
+pre {
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+.pin-top {
+  position: relative;
+}
+
+.pin-bottom {
+  position: relative;
+}
+
+.pinned {
+  position: fixed !important;
+  z-index: 1;
+}
+
+.row .col.l6 {
+  padding: 0;
+}
+
+.col .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.tabs .tab a {
+  font-size: 16px;
+}
+
+.material-icons {
+  position: relative;
+  padding: 0;
+  padding-right: 0.3rem;
+  vertical-align: middle;
+  cursor: pointer;
+  top: -3px;
+}
+
+.icon-share-01 {
+  font-size: 2rem;
+}
+
+.card {
+  margin-top: 0;
+}
+
+.card.medium {
+  height: 350px;
+}
+
+.card.medium .card-image {
+  max-height: 80%;
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0;
+  margin: 0;
+}
+
+h4 {
+  margin: 1rem 0;
+  font-size: 18px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+img {
+  margin: 0;
+}
+
+label {
+  text-transform: capitalize;
+}
+
+h1 {
+  margin: 0;
+}
+
+h5 {
+  font-size: 1.4rem;
+}
+
+h6 {
+  font-size: 1.2rem;
+}
+
+.card-panel {
+  margin: 0;
+}
+
+.collapsible-header {
+  font-size: 1.2rem;
+}
+
+.collection {
+  border: none;
+  margin-top: 0;
+}
+
+.collection .collection-item {
+  padding: 20px 20px;
+  margin-bottom: 1px !important;
+}
+
+.fixed-action-btn {
+  right: 100px;
+}
+
+.row {
+  margin-bottom: 0;
+}
+
+.sidenav .user-view {
+  min-height: 25vh;
+  margin-bottom: 0;
+}
+
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+#particles-js canvas {
+  position: absolute;
+  max-height: 766px;
+  top: 0;
+  left: 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.input-field .prefix {
+  font-size: 18px;
+}
+
+input {
+  font-size: 0.9rem !important;
+}
+
+.collection .collection-item.avatar:not(.circle-clipper) > .circle,
+.collection .collection-item.avatar :not(.circle-clipper) > .circle {
+  top: 20px;
+}
+
+.btn,
+.btn-no-hover {
+  height: 44px;
+  line-height: 38px;
+  vertical-align: middle;
+  margin: 0.2rem;
+  text-transform: none;
+  letter-spacing: 0.07em;
+  font-weight: bolder;
+  padding: 2px 22px 4px !important;
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+.fixed-action-btn {
+  right: 30px;
+  bottom: 60px;
+}
+
+.card .card-content p {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.card-content {
+  font-size: 16px;
+  text-align: center;
+  line-height: 24px;
+}
+
+.card-content p {
+  line-height: 17px;
+}
+
+.app-draft {
+  border: 1px solid #000;
+  background: #f2f2f2;
+}
+
+div.DraftEditor-root {
+  min-height: 300px;
+  overflow-y: auto;
+  padding: 1rem;
+}
+div.DraftEditor-editorContainer,
+div.public-DraftEditor-content {
+  height: 100%;
+}
+
+.blog img {
+  max-height: 85vh;
+  max-width: 100%;
+}

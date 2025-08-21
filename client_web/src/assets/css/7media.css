@@ -1,0 +1,132 @@
+/* Width Below 320px - Small Mobile */
+/* Width Above 320px and Below 420px - Mobile */
+/* Width Above 420px and Below 1024px - Tablet */
+/* Width Above 1024px and At 1366px - Tablet or PC */
+/* Width Above 1366px - Large Screen PC */
+
+/* Height Above 560px and Below 620px - Small Mobile */
+/* Height Above 620px and Below 767px - IPhone 6 or PC */
+/* Height Above 767px and Below 820px - Tablet or Iphone X  */
+/* Height Above 820px - Tablet  */
+
+/* Small Screen Mobile */
+@media (max-width: 320px) {
+  input {
+    font-size: 0.7rem !important;
+  }
+
+  .collection .collection-item {
+    font-size: 1rem;
+  }
+  .chip {
+    font-size: 11px;
+  }
+}
+
+/* Mobile Sure */
+@media (max-width: 415px) {
+  .row .col {
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  h2 {
+    font-size: 25px;
+  }
+
+  nav ul a {
+    font-size: 20px;
+    padding: 0 5px;
+  }
+
+  .app-mobile-center {
+    text-align: center;
+  }
+
+  .chip .close {
+    top: -9px;
+    line-height: 20px;
+  }
+
+  .app-px-3-5 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .container {
+    width: 90%;
+  }
+
+  ul.stepper .step .step-content {
+    margin-left: 1.5rem;
+    margin-right: 0;
+  }
+
+  body {
+    font-size: 17px;
+  }
+
+  .app-f-3-6 {
+    font-size: 2.5rem;
+  }
+
+  .mobile-table {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 12px;
+  }
+
+  /* nav .brand-logo {
+    left: 47%;
+  } */
+}
+
+/* Tablets and PCs */
+@media (min-width: 416px) {
+  .container-50 {
+    max-width: 90%;
+    padding-left: 5rem;
+  }
+
+  .app-big-right {
+    text-align: right;
+  }
+
+  .app-slider-title {
+    font-size: 40px;
+    padding: 0;
+  }
+
+  .app-flex-vh {
+    min-height: 602px; /* Height of device mmius navbar height */
+  }
+
+  .app-px {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  #particles-js canvas {
+    max-height: 664px;
+  }
+
+  .container {
+    width: 85%;
+  }
+}
+
+/*  PC Sure */
+@media (min-width: 769px) {
+  .container-50 {
+    max-width: 50%;
+    padding-left: 5rem;
+  }
+
+  .container-right {
+    margin-left: auto;
+    margin-right: 10%;
+  }
+}

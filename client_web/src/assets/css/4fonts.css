@@ -1,0 +1,44 @@
+body {
+  font-family: "Signika Negative";
+}
+
+a.btn {
+  font-size: 14px;
+}
+
+h1 {
+  font-size: 48px;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 36px;
+  font-weight: 400;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+footer p {
+  font-size: 12px;
+}
+
+.card-panel p {
+  font-size: 16px;
+  line-height: 30px;
+}
+
+.card-panel h3 {
+  font-size: 26px;
+  line-height: 30px;
+}
+
+.collection .collection-item {
+  font-size: 16px;
+}
+
+/* .carousel.carousel-slider .carousel-item p {
+  font-size: 20px;
+} */

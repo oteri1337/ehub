@@ -1,0 +1,12 @@
+.env
+*.sh
+*.md
+*.zip
+*.mp4
+.DS_Store
+
+vendor/
+database/
+public_html/adev
+client_web/node_modules/
+client_expo/node_modules/

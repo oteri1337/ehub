@@ -1,0 +1,39 @@
+<html>
+  <title>{{ title }}</title>
+  <div
+    style="
+      background: #f7f9fb;
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+        'Lucida Sans', Arial, sans-serif;
+    "
+  >
+    <div
+      style="
+        padding: 1rem;
+        background: #0eb8d9;
+        background: linear-gradient(134deg, #0eb8d9 0%, #2cddc9 100%);
+        color: white;
+      "
+    >
+      eHUB
+    </div>
+    <div
+      style="
+        margin: 2rem;
+        text-align: center;
+        background: white;
+        padding: 1rem;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+          0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+      "
+    >
+      <h1 style="font-size: 15px; font-weight: bold;">{{ title }}</h1>
+      <div style="font-size: 14px; text-decoration: none;">
+        {{ content | raw }}
+      </div>
+    </div>
+    <div style="text-align: center; background: white; padding: 3rem;">
+      <p>&copy; eHUB All Rights Reserved.</p>
+    </div>
+  </div>
+</html>

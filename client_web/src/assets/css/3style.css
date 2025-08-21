@@ -1,0 +1,94 @@
+.btn-full {
+  width: 100%;
+}
+
+.app-no-shadow {
+  box-shadow: none;
+}
+
+.app-inline {
+  display: inline;
+}
+
+.fade-appear {
+  opacity: 0;
+}
+
+.fade-appear-active {
+  opacity: 1;
+  transition: opacity 1000ms linear;
+}
+
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.animate-up {
+  animation-name: animate-up;
+  animation-duration: 15s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+}
+
+@keyframes animate-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-1100px);
+  }
+}
+
+.app-trading-month {
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+}
+
+.app-trading-day {
+  font-size: 2.1rem;
+}
+
+.app-slider-title {
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.app-slider-caption {
+  font-size: 18px !important;
+  line-height: 27px;
+}
+
+.my-node-enter {
+  opacity: 0;
+}
+.my-node-enter-active {
+  opacity: 1;
+  transition: opacity 500ms;
+}
+.my-node-exit {
+  opacity: 1;
+}
+.my-node-exit-active {
+  opacity: 0;
+  transition: opacity 500ms;
+}
+
+.test-enter {
+  opacity: 0;
+  font-size: 10px;
+}
+
+.test-enter.test-timeout {
+  opacity: 1;
+  transition: 500ms;
+}
+
+.test-enter.test-timeout.test-leaves {
+  color: red;
+}
