@@ -24,20 +24,20 @@ class AuthController extends NewApiController
         $email = $body['email'] ?? '';
         $password = $body['password'] ?? '';
 
-        $rules = [
-            'email' => [$email, 'required|email'],
-            'password' => [$password, 'required']
-        ];
+        // $rules = [
+        //     'email' => [$email, 'required|email'],
+        //     'password' => [$password, 'required']
+        // ];
 
-        $this->validator->validate($rules);
+        // $this->validator->validate($rules);
 
-        $errors = $this->validator->errors;
+        // $errors = $this->validator->errors;
 
-        if ($errors) {
-            $this->data['errors'] =  $errors;
-            $response->getBody()->write(json_encode($this->data));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
+        // if ($errors) {
+        //     $this->data['errors'] =  $errors;
+        //     $response->getBody()->write(json_encode($this->data));
+        //     return $response->withHeader('Content-Type', 'application/json');
+        // }
 
         $password = $this->encryptPassword($password);
         $row = $this->model->where('email', $email)->where('password', $password)->with($this->eagerRead)->first();

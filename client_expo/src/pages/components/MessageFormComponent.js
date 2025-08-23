@@ -1,6 +1,6 @@
 import React from "react";
 import { Keyboard } from "react-native";
-import * as Permissions from "expo-permissions";
+// import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import { View, Textarea, Button, Icon, ActionSheet } from "native-base";

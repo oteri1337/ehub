@@ -2,11 +2,11 @@ import React from "react";
 import Constants from "expo-constants";
 import { Vibration } from "react-native";
 import reducer from "./reducers/rootReducer";
-import * as Notifications from "expo-notifications";
+// import * as Notifications from "expo-notifications";
 import { getRequest, sendRequest } from "./functions";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NOTIFICATIONS, getAsync, askAsync } from "expo-permissions";
+// import { NOTIFICATIONS, getAsync, askAsync } from "expo-permissions";
 
 export const Store = React.createContext({});
 

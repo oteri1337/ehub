@@ -1,11 +1,8 @@
 {
   "expo": {
-    "name": "eHUB",
-    "slug": "eHUB",
-    "privacy": "public",
-    "description": "The application will serve as the knowledge hub of the university with more focus on the faculty of engineering to provide access to qualitative resources which will support teaching, researches and is going to further enhance / bridge the gap with professionals, interns and students",
-    "platforms": ["ios", "android", "web"],
-    "version": "0.2.1",
+    "name": "my-legacy-app",
+    "slug": "my-legacy-app",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -16,29 +13,17 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.abokiui.ehub"
+      "supportsTablet": true
     },
     "android": {
-      "versionCode": 2,
-      "package": "com.abokiui.ehub",
-      "googleServicesFile": "./google-services.json",
-      "permissions": [
-        "CAMERA",
-        "VIBRATE",
-        "READ_CALENDAR",
-        "WRITE_CALENDAR",
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
-      ]
+      "package": "com.mycompany.mylegacyapp"
     },
-    "notification": {
-      "color": "#ffffff",
-      "androidMode": "collapse",
-      "icon": "./assets/icon.png",
-      "androidCollapsedTitle": "New Messages"
+    "web": {
+      "favicon": "./assets/favicon.png"
     }
   }
 }

@@ -8,5 +8,6 @@
 vendor/
 database/
 public_html/adev
+app/node_modules/
 client_web/node_modules/
 client_expo/node_modules/
